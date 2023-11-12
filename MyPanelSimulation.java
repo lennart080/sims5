@@ -14,7 +14,6 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     g2D.setPaint(Color.BLUE);
     g2D.drawString("Simulation-Panel", 20, 40);
     g2D.drawString("" + zahl, 20, 60);
-    g2D.drawString(""hallo"", 100, 40);
   }
   
   public void myUpdate(int pz) {                 //aktualisiren der daten
