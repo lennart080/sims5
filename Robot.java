@@ -34,6 +34,6 @@ public class Robot {
   
   public void setStatistic(String statistic, int value) {
     dna[0] = 5; 
-    position[2] = 0;
+    position[2] = 5;
     }
 }
