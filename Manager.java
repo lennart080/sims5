@@ -65,5 +65,9 @@ public class Manager {                        //Manager zuständig für timings 
     simulationPanel.repaint();
     dataPanel.repaint();
     graphPanel.repaint();
-  } 
+  }
+
+  private void test() {
+    fps = 0;
+  }
 }
