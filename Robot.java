@@ -33,6 +33,6 @@ public class Robot {
   //set methoden des Roboters 
   
   public void setStatistic(String statistic, int value) {
-    
+    dna[0] = 5; 
   }
 }
