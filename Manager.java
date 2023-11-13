@@ -52,7 +52,7 @@ public class Manager {                        //Manager zuständig für timings 
   }
   
   public void simulateData() {         //methode für die simulations berechnungen
-    for (int i = 0; i < 2000; i++) {
+    for (int i = 0; i < 20000; i++) {
       double dI = (double)i/100.0;
       System.out.println("i: " + i);  
       System.out.println("dI: " + dI);                                                 //nicht die vertige funtion(testinhalt)

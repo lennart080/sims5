@@ -2,7 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 public class MyPanelGraphs extends JPanel {         //graphic classe der simulation
   private int h;
-  private double[] graph = new double[16000];
+  private double[] graph = new double[20000];
   public MyPanelGraphs() {
     this.setBackground(Color.GREEN);
     repaint(); 
@@ -17,7 +17,7 @@ public class MyPanelGraphs extends JPanel {         //graphic classe der simulat
 
     //zur test veranschaulichung der graphen funktion (nicht final!!!)
     for (int i = 0; i<h; i++) {
-      g2D.drawLine((i+50), (int)graph[i]+100, (i+50), (int)graph[i]+100);
+      g2D.drawLine((i+50)/10, (int)graph[i]+100, (i+50)/10, (int)graph[i]+100);
     }
   }
   

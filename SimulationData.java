@@ -9,7 +9,7 @@ public class SimulationData {
   private double lightAmplitude;
   private int seed;
   public SimulationData() {
-    seed = 23;
+    seed = 2334535;
     noise = new PerlinNoise(seed);
     this.Write();
     //newBoard(100, 70);
@@ -95,21 +95,24 @@ public class SimulationData {
       for (int i = 0; i < TABLE_SIZE; i++) {
         int index;
         do {
-          index = (int) (XorShiftNext() % TABLE_SIZE);
-        } while (used[index]);
+          index = (int) (XorShiftNext(seed) % TABLE_SIZE);
+          System.out.println("index: " + index);
+        } while (used.length < index || index < 0);
         permutationIndices[i] = index;
         used[index] = true;
       }
       for (int i = 0; i < TABLE_SIZE; i++) {
-        permutation[i] = originalTable[permutationIndices[i]];
+        //permutation[i] = originalTable[permutationIndices[i]];
+        permutation[i] = permutationIndices[i];
       }
     }
 
-    public long XorShiftNext() {
-        seed ^= (seed << 21);
-        seed ^= (seed >>> 35);
-        seed ^= (seed << 4);
-        return seed;
+    public long XorShiftNext(int pSeed) {
+        pSeed ^= (pSeed << 21);
+        pSeed ^= (pSeed >>> 35);
+        pSeed ^= (pSeed << 4);
+        seed = pSeed;
+        return pSeed;
     }
   
     private double fade(double t) {
