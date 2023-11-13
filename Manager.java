@@ -52,14 +52,12 @@ public class Manager {                        //Manager zuständig für timings 
   }
   
   public void simulateData() {         //methode für die simulations berechnungen
+    // ------testzwecke-----------
     for (int i = 0; i < 20000; i++) {
       double dI = (double)i/100.0;
-      System.out.println("i: " + i);  
-      System.out.println("dI: " + dI);                                                 //nicht die vertige funtion(testinhalt)
-      System.out.println("sim: " + simulationData.getLightIntensityAtTime(dI));
       graphPanel.myUpdate((int)(10*simulationData.getLightIntensityAtTime(dI)), i);
     }
-    //simulationData.
+    //----------------------------
   }
   
   private void updateGraphicData() {               //methode für die daten updates die graphic panele

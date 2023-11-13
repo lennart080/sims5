@@ -1,17 +1,13 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-
 public class SimulationData {
   private PerlinNoise noise;
   private int[][] board; 
   private double lightIntensity;
   private double lightAmplitude;
   private int seed;
-  public SimulationData() {
-    seed = 2334535;
+
+  public SimulationData() {              //generirien und laden des simulations umfelds
+    setSeed(2334535);
     noise = new PerlinNoise(seed);
-    this.Write();
     //newBoard(100, 70);
   }
   
@@ -66,32 +62,27 @@ public class SimulationData {
   }
   
   public double getLightIntensityAtTime(double time) {              //berechnung der licht intensivität zu einer bestimmten zeit
-    double lightIntensityAtTime = noise.getPerlinNoise(time);                  //nicht final
+    double lightIntensityAtTime = noise.getPerlinNoise(time);                  
     return lightIntensityAtTime;
   }
 
-    public void Write() {
-      for (int x = 0; x < noise.getpermut().length; x++) {
-        System.out.println(x + ": " + noise.getpermut()[x]);
-      }
+  public void Write() {                //comadline augabe zu testzweken der überprüfung von generirten funktionen
+    for (int x = 0; x < noise.getpermut().length; x++) {
+      System.out.println(x + ": " + noise.getpermut()[x]);
     }
-
-
+  }
 
   //klasse und methoden zur erstellung des 1d perlin noise
   
   private static class PerlinNoise {
-    private static final int TABLE_SIZE = 2048;
+    private static final int TABLE_SIZE = 2048;          //bestimmt die rauschgöße des perlin noise
     private static final int[] permutation = new int[TABLE_SIZE];
-
+    private static final int[] permutationIndices = new int[TABLE_SIZE];
+    private static final boolean[] used = new boolean[TABLE_SIZE];
     private int seed;
 
-    private int[] originalTable = new int[TABLE_SIZE]; 
-    private int[] permutationIndices = new int[TABLE_SIZE];
-    private boolean[] used = new boolean[TABLE_SIZE];
-
-    public PerlinNoise(int pSeed) {    
-      seed = pSeed;                             //erstellen eines prelin musters am anfag der simulation 
+    public PerlinNoise(int pSeed) {            //erstellen eines prelin musters am anfag der simulation 
+      seed = pSeed;                             
       for (int i = 0; i < TABLE_SIZE; i++) {
         int index;
         do {
@@ -102,12 +93,11 @@ public class SimulationData {
         used[index] = true;
       }
       for (int i = 0; i < TABLE_SIZE; i++) {
-        //permutation[i] = originalTable[permutationIndices[i]];
         permutation[i] = permutationIndices[i];
       }
     }
 
-    public long XorShiftNext(int pSeed) {
+    private long XorShiftNext(int pSeed) {
         pSeed ^= (pSeed << 21);
         pSeed ^= (pSeed >>> 35);
         pSeed ^= (pSeed << 4);
@@ -141,7 +131,7 @@ public class SimulationData {
       return lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2; 
     }
 
-    public int[] getpermut() {
+    public int[] getpermut() {            //übergabe des niose musters zu testzwecken
       return permutation;
     }
   }

@@ -22,7 +22,9 @@ public class MyPanelGraphs extends JPanel {         //graphic classe der simulat
   }
   
   public void myUpdate(int x, int g) {                 //aktualisiren der daten
-    graph[g] = x;                           //falsche daten schnitstelle (nur testweiße)
-    h = g;                                    //...
+    //----testdaten----
+    graph[g] = x;                           
+    h = g;   
+    //-----------------                               
   }
 }
