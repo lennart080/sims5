@@ -2,7 +2,6 @@ import javax.swing.*;
 import javax.swing.SwingUtilities;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.*;
 public class Manager {                        //Manager zuständig für timings und updates
   private MyFrame screen;
   private MyPanelSimulation simulationPanel;
@@ -30,7 +29,7 @@ public class Manager {                        //Manager zuständig für timings 
       public void actionPerformed(ActionEvent e) {
         updates++;
         fpsUpdate();
-        simulateData();
+        //simulateData();                        zu test zwenken aus 
         updateGraphicData();
         updateScreen();
       }
@@ -52,7 +51,12 @@ public class Manager {                        //Manager zuständig für timings 
     }
   }
   
-  private void simulateData() {         //methode für die simulations berechnungen
+  public void simulateData() {         //methode für die simulations berechnungen
+    for (int i = 0; i < 500; i++) {
+      System.out.println("i: " + i);                                                   //nicht die vertige funtion(testinhalt)
+      System.out.println("sim: " + simulationData.getLightIntensityAtTime(i));
+      graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), i);
+    }
     //simulationData.
   }
   

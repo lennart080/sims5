@@ -2,9 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.JPanel;
-import java.awt.GridBagLayout;
-import java.awt.GridBagConstraints;
-import java.awt.BorderLayout;
 public class MyFrame extends JFrame {                 //graphic manager (zuständig für wo welche fenster/menüs angezeigt werden)
   private Manager manager;
   private MyPanelSimulation simulationPanel;
@@ -85,21 +82,23 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     @Override
     public void keyPressed(KeyEvent e) {
       switch (e.getKeyCode()) {
-        case KeyEvent.VK_A  : 
+        case KeyEvent.VK_A  :                         //test taste
           GuiModes(1);
           break;
-        case KeyEvent.VK_S  : 
+        case KeyEvent.VK_S  :              //test taste
           GuiModes(2);
           break;
-        case KeyEvent.VK_W  : 
+        case KeyEvent.VK_W  :                   //test taste
           GuiModes(3);
           break;
-        case KeyEvent.VK_D  : 
+        case KeyEvent.VK_D  :                     //test taste
           GuiModes(4);
           break;
-        case KeyEvent.VK_H  : 
+        case KeyEvent.VK_H  :                      //test taste
           manager.myTimerStop();
           break;
+        case KeyEvent.VK_G  :                    //test taste
+          manager.simulateData();              
         default: 
       }
       if(47 < e.getKeyCode() && e.getKeyCode() < 58) {
