@@ -5,6 +5,7 @@ public class SimulationData {
   private double lightAmplitude;
   private int seed;
   public SimulationData() {
+    seed = 23;
     noise = new PerlinNoise(seed);
     //newBoard(100, 70);
   }
@@ -26,10 +27,10 @@ public class SimulationData {
   }
   
   public void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
-    if (pSeed >= 0) {
+    if (pSeed >= 1) {
       seed = pSeed;
     } else {
-      seed = 0;
+      seed = 1;
     } 
   }
   
@@ -59,15 +60,15 @@ public class SimulationData {
     return seed;
   }
   
-  public double getLightIntensityAtTime(int time) {              //berechnung der licht intensivität zu einer bestimmten zeit
-    double lightIntensityAtTime = noise.getPerlinNoise((double)time/10.0);                  //nicht final
+  public double getLightIntensityAtTime(double time) {              //berechnung der licht intensivität zu einer bestimmten zeit
+    double lightIntensityAtTime = noise.getPerlinNoise(time);                  //nicht final
     return lightIntensityAtTime;
   }
 
   //klasse und methoden zur erstellung des 1d perlin noise
   
   private static class PerlinNoise {
-    private static final int TABLE_SIZE = 256;
+    private static final int TABLE_SIZE = 2048;
     private static final int[] permutation = new int[2*TABLE_SIZE];
 
     public PerlinNoise(int pSeed) {                                 //erstellen eines prelin musters am anfag der simulation 
@@ -96,6 +97,7 @@ public class SimulationData {
       int c = (int)x & (TABLE_SIZE - 1);
       double xf = x - (int)x;
       double u = fade(xf);
+      System.out.println("über: " + x);
       System.out.println("c :" + c + " xf: " + xf + " u: "+ u);
       System.out.println("lerp: " + (lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2));
       return lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2; 

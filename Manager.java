@@ -1,5 +1,5 @@
 import javax.swing.*;
-import javax.swing.SwingUtilities;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Manager {                        //Manager zuständig für timings und updates
@@ -52,10 +52,12 @@ public class Manager {                        //Manager zuständig für timings 
   }
   
   public void simulateData() {         //methode für die simulations berechnungen
-    for (int i = 0; i < 500; i++) {
-      System.out.println("i: " + i);                                                   //nicht die vertige funtion(testinhalt)
-      System.out.println("sim: " + simulationData.getLightIntensityAtTime(i));
-      graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), i);
+    for (int i = 0; i < 100; i++) {
+      double dI = (double)i/100.0;
+      System.out.println("i: " + i);  
+      System.out.println("dI: " + dI);                                                 //nicht die vertige funtion(testinhalt)
+      System.out.println("sim: " + simulationData.getLightIntensityAtTime(dI));
+      graphPanel.myUpdate((int)(10*simulationData.getLightIntensityAtTime(dI)), i);
     }
     //simulationData.
   }
