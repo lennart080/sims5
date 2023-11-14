@@ -53,9 +53,10 @@ public class Manager {                        //Manager zuständig für timings 
   
   public void simulateData() {         //methode für die simulations berechnungen
     // ------testzwecke-----------
-    for (int i = 0; i < 20000; i++) {
-      double dI = (double)i/100.0;
-      graphPanel.myUpdate((int)(10*simulationData.getLightIntensityAtTime(dI)), i);
+    for (int i = 0; i < 18; i++) {
+      for (int j = 0; j < 100; j++) {
+        graphPanel.myUpdate((int)(10*simulationData.getLightIntensityAtTime(((double)j/100.0)+i)), (j+(i*100)));
+      }
     }
     //----------------------------
   }
