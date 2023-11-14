@@ -125,9 +125,6 @@ public class SimulationData {
       int c = (int)x & (TABLE_SIZE - 1);
       double xf = x - (int)x;
       double u = fade(xf);
-      System.out.println("über: " + x);
-      System.out.println("c :" + c + " xf: " + xf + " u: "+ u);
-      System.out.println("lerp: " + (lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2));
       return lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2; 
     }
 
