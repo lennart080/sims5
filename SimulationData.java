@@ -3,10 +3,12 @@ public class SimulationData {
   private int[][] board; 
   private double lightIntensity;
   private double lightAmplitude;
+  private double noiseStrength;
   private int seed;
 
   public SimulationData() {              //generirien und laden des simulations umfelds
     setSeed(2334535);
+    setNoiseStrength(0.4);
     noise = new PerlinNoise(seed);
     //newBoard(100, 70);
   }
@@ -34,6 +36,12 @@ public class SimulationData {
       seed = 1;
     } 
   }
+
+  public void setNoiseStrength(double waight) {
+    if (waight > 0 && waight < 1) {
+      noiseStrength = waight;
+    }
+  }
   
   public void setLightChangeStrength(double pAmplitude) {             //setzen der schwankungen mit der zeit der stärke des lichts 
     if (pAmplitude >= 0.0) {
@@ -59,6 +67,10 @@ public class SimulationData {
   
   public int getSeed() {
     return seed;
+  }
+
+  public double getNoiseStrength() {
+    return noiseStrength;
   }
   
   public double getLightIntensityAtTime(double time) {              //berechnung der licht intensivität zu einer bestimmten zeit
@@ -87,7 +99,6 @@ public class SimulationData {
         int index;
         do {
           index = (int) (XorShiftNext(seed) % TABLE_SIZE);
-          System.out.println("index: " + index);
         } while (used.length < index || index < 0);
         permutationIndices[i] = index;
         used[index] = true;

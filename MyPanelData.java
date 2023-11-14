@@ -1,5 +1,7 @@
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import javax.swing.JPanel;
 public class MyPanelData extends JPanel {          //graphic classe der daten
   private int fps;
   public MyPanelData() {

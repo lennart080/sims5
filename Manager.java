@@ -1,5 +1,5 @@
 import javax.swing.*;
-
+import java.lang.Math;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Manager {                        //Manager zuständig für timings und updates
@@ -53,9 +53,18 @@ public class Manager {                        //Manager zuständig für timings 
   
   public void simulateData() {         //methode für die simulations berechnungen
     // ------testzwecke-----------
-    for (int i = 0; i < 18; i++) {
+    for (int i = 0; i < 5; i++) {
       for (int j = 0; j < 100; j++) {
-        graphPanel.myUpdate((int)(10*simulationData.getLightIntensityAtTime(((double)j/100.0)+i)), (j+(i*100)));
+        if (((double)j/100.0) < (7.0/24.0) || ((double)j/100.0) > (20.0/24.0)) {
+          System.out.println("flat");
+          graphPanel.myUpdate(0, j+(i*100));
+        } else {
+          double w = simulationData.getNoiseStrength();
+          double fx = Math.cos(((double)j/100.0)*Math.PI*(24.0/13.0));
+          double gx = simulationData.getLightIntensityAtTime((((double)j/100.0)+i)*10);
+          System.out.println("sin: " + fx + " j: " + j/100.0);
+          graphPanel.myUpdate((int)((gx*w)+(fx*(1-w))*10), j+(i*100));
+        }
       }
     }
     //----------------------------
