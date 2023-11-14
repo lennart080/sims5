@@ -73,9 +73,16 @@ public class SimulationData {
     return noiseStrength;
   }
   
-  public double getLightIntensityAtTime(double time) {              //berechnung der licht intensivität zu einer bestimmten zeit
-    double lightIntensityAtTime = noise.getPerlinNoise(time);                  
-    return lightIntensityAtTime;
+  public double getLightIntensityAtTime(int day, int hour, int minute, int second) {              //berechnung der licht intensivität zu einer bestimmten zeit
+    double time = (((hour * 3600) + (minute * 60) + second) * 100) / 8640000;
+    if ((time) > (7.0/24.0) && (time) < (20.0/24.0)) {
+      double w = this.getNoiseStrength();
+      double fx = Math.cos(time*Math.PI*(24.0/13.0));
+      double gx = noise.getPerlinNoise((time+day)*10);
+      System.out.println("sin: " + fx + " noise: " + gx + " j: " + time);
+      return (gx*w)+(fx*(1-w))*10;
+    }
+    return 0.0;
   }
 
   public void Write() {                //comadline augabe zu testzweken der überprüfung von generirten funktionen
