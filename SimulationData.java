@@ -73,14 +73,21 @@ public class SimulationData {
     return noiseStrength;
   }
   
-  public double getLightIntensityAtTime(int day, int hour, int minute, int second) {              //berechnung der licht intensivität zu einer bestimmten zeit
-    double time = (((hour * 3600) + (minute * 60) + second) * 100) / 8640000;
+  public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit
+    double perlinTime = ((double)pTime / 86400.0);
+    double time;
+    if (perlinTime == (int)perlinTime && perlinTime != 0.0) {
+      time = 1.0;
+    } else {
+      time = perlinTime - (int)perlinTime;
+    }
     if ((time) > (7.0/24.0) && (time) < (20.0/24.0)) {
       double w = this.getNoiseStrength();
-      double fx = Math.cos(time*Math.PI*(24.0/13.0));
-      double gx = noise.getPerlinNoise((time+day)*10);
-      System.out.println("sin: " + fx + " noise: " + gx + " j: " + time);
+      double fx = Math.cos(time*Math.PI*(24.0/13.0))*(-1);
+      double gx = noise.getPerlinNoise((perlinTime)*10);
+      if (((gx*w)+(fx*(1-w))*10) > 0.0) {
       return (gx*w)+(fx*(1-w))*10;
+      }
     }
     return 0.0;
   }

@@ -1,5 +1,4 @@
 import javax.swing.*;
-import java.lang.Math;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 public class Manager {                        //Manager zuständig für timings und updates
@@ -11,6 +10,7 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
   
   private int updates = 0;        //anzahl der updates seit start des programms  
+  private int time = 0;
   private int fps;
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
@@ -53,9 +53,8 @@ public class Manager {                        //Manager zuständig für timings 
   
   public void simulateData() {         //methode für die simulations berechnungen
     // ------testzwecke-----------
-    for (int i = 1; i < 11; i++) {
-       graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(1, i, 34, 20), i);
-       System.out.println("y: " + (int)simulationData.getLightIntensityAtTime(1, i, 34, 20) + " time: " + i);
+    for (int i = 1; i < (86400*8); i++) {
+       graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), (int)((double)i*0.00115740740740740740740740740741));
     }
     //----------------------------
   }
