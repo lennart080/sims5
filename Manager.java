@@ -6,11 +6,14 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
-  private Timer timer;
   private SimulationData simulationData;
+  private Timer timer;
+  private Timer timeTimer;
+
   
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;
+  private int programmSpeed = 1;
   private int fps;
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
@@ -24,21 +27,38 @@ public class Manager {                        //Manager zuständig für timings 
     
     simulationData = new SimulationData();
     
-    timer = new Timer(10, new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
+    timer = new Timer((100/programmSpeed), new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
       @Override
       public void actionPerformed(ActionEvent e) {
+        long ts = System.currentTimeMillis();
         updates++;
         fpsUpdate();
-        //simulateData();                        zu test zwenken aus 
+        simulateData();                       // zu test zwenken aus 
         updateGraphicData();
         updateScreen();
+        if (System.currentTimeMillis()-ts != 0) {
+          timer.setDelay((100/programmSpeed)-(int)(System.currentTimeMillis()-ts)+6);     
+        } 
       }
     });
     timer.start();
+
+    timeTimer = new Timer(1000/programmSpeed, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        long ts = System.currentTimeMillis();
+        time++;
+        if (System.currentTimeMillis()-ts != 0) {
+          timer.setDelay((1000/programmSpeed)-(int)(System.currentTimeMillis()-ts));     
+        } 
+      }
+    });
+    timeTimer.start();
   }  
   
   public void myTimerStop() {
     timer.stop();
+    timeTimer.stop();
   }
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
@@ -60,7 +80,7 @@ public class Manager {                        //Manager zuständig für timings 
   }
   
   private void updateGraphicData() {               //methode für die daten updates die graphic panele
-    simulationPanel.myUpdate(updates);  
+    simulationPanel.myUpdate(updates, time);  
     dataPanel.myUpdate(fps);
   }
   
