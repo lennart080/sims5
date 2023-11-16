@@ -1,10 +1,14 @@
+import java.awt.Dimension;
+import java.awt.Toolkit;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+
 import panels.MyPanelData;
 import panels.MyPanelGraphs;
 import panels.MyPanelSimulation;
-import javax.swing.*;
-import java.awt.*;
-import java.awt.event.*;
-import javax.swing.JPanel;
 public class MyFrame extends JFrame {                 //graphic manager (zuständig für wo welche fenster/menüs angezeigt werden)
   private Manager manager;
   private MyPanelSimulation simulationPanel;

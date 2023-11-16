@@ -1,19 +1,43 @@
 public class SimulationData {
   private PerlinNoise noise;
   private int[][] board; 
+  private double dayStart;
+  private double dayEnd;
   private double lightIntensity;
-  private double lightAmplitude;
+  private double noiseAmplitude;
   private double noiseStrength;
   private int seed;
 
   public SimulationData() {              //generirien und laden des simulations umfelds
     setSeed(2334535);
     setNoiseStrength(0.4);
+    setDayStart(7.0);
+    setDayEnd(20.0);
+    setNoiseAmplitude(10.0);
+    setLightIntensity(10.0);
     noise = new PerlinNoise(seed);
     //newBoard(100, 70);
   }
   
   //set methoden der simulation daten
+
+  public void setDayStart(double pDayStart) {
+    dayStart = 7.0;
+    if (23.99 > pDayStart && pDayStart >= 0.0) {
+      if (dayEnd > pDayStart || dayEnd == 0.0) {
+        dayStart = pDayStart;
+      } 
+    } 
+  }
+
+  public void setDayEnd(double pDayEnd) {
+    dayEnd = 20.0;
+    if (24.0 >= pDayEnd && pDayEnd > 0.1) {
+      if (dayStart < pDayEnd) {
+        dayEnd = pDayEnd;     
+      } 
+    }
+  }
   
   public void setBoardSize(int x, int y) {            //erstellen der größe der simulation (einzige einstellung die nur einmal gesetzt werden kann)
     if (board == null) {
@@ -21,7 +45,7 @@ public class SimulationData {
     }
   }
   
-  public void setLightIntensity(int intensity) {            //setzen der licht stärke in der simulation
+  public void setLightIntensity(double intensity) {            //setzen der licht stärke in der simulation
     if (intensity >= 0) {
       lightIntensity = intensity;  
     } else {
@@ -43,15 +67,11 @@ public class SimulationData {
     }
   }
   
-  public void setLightChangeStrength(double pAmplitude) {             //setzen der schwankungen mit der zeit der stärke des lichts 
-    if (pAmplitude >= 0.0) {
-      if (pAmplitude <= 2.0) {
-        lightAmplitude = pAmplitude;
-      } else {
-        lightAmplitude = 2.0;
-      }
+  public void setNoiseAmplitude(double pNoiseAmplitude) {             //setzen der schwankungen mit der zeit der stärke des lichts 
+    if (pNoiseAmplitude > 0.0) {
+      noiseAmplitude = pNoiseAmplitude;
     } else {
-      lightAmplitude = 0.0;
+      noiseAmplitude = 0.1;
     } 
   }
   
@@ -61,8 +81,8 @@ public class SimulationData {
     return lightIntensity;
   }
   
-  public double getLightChangeStrenght() {
-    return lightAmplitude;
+  public double getNoiseAmplitude() {
+    return noiseAmplitude;
   }
   
   public int getSeed() {
@@ -81,12 +101,12 @@ public class SimulationData {
     } else {
       time = perlinTime - (int)perlinTime;
     }
-    if ((time) > (7.0/24.0) && (time) < (20.0/24.0)) {
+    if ((time) > (dayStart/24.0) && (time) < (dayEnd/24.0)) {
       double w = this.getNoiseStrength();
-      double fx = Math.cos(time*Math.PI*(24.0/13.0))*(-1);
-      double gx = noise.getPerlinNoise((perlinTime)*10);
-      if (((gx*w)+(fx*(1-w))*10) > 0.0) {
-      return (gx*w)+(fx*(1-w))*10;
+      double fx = Math.cos(time*Math.PI*(24.0/(dayEnd-dayStart)))*(-1);
+      double gx = noise.getPerlinNoise((perlinTime)*noiseAmplitude);
+      if (((gx*w)+(fx*(1-w))*lightIntensity) > 0.0) {
+      return (gx*w)+(fx*(1-w))*lightIntensity;
       }
     }
     return 0.0;

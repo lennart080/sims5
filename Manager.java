@@ -1,9 +1,12 @@
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.SwingUtilities;
+import javax.swing.Timer;
+
 import panels.MyPanelData;
 import panels.MyPanelGraphs;
 import panels.MyPanelSimulation;
-import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 public class Manager {                        //Manager zuständig für timings und updates
   private MyFrame screen;
   private MyPanelSimulation simulationPanel;
