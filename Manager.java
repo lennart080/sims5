@@ -1,3 +1,6 @@
+import panels.MyPanelData;
+import panels.MyPanelGraphs;
+import panels.MyPanelSimulation;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

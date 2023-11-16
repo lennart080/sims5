@@ -1,3 +1,4 @@
+package panels;
 import javax.swing.*;
 import java.awt.*;
 public class MyPanelGraphs extends JPanel {         //graphic classe der simulation
