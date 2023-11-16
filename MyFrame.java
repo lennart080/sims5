@@ -105,12 +105,16 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           manager.myTimerStop();
           break;
         case KeyEvent.VK_G  :                    //test taste
-          manager.simulateData();              
+          manager.simulateData();     
+        case KeyEvent.VK_R  :                    //test taste
+          manager.startSimulation();          
         default: 
       }
+      /* 
       if(47 < e.getKeyCode() && e.getKeyCode() < 58) {
         int zahl = (int)(e.getKeyCode()-38);    
       }
+      */
     }
   }
 }
