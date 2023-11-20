@@ -68,11 +68,16 @@ public class Manager {                        //Manager zuständig für timings 
 
   public void startSimulation() {
     if (round == 0) {
+      int maxInt = 0;
+      for (int i = 0; i < simulationData.getPermut().length; i++) {
+        if (maxInt < simulationData.getPermut()[i]) {
+          maxInt = simulationData.getPermut()[i];
+        } 
+      }
       for (int i = 0; i < robots.length; i++) {
-        int posX = (int)(screen.getScreenWidth()/(double)(simulationData.getPermut()[i*2]));
-        int posY = (int)(screen.getScreenHeight()/(double)(simulationData.getPermut()[(i*2)+1]));
+        int posX = normaliseValue(simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
+        int posY = normaliseValue(simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());
         int[] pos = {posX, posY};
-        System.out.println(pos[0] + " " + pos[1]);
         robots[i] = new Robot(null, pos);
       }
     } else {
@@ -80,6 +85,16 @@ public class Manager {                        //Manager zuständig für timings 
     }
     round++;       
   }
+
+  public static int normaliseValue(int value, int oldMax, int newMax) {       //linear mapping
+    int originalMax = oldMax;
+    double originalRange = (double) (originalMax);
+    double newRange = (double) (newMax);
+    double scaledValue = ((double) (value) * newRange) / originalRange;
+
+    // Ensure the scaled value fits within the new range
+    return (int) Math.min(Math.max(scaledValue, 0), newMax);
+}
   
   public void simulateData() {         //methode für die simulations berechnungen
 
