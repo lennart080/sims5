@@ -16,11 +16,10 @@ public class Manager {                        //Manager zuständig für timings 
 
   private Robot[] robots = new Robot[100];
 
-  private Timer simualtionTimer;
-  private Timer realTimer;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
-  private int programmSpeed = 100;   //um ... schneller als echtzeit (0-100)
+  private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
+  private int simulationUpdatesPerSec = 10;
   private int fps;
   private int sollFps = 24;
   private int fpsCounter = 0;
@@ -37,33 +36,26 @@ public class Manager {                        //Manager zuständig für timings 
     simulationData = new SimulationData();
     startSimulation();
     
-    simualtionTimer = new Timer(100/programmSpeed, new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
-      @Override
-      public void actionPerformed(ActionEvent e) {
+    ActionListener taskPerformerSimulation = new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
         updates++;
-        if (updates == (((int)((double)updates/10.0))*10)) {
-          time++;
-        }
-        simulateData();                    
+        simulateData(); 
+        if (updates == (int)((double)updates/10.0)*10) {
+          time++;       
+        } 
       }
-    });
-    //simualtionTimer.start();
+    };
+  new Timer(1000/(simulationUpdatesPerSec*programmSpeed), taskPerformerSimulation).start();
 
-    realTimer = new Timer(50, new ActionListener() {
-      @Override
-      public void actionPerformed(ActionEvent e) {
+    ActionListener taskPerformerGui = new ActionListener() {
+      public void actionPerformed(ActionEvent evt) {
         fpsUpdate();
         updateGraphicData();
         updateScreen();
       }
-    });
-    realTimer.start();
+    };
+  new Timer(1000/sollFps, taskPerformerGui).start();
   }  
-  
-  public void myTimerStop() {
-    simualtionTimer.stop();
-    realTimer.stop();
-  }
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
     if ((timeSave+1) <= (System.currentTimeMillis()/1000)) {
