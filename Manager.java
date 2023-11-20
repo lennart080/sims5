@@ -17,10 +17,12 @@ public class Manager {                        //Manager zuständig für timings 
   private Robot[] robots = new Robot[100];
 
   private Timer simualtionTimer;
+  private Timer realTimer;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
   private int programmSpeed = 100;   //um ... schneller als echtzeit (0-100)
   private int fps;
+  private int sollFps = 24;
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
 
@@ -35,31 +37,32 @@ public class Manager {                        //Manager zuständig für timings 
     simulationData = new SimulationData();
     startSimulation();
     
-    simualtionTimer = new Timer((100/programmSpeed), new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
+    simualtionTimer = new Timer(100/programmSpeed, new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
       @Override
       public void actionPerformed(ActionEvent e) {
-        long ts = System.currentTimeMillis();
         updates++;
         if (updates == (((int)((double)updates/10.0))*10)) {
           time++;
         }
-        fpsUpdate();
         simulateData();                    
-        updateGraphicData();
-        updateScreen();
-        if (System.currentTimeMillis()-ts > 0) {
-          simualtionTimer.setDelay((int)(100.0/(double)programmSpeed)-(int)(System.currentTimeMillis()-ts));     
-        } 
-        if (simualtionTimer.getDelay() == 0) {
-          simualtionTimer.setDelay(1);
-        }
       }
     });
-    simualtionTimer.start();
+    //simualtionTimer.start();
+
+    realTimer = new Timer(50, new ActionListener() {
+      @Override
+      public void actionPerformed(ActionEvent e) {
+        fpsUpdate();
+        updateGraphicData();
+        updateScreen();
+      }
+    });
+    realTimer.start();
   }  
   
   public void myTimerStop() {
     simualtionTimer.stop();
+    realTimer.stop();
   }
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
@@ -67,9 +70,8 @@ public class Manager {                        //Manager zuständig für timings 
       timeSave = System.currentTimeMillis()/1000;
       fps = fpsCounter;
       fpsCounter = 0;
-    } else {
-      fpsCounter++;
     }
+    fpsCounter++;
   }
 
   public void startSimulation() {       
@@ -98,7 +100,8 @@ public class Manager {                        //Manager zuständig für timings 
     for (int i = 0; i < robo.length; i++) {
       robo[i] = robots[i].getPosition();
     }
-    simulationPanel.robotest(robo);    
+    simulationPanel.robotest(robo); 
+       
   }
   
   private void updateScreen() {           //methode für neuzeichnen des bildschirms
