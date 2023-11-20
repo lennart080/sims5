@@ -13,8 +13,8 @@ public class SimulationData {
     setNoiseStrength(0.4);
     setDayStart(7.0);
     setDayEnd(20.0);
-    setNoiseAmplitude(10.0);
-    setLightIntensity(10.0);
+    setNoiseAmplitude(100.0);
+    setLightIntensity(100.0);
     noise = new PerlinNoise(seed);
     //newBoard(100, 70);
   }
@@ -102,6 +102,7 @@ public class SimulationData {
       time = perlinTime - (int)perlinTime;
     }
     if ((time) > (dayStart/24.0) && (time) < (dayEnd/24.0)) {
+      
       double w = this.getNoiseStrength();
       double fx = Math.cos(time*Math.PI*(24.0/(dayEnd-dayStart)))*(-1);
       double gx = noise.getPerlinNoise((perlinTime)*noiseAmplitude);

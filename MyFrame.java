@@ -105,7 +105,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           manager.myTimerStop();
           break;
         case KeyEvent.VK_G  :                    //test taste
-          manager.simulateData();     
+          manager.loadLight();     
         case KeyEvent.VK_R  :                    //test taste
           manager.startSimulation();          
         default: 

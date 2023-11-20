@@ -14,7 +14,7 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelGraphs graphPanel;
   private SimulationData simulationData;
 
-  private Robot[] robots;
+  private Robot[] robots = new Robot[100];
 
   private Timer simualtionTimer;
   private int updates = 0;        //anzahl der updates seit start des programms  
@@ -33,6 +33,7 @@ public class Manager {                        //Manager zuständig für timings 
     });
     
     simulationData = new SimulationData();
+    startSimulation();
     
     simualtionTimer = new Timer((100/programmSpeed), new ActionListener() {                    //timer welcher jede ... milisecunden daten und screen aufruft
       @Override
@@ -71,30 +72,33 @@ public class Manager {                        //Manager zuständig für timings 
     }
   }
 
-  public void startSimulation() {        //not working 
-    int[] help = new int[5];
-    for (int i = 0; i < 30; i++) {
-      robots[i] = new Robot(help, help);
+  public void startSimulation() {       
+    for (int i = 0; i < robots.length; i++) {
+      int[] help = {(int)(Math.random()*100.0)*15, (int)(Math.random()*100.0)*10};   //no end produkt 
+      robots[i] = new Robot(null, help);
     }
-    int[] robo = new int[robots.length];
-    for (int i = 0; i < robo.length; i++) {
-      robo[i] = robots[i].getSerialNumber();
-      System.out.println("pso");
-    }
-    simulationPanel.robotest(robo);
   }
   
   public void simulateData() {         //methode für die simulations berechnungen
-    // ------testzwecke-----------
-    for (int i = 1; i < (86400*8); i+=864) {
-       graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), (int)((double)i*0.00115740740740740740740740740741));
+
+  }
+
+  public void loadLight() {                        //test methode
+    for (int i = 1; i < 86400; i+=80) {
+       graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), i/80);
     }
-    //----------------------------
   }
   
   private void updateGraphicData() {               //methode für die daten updates die graphic panele
     simulationPanel.myUpdate(updates, time);  
     dataPanel.myUpdate(fps);
+
+    //test
+    int[][] robo = new int[robots.length][2];
+    for (int i = 0; i < robo.length; i++) {
+      robo[i] = robots[i].getPosition();
+    }
+    simulationPanel.robotest(robo);    
   }
   
   private void updateScreen() {           //methode für neuzeichnen des bildschirms
