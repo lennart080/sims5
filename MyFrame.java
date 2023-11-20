@@ -46,6 +46,14 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
       this.add(panel);
     }
   }
+
+  public int getScreenWidth() {
+    return screenWidth;
+  }
+
+  public int getScreenHeight() {
+    return screenHeight;
+  }
   
   private void GuiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
     myRemove(simulationPanel);
@@ -101,13 +109,10 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         case KeyEvent.VK_D  :                     //test taste
           GuiModes(4);
           break;
-        case KeyEvent.VK_H  :                      //test taste
-          manager.myTimerStop();
-          break;
         case KeyEvent.VK_G  :                    //test taste
-          manager.loadLight();     
+          manager.loadLight(); 
         case KeyEvent.VK_R  :                    //test taste
-          manager.startSimulation();          
+          manager.startSimulation();            
         default: 
       }
       /* 

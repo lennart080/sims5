@@ -9,7 +9,7 @@ public class SimulationData {
   private int seed;
 
   public SimulationData() {              //generirien und laden des simulations umfelds
-    setSeed(2334535);
+    setSeed(54674);
     setNoiseStrength(0.4);
     setDayStart(7.0);
     setDayEnd(20.0);
@@ -91,6 +91,10 @@ public class SimulationData {
 
   public double getNoiseStrength() {
     return noiseStrength;
+  }
+
+  public int[] getPermut() {
+    return noise.getpermut();
   }
   
   public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit

@@ -16,6 +16,7 @@ public class Manager {                        //Manager zuständig für timings 
 
   private Robot[] robots = new Robot[100];
 
+  private int round = 0;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
   private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
@@ -34,7 +35,6 @@ public class Manager {                        //Manager zuständig für timings 
     });
     
     simulationData = new SimulationData();
-    startSimulation();
     
     ActionListener taskPerformerSimulation = new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
@@ -66,11 +66,19 @@ public class Manager {                        //Manager zuständig für timings 
     fpsCounter++;
   }
 
-  public void startSimulation() {       
-    for (int i = 0; i < robots.length; i++) {
-      int[] help = {(int)(Math.random()*100.0)*15, (int)(Math.random()*100.0)*10};   //no end produkt 
-      robots[i] = new Robot(null, help);
+  public void startSimulation() {
+    if (round == 0) {
+      for (int i = 0; i < robots.length; i++) {
+        int posX = (int)(screen.getScreenWidth()/(double)(simulationData.getPermut()[i*2]));
+        int posY = (int)(screen.getScreenHeight()/(double)(simulationData.getPermut()[(i*2)+1]));
+        int[] pos = {posX, posY};
+        System.out.println(pos[0] + " " + pos[1]);
+        robots[i] = new Robot(null, pos);
+      }
+    } else {
+      
     }
+    round++;       
   }
   
   public void simulateData() {         //methode für die simulations berechnungen
@@ -88,12 +96,13 @@ public class Manager {                        //Manager zuständig für timings 
     dataPanel.myUpdate(fps);
 
     //test
-    int[][] robo = new int[robots.length][2];
-    for (int i = 0; i < robo.length; i++) {
-      robo[i] = robots[i].getPosition();
+    if (round != 0) {
+      int[][] robo = new int[robots.length][2];
+      for (int i = 0; i < robo.length; i++) {
+        robo[i] = robots[i].getPosition();
+      }
+      simulationPanel.robotest(robo); 
     }
-    simulationPanel.robotest(robo); 
-       
   }
   
   private void updateScreen() {           //methode für neuzeichnen des bildschirms
