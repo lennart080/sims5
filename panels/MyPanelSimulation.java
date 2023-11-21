@@ -6,7 +6,8 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   private int zahl2;
   private int zahl3;
   private long start;
-  private int[][] roboPos;
+  private double[][] roboPos;
+  private int[] energie;
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -25,7 +26,11 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     //-------test--------
     if (roboPos != null) {
       for (int i = 0; i < roboPos.length; i++) {
-        g2D.drawString("" + i, roboPos[i][0], roboPos[i][1]);
+        if (energie != null) {
+          g2D.drawString("" + energie[i],(int)roboPos[i][0], (int)roboPos[i][1]);          
+        } else {
+          g2D.drawString("" + i,(int)roboPos[i][0], (int)roboPos[i][1]);
+        }
       }
     }
     //-------------------
@@ -37,7 +42,8 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     zahl3 = (int)((System.currentTimeMillis()-start)/1000);
   }
 
-  public void robotest(int[][] pos) {               //test
+  public void robotest(double[][] pos, int[] pEnergie) {               //test
     roboPos = pos;
+    energie = pEnergie;
   }
 }

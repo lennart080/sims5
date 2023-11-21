@@ -1,15 +1,30 @@
 public class Robot {
   private int serialNumber;
   protected static int lastSerialNumber;
-  private int[] position;
+  private double[] position;
   private int[] dna;
-  private int[] statistics;
+  private int[] statistics = new int[7];
   
-  public Robot(int[] pDna, int[] pPosition) {
+  public Robot(int[] pDna, double[] pPosition) {
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
     dna = pDna;
     position = pPosition;
+
+    //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
+    statistics[0] = 100;
+    //schrott                       währung mit welcher teile und kinder "hergestellt" werden können
+    statistics[1] = 100;
+    //attack                        schaden welcher pro atacke zugerichtet wird
+    statistics[2] = 0;
+    //energie speicher              max energie die der robo haben kann
+    statistics[3] = 100;
+    //speed                         ...pixel pro sec werden max zurückgelegt     
+    statistics[4] = 10;
+    //defense                       wird von der gegnerischen attake abgezogen
+    statistics[5] = 0; 
+    //health                        anzahl der leben welche von ataken veringert werden kann und sinkt wenn energie 0 ist. bei 0 leben stirbt er
+    statistics[6] = 5;       
   }
   
   //get methoden des roboters 
@@ -18,7 +33,7 @@ public class Robot {
     return dna;
   }
   
-  public int[] getPosition() {
+  public double[] getPosition() {
     return position;
   }
   
@@ -28,6 +43,10 @@ public class Robot {
   
   public int getSerialNumber() {
     return serialNumber;
+  }
+
+  public void updateStatistics() {
+    statistics[0]-=1;
   }
   
   //set methoden des Roboters 

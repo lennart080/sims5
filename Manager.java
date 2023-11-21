@@ -1,8 +1,5 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -17,7 +14,7 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelGraphs graphPanel;
   private SimulationData simulationData;
 
-  private Robot[] robots = new Robot[100];
+  private Robot[] robots = new Robot[5];
 
   private Timer simulationTimer;
   private Timer guiTimer;
@@ -26,7 +23,7 @@ public class Manager {                        //Manager zuständig für timings 
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
   private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
-  private int simulationUpdatesPerSec = 10;
+  private int simulationUpdatesPerSec = 1;
   private int fps;
   private int sollFps = 20;
   private int fpsCounter = 0;
@@ -54,7 +51,7 @@ public class Manager {                        //Manager zuständig für timings 
     };
   simulationTimer = new Timer(1000/(simulationUpdatesPerSec*programmSpeed), taskPerformerSimulation);
   simulationTimer.start(); 
-  
+
   /* 
   ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
 
@@ -105,7 +102,7 @@ public class Manager {                        //Manager zuständig für timings 
       for (int i = 0; i < robots.length; i++) {
         int posX = normaliseValue(simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
         int posY = normaliseValue(simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());
-        int[] pos = {posX, posY};
+        double[] pos = {(double)posX, (double)posY};
         robots[i] = new Robot(null, pos);
       }
     } else {
@@ -125,7 +122,11 @@ public class Manager {                        //Manager zuständig für timings 
 }
   
   public void simulateData() {         //methode für die simulations berechnungen
-
+    if (robots[0] != null) {
+      for (int i = 0; i < robots.length; i++) {
+        robots[i].updateStatistics();
+      }    
+    }
   }
 
   public void loadLight() {                        //test methode
@@ -139,12 +140,16 @@ public class Manager {                        //Manager zuständig für timings 
     dataPanel.myUpdate(fps);
 
     //test
-    if (round != 0) {
-      int[][] robo = new int[robots.length][2];
+    if (robots[0] != null) {
+      double[][] robo = new double[robots.length][2];
       for (int i = 0; i < robo.length; i++) {
         robo[i] = robots[i].getPosition();
       }
-      simulationPanel.robotest(robo); 
+      int[] energie = new int[robots.length];
+      for (int j = 0; j < robots.length; j++) {
+        energie[j] = robots[j].getStatistics()[0];
+      } 
+      simulationPanel.robotest(robo, energie); 
     }
   }
   
