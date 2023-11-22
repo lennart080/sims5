@@ -10,7 +10,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
   private double[][] roboPos;
-  private int[] energie;
+  private int[][] roboStats;
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -29,15 +29,10 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     //-------test--------
     if (roboPos != null) {
       for (int i = 0; i < roboPos.length; i++) {
-        if (energie != null) {
-          int x = MyPanel.normaliseValue(roboPos[i][0], screenWidth, this.getWidth());
-          int y = MyPanel.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
-          g2D.drawString("" + energie[i], x, y);          
-        } else {
-          int x = MyPanel.normaliseValue(roboPos[i][0], screenWidth, this.getWidth());
-          int y = MyPanel.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
-          g2D.drawString("" + i, x, y);
-        }
+        int x = MyPanel.normaliseValue(roboPos[i][0], screenWidth, this.getWidth());
+        int y = MyPanel.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
+        g2D.drawString("ROBO_" + i, x, y);
+        g2D.drawString("ENERGIE_" + roboStats[i][0], x, y+20);
       }
     }
     //-------------------
@@ -49,8 +44,8 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     zahl3 = (int)((System.currentTimeMillis()-start)/1000);
   }
 
-  public void robotest(double[][] pos, int[] pEnergie) {               //test
-    roboPos = pos;
-    energie = pEnergie;
+  public void roboUpdate(double[][] pPosition, int[][] pStatistics) {               //test
+    roboPos = pPosition;
+    roboStats = pStatistics;
   }
 }

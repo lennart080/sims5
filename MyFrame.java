@@ -54,19 +54,19 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     if (!this.getContentPane().isAncestorOf(panel)) {
       int z = 0;
       if (panel == simulationPanel) {
-        this.setComponentZOrder(simulationPanel, z);
+        //this.setComponentZOrder(simulationPanel, z);
         z++;
       }
       if (panel == dataPanel) {
-        this.setComponentZOrder(dataPanel, z);
+        //this.setComponentZOrder(dataPanel, z);
         z++;
       }
       if (panel == graphPanel) {
-        this.setComponentZOrder(graphPanel, z);
+        //this.setComponentZOrder(graphPanel, z);
         z++;
       }
       if (panel == robotDataPanel) {
-        this.setComponentZOrder(robotDataPanel, z);
+        //this.setComponentZOrder(robotDataPanel, z);
         z++;
       }
     }

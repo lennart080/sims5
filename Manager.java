@@ -117,8 +117,9 @@ public class Manager {                        //Manager zuständig für timings 
 
   public void simulateData() {         //methode für die simulations berechnungen
     if (robots[0] != null) {
+      double LightIntensity = simulationData.getLightIntensityAtTime(time);
       for (int i = 0; i < robots.length; i++) {
-        robots[i].updateStatistics();
+        robots[i].simulate(LightIntensity);
       }    
     }
   }
@@ -138,15 +139,15 @@ public class Manager {                        //Manager zuständig für timings 
       for (int i = 0; i < robo.length; i++) {
         robo[i] = robots[i].getPosition();
       }
-      int[] energie = new int[robots.length];
+      int[][] stats = new int[robots.length][7];
       for (int j = 0; j < robots.length; j++) {
-        energie[j] = robots[j].getStatistics()[0];
+        stats[j] = robots[j].getStatistics();
       } 
-      simulationPanel.robotest(robo, energie); 
+      simulationPanel.roboUpdate(robo, stats); 
 
-      int[] help = {(int)robo[0][0], (int)robo[0][1]};
-      screen.robotDataMode(help);
-      robotDataPanel.myUpdate(0, null);
+      //int[] help = {(int)robo[0][0], (int)robo[0][1]};
+      //screen.robotDataMode(help);
+      //robotDataPanel.myUpdate(0, null);
     }
   }
   
@@ -154,6 +155,6 @@ public class Manager {                        //Manager zuständig für timings 
     simulationPanel.repaint();
     dataPanel.repaint();
     graphPanel.repaint();
-    robotDataPanel.repaint();
+    //robotDataPanel.repaint();
   }
 }

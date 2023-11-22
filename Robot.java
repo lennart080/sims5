@@ -44,14 +44,20 @@ public class Robot {
   public int getSerialNumber() {
     return serialNumber;
   }
-
-  public void updateStatistics() {
-    statistics[0]-=1;
-  }
   
   //set methoden des Roboters 
   
   public void setStatistic(String statistic, int value) {
     
+  }
+
+  //hirn des robos
+
+  public void simulate(double pLightIntensity){
+    updateStatistics();
+  }
+
+  private void updateStatistics() {
+    statistics[0]-=1;
   }
 }
