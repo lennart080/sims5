@@ -7,6 +7,7 @@ import javax.swing.Timer;
 import panels.MyPanelData;
 import panels.MyPanelGraphs;
 import panels.MyPanelSimulation;
+import panels.MyPanel;
 public class Manager {                        //Manager zuständig für timings und updates
   private MyFrame screen;
   private MyPanelSimulation simulationPanel;
@@ -100,8 +101,8 @@ public class Manager {                        //Manager zuständig für timings 
         } 
       }
       for (int i = 0; i < robots.length; i++) {
-        int posX = normaliseValue(simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
-        int posY = normaliseValue(simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());
+        int posX = MyPanel.normaliseValue(simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
+        int posY = MyPanel.normaliseValue(simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
         double[] pos = {(double)posX, (double)posY};
         robots[i] = new Robot(null, pos);
       }
@@ -111,16 +112,6 @@ public class Manager {                        //Manager zuständig für timings 
     round++;       
   }
 
-  public static int normaliseValue(int value, int oldMax, int newMax) {       //linear mapping
-    int originalMax = oldMax;
-    double originalRange = (double) (originalMax);
-    double newRange = (double) (newMax);
-    double scaledValue = ((double) (value) * newRange) / originalRange;
-
-    // Ensure the scaled value fits within the new range
-    return (int) Math.min(Math.max(scaledValue, 0), newMax);
-}
-  
   public void simulateData() {         //methode für die simulations berechnungen
     if (robots[0] != null) {
       for (int i = 0; i < robots.length; i++) {
