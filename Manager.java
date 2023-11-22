@@ -6,6 +6,7 @@ import javax.swing.Timer;
 
 import panels.MyPanelData;
 import panels.MyPanelGraphs;
+import panels.MyPanelRobotData;
 import panels.MyPanelSimulation;
 import panels.MyPanel;
 public class Manager {                        //Manager zuständig für timings und updates
@@ -13,6 +14,7 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
+  private MyPanelRobotData robotDataPanel;
   private SimulationData simulationData;
 
   private Robot[] robots = new Robot[5];
@@ -35,7 +37,8 @@ public class Manager {                        //Manager zuständig für timings 
       simulationPanel = new MyPanelSimulation();
       dataPanel = new MyPanelData();
       graphPanel = new MyPanelGraphs();
-      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel);
+      robotDataPanel = new MyPanelRobotData();
+      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel);
     });
     
     simulationData = new SimulationData();
@@ -101,8 +104,8 @@ public class Manager {                        //Manager zuständig für timings 
         } 
       }
       for (int i = 0; i < robots.length; i++) {
-        int posX = MyPanel.normaliseValue(simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
-        int posY = MyPanel.normaliseValue(simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
+        int posX = MyPanel.normaliseValue((double)simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
+        int posY = MyPanel.normaliseValue((double)simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
         double[] pos = {(double)posX, (double)posY};
         robots[i] = new Robot(null, pos);
       }
@@ -129,7 +132,6 @@ public class Manager {                        //Manager zuständig für timings 
   private void updateGraphicData() {               //methode für die daten updates die graphic panele
     simulationPanel.myUpdate(updates, time);  
     dataPanel.myUpdate(fps);
-
     //test
     if (robots[0] != null) {
       double[][] robo = new double[robots.length][2];
@@ -141,6 +143,10 @@ public class Manager {                        //Manager zuständig für timings 
         energie[j] = robots[j].getStatistics()[0];
       } 
       simulationPanel.robotest(robo, energie); 
+
+      int[] help = {(int)robo[0][0], (int)robo[0][1]};
+      screen.robotDataMode(help);
+      robotDataPanel.myUpdate(0, null);
     }
   }
   
@@ -148,5 +154,6 @@ public class Manager {                        //Manager zuständig für timings 
     simulationPanel.repaint();
     dataPanel.repaint();
     graphPanel.repaint();
+    robotDataPanel.repaint();
   }
 }

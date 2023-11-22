@@ -8,22 +8,25 @@ import javax.swing.JPanel;
 
 import panels.MyPanelData;
 import panels.MyPanelGraphs;
+import panels.MyPanelRobotData;
 import panels.MyPanelSimulation;
 public class MyFrame extends JFrame {                 //graphic manager (zuständig für wo welche fenster/menüs angezeigt werden)
   private Manager manager;
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
+  private MyPanelRobotData robotDataPanel;
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
   
-  public MyFrame(Manager mp, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp) {            //zuweißung der graphic componenten(fenster/menüs usw.)
+  public MyFrame(Manager mp, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {            //zuweißung der graphic componenten(fenster/menüs usw.)
     simulationPanel = sp;
     dataPanel = dp;
     graphPanel = gp;
     manager = mp;
-    
+    robotDataPanel = rdp;
+
     this.setTitle("Info-Projekt");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setUndecorated(true);
@@ -47,6 +50,28 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     }
   }
 
+  private void setZOrder(JPanel panel) {
+    if (!this.getContentPane().isAncestorOf(panel)) {
+      int z = 0;
+      if (panel == simulationPanel) {
+        this.setComponentZOrder(simulationPanel, z);
+        z++;
+      }
+      if (panel == dataPanel) {
+        this.setComponentZOrder(dataPanel, z);
+        z++;
+      }
+      if (panel == graphPanel) {
+        this.setComponentZOrder(graphPanel, z);
+        z++;
+      }
+      if (panel == robotDataPanel) {
+        this.setComponentZOrder(robotDataPanel, z);
+        z++;
+      }
+    }
+  }
+
   public int getScreenWidth() {
     return screenWidth;
   }
@@ -65,19 +90,27 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         myAdd(simulationPanel);
         
         dataPanel.setBounds(0,0,300,screenHeight);
-        simulationPanel.setBounds(300,0, screenWidth-300, screenHeight);                
+        simulationPanel.setBounds(300,0, screenWidth-300, screenHeight); 
+        
+        setZOrder(simulationPanel);
+        setZOrder(dataPanel);
         break;
       case 2 : 
         myAdd(simulationPanel);
         
-        simulationPanel.setBounds(0,0,screenWidth, screenHeight);        
+        simulationPanel.setBounds(0,0,screenWidth, screenHeight);   
+        
+        setZOrder(simulationPanel);
         break;
       case 3 : 
         myAdd(simulationPanel);
         myAdd(graphPanel);
         
         simulationPanel.setBounds(0, 200, screenWidth, screenHeight-200);
-        graphPanel.setBounds(0, 0, screenWidth, 200);       
+        graphPanel.setBounds(0, 0, screenWidth, 200);    
+        
+        setZOrder(simulationPanel);
+        setZOrder(graphPanel);
         break;
       case 4 :               
         myAdd(simulationPanel);
@@ -86,11 +119,23 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
                 
         dataPanel.setBounds(0,0,300,screenHeight);
         graphPanel.setBounds(300, 0, screenWidth-300, 200);
-        simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);       
+        simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
+        
+        setZOrder(dataPanel);
+        setZOrder(graphPanel);
+        setZOrder(simulationPanel);
         break;
       default:   
     }
+    setZOrder(robotDataPanel);
     revalidate();
+  }
+
+  public void robotDataMode(int[] pos){
+    myAdd(robotDataPanel);
+    if (pos[0] != robotDataPanel.getX() && pos[1] != robotDataPanel.getY()) {
+      robotDataPanel.setBounds(pos[0], pos[1], 150, 100);  
+    }
   }
   
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
