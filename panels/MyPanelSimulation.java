@@ -9,8 +9,9 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
 
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+  private int[] roboNumber;
   private double[][] roboPos;
-  private int[][] roboStats;
+  private double[][] roboStats;
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -27,12 +28,14 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     g2D.drawString("" + zahl2, 20, 80);
     g2D.drawString("" + zahl3, 20, 100);
     //-------test--------
-    if (roboPos != null) {
-      for (int i = 0; i < roboPos.length; i++) {
+    if (roboNumber != null) {
+      for (int i = 0; i < roboNumber.length; i++) {
         int x = MyPanel.normaliseValue(roboPos[i][0], screenWidth, this.getWidth());
         int y = MyPanel.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
-        g2D.drawString("ROBO_" + i, x, y);
+        g2D.drawString("ROBO_" + roboNumber[i], x, y);
         g2D.drawString("ENERGIE_" + roboStats[i][0], x, y+20);
+        g2D.drawString("HEALTH_" + roboStats[i][6], x, y+40);
+        g2D.drawString("RUST_" + roboStats[i][7], x, y+60);
       }
     }
     //-------------------
@@ -44,7 +47,8 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     zahl3 = (int)((System.currentTimeMillis()-start)/1000);
   }
 
-  public void roboUpdate(double[][] pPosition, int[][] pStatistics) {               //test
+  public void roboUpdate(int[] pNumber, double[][] pPosition, double[][] pStatistics) {               //test
+    roboNumber = pNumber;
     roboPos = pPosition;
     roboStats = pStatistics;
   }

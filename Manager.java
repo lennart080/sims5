@@ -1,5 +1,7 @@
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.SwingUtilities;
 import javax.swing.Timer;
@@ -17,7 +19,8 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelRobotData robotDataPanel;
   private SimulationData simulationData;
 
-  private Robot[] robots = new Robot[5];
+  private List<Robot> robots = new ArrayList<>();
+  int robotsPerRound = 5;
 
   private Timer simulationTimer;
   private Timer guiTimer;
@@ -103,11 +106,11 @@ public class Manager {                        //Manager zuständig für timings 
           maxInt = simulationData.getPermut()[i];
         } 
       }
-      for (int i = 0; i < robots.length; i++) {
+      for (int i = 0; i < robotsPerRound; i++) {
         int posX = MyPanel.normaliseValue((double)simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
         int posY = MyPanel.normaliseValue((double)simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
         double[] pos = {(double)posX, (double)posY};
-        robots[i] = new Robot(null, pos);
+        robots.add(new Robot(this, null, pos));
       }
     } else {
       
@@ -116,10 +119,10 @@ public class Manager {                        //Manager zuständig für timings 
   }
 
   public void simulateData() {         //methode für die simulations berechnungen
-    if (robots[0] != null) {
+    if (robots.size() != 0) {
       double LightIntensity = simulationData.getLightIntensityAtTime(time);
-      for (int i = 0; i < robots.length; i++) {
-        robots[i].simulate(LightIntensity);
+      for (int i = 0; i < robots.size(); i++) {
+        robots.get(i).simulate(LightIntensity);
       }    
     }
   }
@@ -134,20 +137,26 @@ public class Manager {                        //Manager zuständig für timings 
     simulationPanel.myUpdate(updates, time);  
     dataPanel.myUpdate(fps);
     //test
-    if (robots[0] != null) {
-      double[][] robo = new double[robots.length][2];
-      for (int i = 0; i < robo.length; i++) {
-        robo[i] = robots[i].getPosition();
+    if (robots.size() != 0) {
+      int[] roboNumber = new int[robots.size()];
+      for (int i = 0; i < roboNumber.length; i++) {
+        roboNumber[i] = robots.get(i).getSerialNumber();
       }
-      int[][] stats = new int[robots.length][7];
-      for (int j = 0; j < robots.length; j++) {
-        stats[j] = robots[j].getStatistics();
+      double[][] roboPos = new double[robots.size()][2];
+      for (int i = 0; i < roboPos.length; i++) {
+        roboPos[i] = robots.get(i).getPosition();
+      }
+      double[][] roboStats = new double[robots.size()][7];
+      for (int i = 0; i < roboStats.length; i++) {
+        roboStats[i] = robots.get(i).getStatistics();
       } 
-      simulationPanel.roboUpdate(robo, stats); 
+      simulationPanel.roboUpdate(roboNumber, roboPos, roboStats); 
 
       //int[] help = {(int)robo[0][0], (int)robo[0][1]};
       //screen.robotDataMode(help);
       //robotDataPanel.myUpdate(0, null);
+    } else {
+      simulationPanel.roboUpdate(null, null, null);
     }
   }
   
@@ -156,5 +165,16 @@ public class Manager {                        //Manager zuständig für timings 
     dataPanel.repaint();
     graphPanel.repaint();
     //robotDataPanel.repaint();
+  }
+
+  public void deleteRobo(int roboNumber) {
+    for (int i = 0; i < robots.size(); i++) {
+      if (robots.get(i).getSerialNumber() == roboNumber) {
+        robots.remove(i);       
+      }   
+    }
+    if (robots.size() == 0) {
+      System.out.println("null");
+    }
   }
 }

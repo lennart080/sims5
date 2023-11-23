@@ -9,4 +9,8 @@ public class MyPanel{
     // Ensure the scaled value fits within the new range
     return (int) Math.min(Math.max(scaledValue, 0), newMax);
   }
+
+  public static double roundToDecPlaces(double value, int decPlaces) {
+    return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
+  }
 }
