@@ -174,7 +174,7 @@ public class Manager {                        //Manager zuständig für timings 
       }   
     }
     if (robots.size() == 0) {
-      System.out.println("null");
+
     }
   }
 }
