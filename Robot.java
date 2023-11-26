@@ -6,6 +6,11 @@ public class Robot {
   private double[][] position = new double[3][2];
   private int[] dna;
   private double[] statistics = new double[8];
+
+  private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=forne,1=rechts,2=hinten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
+
+  private double[][] neurons = new double[5][];   //[] reihe [][] neuron 
+  private double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
   public Robot(Manager pManager, int[] pDna, double[] pPosition) {
     manager = pManager;
@@ -14,6 +19,15 @@ public class Robot {
     dna = pDna;
     for (int i = 0; i < position.length; i++) {
       position[i] = pPosition;
+    }
+    neurons[0] = new double [statistics.length+(fieldInfos[0].length*fieldInfos.length)];
+    neurons[1] = new double[10];
+    neurons[2] = new double[10];
+    neurons[3] = new double[10];
+    neurons[4] = new double[10];   // 0-3 inRichtungBewegen; 4-7 atk,enSp,sp,def upgade; 8 attack; 9 kind
+
+    for (int i = 0; i < weigths.length; i++) {
+      weigths[i] = new double[neurons[i].length][neurons[i+1].length];
     }
 
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
@@ -62,6 +76,7 @@ public class Robot {
 
   public void simulate(double pLightIntensity){
     updateStatistics();
+    calculate();
   }
 
   private void updateStatistics() {
@@ -86,6 +101,16 @@ public class Robot {
       }     
     } else {
       manager.deleteRobo(serialNumber);       
+    }
+  }
+
+  private void calculate() {
+    for (int i = 0; i < weigths.length; i++) {
+      for (int j = 0; j < weigths[i].length; j++) {
+        for (int j2 = 0; j2 < weigths[i][j].length; j2++) {
+          //neurons[i][j] = weigths[i][j][j2];
+        }
+      }
     }
   }
 }
