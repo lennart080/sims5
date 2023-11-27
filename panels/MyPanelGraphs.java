@@ -2,8 +2,7 @@ package panels;
 import javax.swing.*;
 import java.awt.*;
 public class MyPanelGraphs extends JPanel {         //graphic classe der simulation
-  private int h;
-  private double[] graph = new double[1080];
+  private List<Double> loadedLight = new ArrayList();
   public MyPanelGraphs() {
     this.setBackground(Color.GREEN);
     repaint(); 
@@ -17,15 +16,17 @@ public class MyPanelGraphs extends JPanel {         //graphic classe der simulat
     g2D.drawString("Graph-Panel", 20, 40);
 
     //zur test veranschaulichung der graphen funktion (nicht final!!!)
-    for (int i = 0; i<h; i++) {
-      g2D.drawLine((i+10), 100-(int)graph[i], (i+10), 100-(int)graph[i]);
+    for (int i = 0; i<loadedLight.size(); i++) {
+      g2D.drawLine((i+10), 100-(int)loadedLight.get(i), (i+10), 100-(int)loadedLight.get(i));
     }
   }
   
-  public void myUpdate(int x, int g) {                 //aktualisiren der daten
+  public void myUpdate(double light) {                 //aktualisiren der daten
     //----testdaten----
-    graph[g] = x;                           
-    h = g;   
+    loadedLight.add(light);
+    if (loadedLight.size() >= 800) {
+      loadedLight.remove(0);
+    }
     //-----------------                               
   }
 }
