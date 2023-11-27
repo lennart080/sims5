@@ -13,4 +13,8 @@ public class MyPanel{
   public static double roundToDecPlaces(double value, int decPlaces) {
     return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
   }
+
+  public static double sigmoid(double value) {
+    return 1 / (1 + Math.pow(2.71, -value)); 
+  }
 }
