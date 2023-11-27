@@ -126,16 +126,11 @@ public class Manager {                        //Manager zuständig für timings 
       }    
     }
   }
-
-  public void loadLight() {                        //test methode
-    for (int i = 1; i < 86400; i+=80) {
-       graphPanel.myUpdate((int)simulationData.getLightIntensityAtTime(i), i/80);
-    }
-  }
   
   private void updateGraphicData() {               //methode für die daten updates die graphic panele
     simulationPanel.myUpdate(updates, time);  
     dataPanel.myUpdate(fps);
+    graphPanel.myUpdate(simulationData.getLightIntensityAtTime(time));
     //test
     if (robots.size() != 0) {
       int[] roboNumber = new int[robots.size()];

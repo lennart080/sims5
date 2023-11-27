@@ -104,6 +104,7 @@ public class Robot {
     }
   }
 
+<<<<<<< HEAD
   private void calculate() {
     for (int i = 0; i < weigths.length; i++) {
       for (int j = 0; j < weigths[i].length; j++) {
@@ -113,4 +114,7 @@ public class Robot {
       }
     }
   }
+=======
+  
+>>>>>>> b172412796bdc2fca20eca4ebe14c2678ff2c811
 }
