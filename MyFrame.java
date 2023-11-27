@@ -154,10 +154,12 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         case KeyEvent.VK_D  :                     //test taste
           GuiModes(4);
           break;
-        case KeyEvent.VK_G  :                    //test taste
-          manager.loadLight(); 
         case KeyEvent.VK_R  :                    //test taste
-          manager.startSimulation();            
+          manager.startSimulation();  
+          break;   
+        case KeyEvent.VK_H  :
+          manager.test();    
+          break;   
         default: 
       }
       /* 

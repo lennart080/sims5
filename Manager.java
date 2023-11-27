@@ -20,7 +20,7 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<Robot> robots = new ArrayList<>();
-  int robotsPerRound = 5;
+  int robotsPerRound = 1;
 
   private Timer simulationTimer;
   private Timer guiTimer;
@@ -31,7 +31,7 @@ public class Manager {                        //Manager zuständig für timings 
   private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
   private int simulationUpdatesPerSec = 1;
   private int fps;
-  private int sollFps = 20;
+  private int sollFps = 100;
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
 
@@ -56,27 +56,26 @@ public class Manager {                        //Manager zuständig für timings 
         } 
       }
     };
-  simulationTimer = new Timer(1000/(simulationUpdatesPerSec*programmSpeed), taskPerformerSimulation);
-  simulationTimer.start(); 
+    simulationTimer = new Timer(1000/(simulationUpdatesPerSec*programmSpeed), taskPerformerSimulation);
+    simulationTimer.start(); 
 
-  /* 
-  ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
+    /* 
+    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         // Hier wird die Aufgabe definiert, die alle 100 Mikrosekunden ausgeführt wird
     Runnable task = () -> {
-            // Deine Aufgabenlogik hier einfügen
-    System.out.println("Aufgabe ausgeführt!");
-  };
+        // Deine Aufgabenlogik hier einfügen
+      System.out.println("Aufgabe ausgeführt!");
+    };
 
         // Zeitintervall in Mikrosekunden (hier 100 Mikrosekunden = 0.1 Millisekunden)
-  long intervalMicroseconds = 100;
+    long intervalMicroseconds = 100;
 
         // Umrechnung des Intervalls in Nanosekunden für die Planung des Tasks
-  long intervalNanos = TimeUnit.MICROSECONDS.toNanos(intervalMicroseconds);
+    long intervalNanos = TimeUnit.MICROSECONDS.toNanos(intervalMicroseconds);
 
         // Starte die Aufgabe mit dem angegebenen Intervall
-  executor.scheduleAtFixedRate(task, 0, intervalNanos, TimeUnit.NANOSECONDS);
-  */
+    executor.scheduleAtFixedRate(task, 0, intervalNanos, TimeUnit.NANOSECONDS);
+    */
 
     ActionListener taskPerformerGui = new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
@@ -85,8 +84,8 @@ public class Manager {                        //Manager zuständig für timings 
         updateScreen();
       }
     };
-  guiTimer = new Timer(1000/sollFps, taskPerformerGui);
-  guiTimer.start();
+    guiTimer = new Timer(1000/sollFps, taskPerformerGui);
+    guiTimer.start();
   }  
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
@@ -171,5 +170,9 @@ public class Manager {                        //Manager zuständig für timings 
     if (robots.size() == 0) {
 
     }
+  }
+
+  public void test() {
+    robots.get(0).calculate();
   }
 }

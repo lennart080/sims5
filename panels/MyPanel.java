@@ -15,6 +15,6 @@ public class MyPanel{
   }
 
   public static double sigmoid(double value) {
-    return 1 / (1 + Math.pow(2.71, -value)); 
+    return roundToDecPlaces(1 / (1 + Math.pow(2.71, -value)), 3); 
   }
 }
