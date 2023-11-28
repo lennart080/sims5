@@ -10,7 +10,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
   private int[] roboNumber;
-  private double[][] roboPos;
+  private int[][] roboPos;
   private double[][] roboStats;
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
@@ -47,7 +47,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     zahl3 = (int)((System.currentTimeMillis()-start)/1000);
   }
 
-  public void roboUpdate(int[] pNumber, double[][] pPosition, double[][] pStatistics) {               //test
+  public void roboUpdate(int[] pNumber, int[][] pPosition, double[][] pStatistics) {               //test
     roboNumber = pNumber;
     roboPos = pPosition;
     roboStats = pStatistics;

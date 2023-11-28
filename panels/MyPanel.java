@@ -17,4 +17,8 @@ public class MyPanel{
   public static double sigmoid(double value) {
     return roundToDecPlaces(1 / (1 + Math.pow(2.71, -value)), 3); 
   }
+
+  public static int prozentage(int value, int prozentage) {
+    return (int)((double)value/100.0)*prozentage;
+  }
 }

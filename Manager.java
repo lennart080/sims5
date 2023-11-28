@@ -20,7 +20,9 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<Robot> robots = new ArrayList<>();
-  int robotsPerRound = 1;
+  private int robotsPerRound = 17;
+  private List<double[][][]> bestPerformersWeights = new ArrayList<>();
+  private int permutPos = 0;
 
   private Timer simulationTimer;
   private Timer guiTimer;
@@ -32,6 +34,7 @@ public class Manager {                        //Manager zuständig für timings 
   private int simulationUpdatesPerSec = 1;
   private int fps;
   private int sollFps = 100;
+
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
 
@@ -97,22 +100,30 @@ public class Manager {                        //Manager zuständig für timings 
     fpsCounter++;
   }
 
-  public void startSimulation() {
+  public void startRound() {
+    int maxInt = 0;
+    for (int i = 0; i < simulationData.getPermut().length; i++) {
+      if (maxInt < simulationData.getPermut()[i]) {
+        maxInt = simulationData.getPermut()[i];
+      } 
+    }
+    int[] pos = new int[2];
     if (round == 0) {
-      int maxInt = 0;
-      for (int i = 0; i < simulationData.getPermut().length; i++) {
-        if (maxInt < simulationData.getPermut()[i]) {
-          maxInt = simulationData.getPermut()[i];
-        } 
-      }
       for (int i = 0; i < robotsPerRound; i++) {
-        int posX = MyPanel.normaliseValue((double)simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
-        int posY = MyPanel.normaliseValue((double)simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
-        double[] pos = {(double)posX, (double)posY};
+        pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
+        pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
         robots.add(new Robot(this, null, pos));
+        permutPos++;
       }
     } else {
-      
+      for (int i = permutPos; i < permutPos+bestPerformersWeights.size(); i++) {
+        for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
+          pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
+          pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());         
+          robots.add(new Robot(this, null, pos));
+          permutPos++;        
+        }
+      }
     }
     round++;       
   }
@@ -136,7 +147,7 @@ public class Manager {                        //Manager zuständig für timings 
       for (int i = 0; i < roboNumber.length; i++) {
         roboNumber[i] = robots.get(i).getSerialNumber();
       }
-      double[][] roboPos = new double[robots.size()][2];
+      int[][] roboPos = new int[robots.size()][2];
       for (int i = 0; i < roboPos.length; i++) {
         roboPos[i] = robots.get(i).getPosition();
       }
@@ -164,11 +175,14 @@ public class Manager {                        //Manager zuständig für timings 
   public void deleteRobo(int roboNumber) {
     for (int i = 0; i < robots.size(); i++) {
       if (robots.get(i).getSerialNumber() == roboNumber) {
+        if (robots.size() <= MyPanel.prozentage(robotsPerRound, 5)) {
+          bestPerformersWeights.add(robots.get(i).getWeights());
+        }
         robots.remove(i);       
       }   
     }
     if (robots.size() == 0) {
-
+      startRound();
     }
   }
 }

@@ -155,7 +155,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           GuiModes(4);
           break;
         case KeyEvent.VK_R  :                    //test taste
-          manager.startSimulation();  
+          manager.startRound();  
           break;   
         default: 
       }

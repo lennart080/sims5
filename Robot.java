@@ -3,7 +3,7 @@ public class Robot {
   private Manager manager;
   private int serialNumber;
   protected static int lastSerialNumber;
-  private double[][] position = new double[3][2];
+  private int[][] position = new int[3][2];
   private int[] dna;
   private double[] statistics = new double[8];
 
@@ -12,7 +12,7 @@ public class Robot {
   private double[][] neurons = new double[5][];   //[] reihe [][] neuron   //55555555555555555555555 in first
   private double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
-  public Robot(Manager pManager, int[] pDna, double[] pPosition) {
+  public Robot(Manager pManager, int[] pDna, int[] pPosition) {
     manager = pManager;
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
@@ -51,11 +51,11 @@ public class Robot {
   
   //get methoden des roboters 
   
-  public int[] getDna() {
-    return dna;
+  public double[][][] getWeights() {
+    return weigths;
   }
   
-  public double[] getPosition() {
+  public int[] getPosition() {
     return position[0];
   }
   
@@ -128,8 +128,8 @@ public class Robot {
         }
       }
     }
-    for (int i = 0; i < neurons[neurons.length].length; i++) {
-      System.out.println(i + ": " + neurons[neurons.length][i]); 
+    for (int i = 0; i < neurons[neurons.length-1].length; i++) {
+      System.out.println(i + ": " + neurons[neurons.length-1][i]); 
     }
   }
 }
