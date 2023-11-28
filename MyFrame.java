@@ -157,9 +157,6 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         case KeyEvent.VK_R  :                    //test taste
           manager.startSimulation();  
           break;   
-        case KeyEvent.VK_H  :
-          manager.test();    
-          break;   
         default: 
       }
       /* 

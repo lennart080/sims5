@@ -171,8 +171,4 @@ public class Manager {                        //Manager zuständig für timings 
 
     }
   }
-
-  public void test() {
-    robots.get(0).calculate();
-  }
 }
