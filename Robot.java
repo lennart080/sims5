@@ -1,9 +1,11 @@
+import java.util.ArrayList;
+import java.util.List;
 import panels.MyPanel;
 public class Robot {
   private Manager manager;
   private int serialNumber;
   protected static int lastSerialNumber;
-  private int[][] position = new int[3][2];
+  private List<int[]> position = new ArrayList<>();
   private int[] dna;
   private double[] statistics = new double[8];
 
@@ -17,8 +19,8 @@ public class Robot {
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
     dna = pDna;
-    for (int i = 0; i < position.length; i++) {
-      position[i] = pPosition;
+    for (int i = 0; i < 5; i++) {
+      position.add(pPosition);
     }
     
     neurons[0] = new double [statistics.length+(fieldInfos[0].length*fieldInfos.length)];
@@ -55,8 +57,13 @@ public class Robot {
     return weigths;
   }
   
-  public int[] getPosition() {
-    return position[0];
+  public int[][] getPositions() { 
+    int[][] pos = new int[position.size()][];
+    for (int i = 0; i < position.size(); i++) {
+      pos[i] = position.get(i);
+    }
+    System.out.println(pos[pos.length-1][0] + " " + pos[pos.length-1][1]);
+    return pos;
   }
   
   public double[] getStatistics() {
@@ -82,11 +89,21 @@ public class Robot {
   }
 
   private void updateStatistics() {
-    if (position[0] == position[1]) {
-      statistics[7] = MyPanel.roundToDecPlaces(statistics[7]+0.02, 2);;
+    int x = 0;
+    boolean posWechsel = false;
+    do {
+      if (position.get(x) != position.get(x+1)) {
+        posWechsel = true;
+      }
+      x++;
+    } while (position.size() == x-2 || posWechsel == true);
+    if (posWechsel == false) {
+      if (position.get(position.size()-1) == position.get(position.size()-2)) {
+        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]+0.02, 2);
+      }
     } else {
       if (statistics[7] > 0.0) {
-        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.02, 2);;
+        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.02, 2);
       }
     }
     if (statistics[6] > 0.0) {
@@ -129,7 +146,7 @@ public class Robot {
       }
     }
     for (int i = 0; i < neurons[neurons.length-1].length; i++) {
-      System.out.println(i + ": " + neurons[neurons.length-1][i]); 
+      //System.out.println(i + ": " + neurons[neurons.length-1][i]); 
     }
   }
 }

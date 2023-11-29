@@ -74,6 +74,10 @@ public class SimulationData {
       noiseAmplitude = 0.1;
     } 
   }
+
+  public int getMaxPermute() {
+    return noise.getMaxPermute();
+  }
   
   //get methoden der simulation daten
 
@@ -130,6 +134,7 @@ public class SimulationData {
     private static final int[] permutation = new int[TABLE_SIZE];
     private static final int[] permutationIndices = new int[TABLE_SIZE];
     private static final boolean[] used = new boolean[TABLE_SIZE];
+    private int maxPermute = 0;
     private int seed;
 
     public PerlinNoise(int pSeed) {            //erstellen eines prelin musters am anfag der simulation 
@@ -144,6 +149,9 @@ public class SimulationData {
       }
       for (int i = 0; i < TABLE_SIZE; i++) {
         permutation[i] = permutationIndices[i];
+        if (maxPermute < permutation[i]) {
+          maxPermute = permutation[i];
+        } 
       }
     }
 
@@ -180,6 +188,10 @@ public class SimulationData {
 
     public int[] getpermut() {            //übergabe des niose musters zu testzwecken
       return permutation;
+    }
+
+    public int getMaxPermute() {
+      return maxPermute;
     }
   }
 }

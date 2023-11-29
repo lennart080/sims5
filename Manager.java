@@ -101,27 +101,24 @@ public class Manager {                        //Manager zuständig für timings 
   }
 
   public void startRound() {
-    int maxInt = 0;
-    for (int i = 0; i < simulationData.getPermut().length; i++) {
-      if (maxInt < simulationData.getPermut()[i]) {
-        maxInt = simulationData.getPermut()[i];
-      } 
-    }
-    int[] pos = new int[2];
+    int maxInt = simulationData.getMaxPermute();
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
-        pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[i*2], maxInt, screen.getScreenWidth());
-        pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(i*2)+1], maxInt, screen.getScreenHeight());         
+        int[] pos = new int[2];
+        pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
+        pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());         
         robots.add(new Robot(this, null, pos));
-        permutPos++;
+        permutPos+= 2;
+        System.out.println(pos[0] + " " + pos[1]);  
       }
     } else {
       for (int i = permutPos; i < permutPos+bestPerformersWeights.size(); i++) {
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
+          int[] pos = new int[2];
           pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
           pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());         
           robots.add(new Robot(this, null, pos));
-          permutPos++;        
+          permutPos+= 2;       
         }
       }
     }
@@ -149,7 +146,7 @@ public class Manager {                        //Manager zuständig für timings 
       }
       int[][] roboPos = new int[robots.size()][2];
       for (int i = 0; i < roboPos.length; i++) {
-        roboPos[i] = robots.get(i).getPosition();
+        roboPos[i] = robots.get(i).getPositions()[robots.get(i).getPositions().length-1];
       }
       double[][] roboStats = new double[robots.size()][7];
       for (int i = 0; i < roboStats.length; i++) {
