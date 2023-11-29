@@ -9,9 +9,9 @@ public class Robot {
   private int[] dna;
   private double[] statistics = new double[8];
 
-  private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=forne,1=rechts,2=hinten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
+  private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
 
-  private double[][] neurons = new double[5][];   //[] reihe [][] neuron   //55555555555555555555555 in first
+  private double[][] neurons = new double[5][];   //[] reihe [][] neuron
   private double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
   public Robot(Manager pManager, int[] pDna, int[] pPosition) {
@@ -62,7 +62,6 @@ public class Robot {
     for (int i = 0; i < position.size(); i++) {
       pos[i] = position.get(i);
     }
-    System.out.println(pos[pos.length-1][0] + " " + pos[pos.length-1][1]);
     return pos;
   }
   
@@ -86,6 +85,7 @@ public class Robot {
     updateStatistics();
     setInputs();
     calculate();
+    setOutputs();
   }
 
   private void updateStatistics() {
@@ -96,7 +96,7 @@ public class Robot {
         posWechsel = true;
       }
       x++;
-    } while (position.size() == x-2 || posWechsel == true);
+    } while (position.size() > x+2);
     if (posWechsel == false) {
       if (position.get(position.size()-1) == position.get(position.size()-2)) {
         statistics[7] = MyPanel.roundToDecPlaces(statistics[7]+0.02, 2);
@@ -141,12 +141,59 @@ public class Robot {
       for (int j = 0; j < neurons[i].length; j++) {
         neurons[i][j] = 0;
         for (int j2 = 0; j2 < neurons[i-1].length; j2++) {
-          neurons[i][j] += MyPanel.sigmoid(neurons[i-1][j2] * weigths[i-1][j2][j]);
+          neurons[i][j] += neurons[i-1][j2] * weigths[i-1][j2][j];
         }
+        neurons[i][j] = MyPanel.sigmoid(neurons[i][j]);
       }
     }
     for (int i = 0; i < neurons[neurons.length-1].length; i++) {
-      //System.out.println(i + ": " + neurons[neurons.length-1][i]); 
+      System.out.println(i + ": " + neurons[neurons.length-1][i]); 
     }
+  }
+
+  private void setOutputs() {
+    System.out.println("start");
+    int outputNeuronPos = 0;
+    int highestPosneuron = -1;
+    double highestPos = 0;
+    for (int i = 0; i < 3; i++) {
+      if (neurons[neurons.length-1][outputNeuronPos] > highestPos) {
+        highestPos = neurons[neurons.length-1][outputNeuronPos];
+        if (highestPos > 0.5) {
+          highestPosneuron = outputNeuronPos;        
+        }
+      }
+      outputNeuronPos++;
+    }
+    int[] pos = new int[2];
+    switch (highestPosneuron) {
+      case 0:
+        pos[0] = position.get(position.size()-1)[0];
+        pos[1] = position.get(position.size()-1)[1]+1;
+        position.add(pos);
+        position.remove(0);       
+        break;
+      case 1:
+        pos[0] = position.get(position.size()-1)[0]+1;
+        pos[1] = position.get(position.size()-1)[1];
+        position.add(pos);   
+        position.remove(0);    
+        break;
+      case 2:
+        pos[0] = position.get(position.size()-1)[0];
+        pos[1] = position.get(position.size()-1)[1]-1;
+        position.add(pos);      
+        position.remove(0); 
+        break;
+      case 3:
+        pos[0] = position.get(position.size()-1)[0]-1;
+        pos[1] = position.get(position.size()-1)[1];
+        position.add(pos);
+        position.remove(0);        
+        break;
+      default:
+        break;
+    }  
+    System.out.println("finsih");
   }
 }

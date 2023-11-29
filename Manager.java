@@ -20,7 +20,7 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<Robot> robots = new ArrayList<>();
-  private int robotsPerRound = 17;
+  private int robotsPerRound = 1;
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
   private int permutPos = 0;
 
@@ -108,8 +108,7 @@ public class Manager {                        //Manager zuständig für timings 
         pos[0] = MyPanel.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
         pos[1] = MyPanel.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());         
         robots.add(new Robot(this, null, pos));
-        permutPos+= 2;
-        System.out.println(pos[0] + " " + pos[1]);  
+        permutPos+= 2; 
       }
     } else {
       for (int i = permutPos; i < permutPos+bestPerformersWeights.size(); i++) {
