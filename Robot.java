@@ -35,7 +35,7 @@ public class Robot {
     
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
     statistics[0] = 10.0;
-    //schrott (int)                      währung mit welcher teile und kinder "hergestellt" werden können
+    //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
     statistics[1] = 100.0;
     //attack                        schaden welcher pro atacke zugerichtet wird
     statistics[2] = 0.0;
@@ -46,9 +46,11 @@ public class Robot {
     //defense                       wird von der gegnerischen attake abgezogen
     statistics[5] = 0.0; 
     //health                        anzahl der leben welche von ataken veringert werden kann und sinkt wenn energie 0 ist. bei 0 leben stirbt er
-    statistics[6] = 5.0;       
+    statistics[7] = 5.0;       
     //rust                          rost bildet sich wenn der robo länger auf der stelle steht, je mehr rost deszo mehr energie verbrauch 
-    statistics[7] = 0.0; 
+    statistics[8] = 0.0; 
+    //solar                         solar panele welche energie gewinnen
+    statistics[6] = 1.0; 
   }
   
   //get methoden des roboters 
@@ -99,23 +101,23 @@ public class Robot {
     } while (position.size() > x+2);
     if (posWechsel == false) {
       if (position.get(position.size()-1) == position.get(position.size()-2)) {
-        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]+0.02, 2);
+        statistics[8] = MyPanel.roundToDecPlaces(statistics[8]+0.02, 2);
       }
     } else {
-      if (statistics[7] > 0.0) {
-        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.02, 2);
+      if (statistics[8] > 0.0) {
+        statistics[8] = MyPanel.roundToDecPlaces(statistics[8]-0.02, 2);
       }
     }
-    if (statistics[6] > 0.0) {
+    if (statistics[7] > 0.0) {
       if (statistics[0] > 0.0) {
-        statistics[0] = MyPanel.roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 1);
+        statistics[0] = MyPanel.roundToDecPlaces(statistics[0]-(0.1+statistics[8]), 1);
         if (statistics[0] < 0.0) {
           statistics[0] = 0.0;
         }
       } else {
-        statistics[6] = MyPanel.roundToDecPlaces(statistics[6]-0.1, 1);
-        if (statistics[6] < 0.0) {
-          statistics[6] = 0.0;
+        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.1, 1);
+        if (statistics[7] < 0.0) {
+          statistics[7] = 0.0;
         }
       }     
     } else {
@@ -152,7 +154,6 @@ public class Robot {
   }
 
   private void setOutputs() {
-    System.out.println("start");
     int outputNeuronPos = 0;
     int highestPosneuron = -1;
     double highestPos = 0;
@@ -194,6 +195,13 @@ public class Robot {
       default:
         break;
     }  
-    System.out.println("finsih");
+    for (int i = 0; i < 4; i++) {
+      if (neurons[neurons.length-1][ououtputNeuronPos] > 0.5) {
+        //if(energiegenug) {
+            statistics[i+2] += 1;  
+        //}
+      }
+      outputNeuronPos++;
+    }
   }
 }
