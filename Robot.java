@@ -7,7 +7,7 @@ public class Robot {
   protected static int lastSerialNumber;
   private List<int[]> position = new ArrayList<>();
   private int[] dna;
-  private double[] statistics = new double[8];
+  private double[] statistics = new double[9];
 
   private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
 
@@ -34,7 +34,7 @@ public class Robot {
     }
     
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
-    statistics[0] = 10.0;
+    statistics[0] = 100.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
     statistics[1] = 100.0;
     //attack                        schaden welcher pro atacke zugerichtet wird
@@ -46,11 +46,11 @@ public class Robot {
     //defense                       wird von der gegnerischen attake abgezogen
     statistics[5] = 0.0; 
     //health                        anzahl der leben welche von ataken veringert werden kann und sinkt wenn energie 0 ist. bei 0 leben stirbt er
-    statistics[7] = 5.0;       
+    statistics[6] = 5.0;       
     //rust                          rost bildet sich wenn der robo länger auf der stelle steht, je mehr rost deszo mehr energie verbrauch 
-    statistics[8] = 0.0; 
+    statistics[7] = 0.0; 
     //solar                         solar panele welche energie gewinnen
-    statistics[6] = 1.0; 
+    statistics[8] = 1.0; 
   }
   
   //get methoden des roboters 
@@ -101,23 +101,23 @@ public class Robot {
     } while (position.size() > x+2);
     if (posWechsel == false) {
       if (position.get(position.size()-1) == position.get(position.size()-2)) {
-        statistics[8] = MyPanel.roundToDecPlaces(statistics[8]+0.02, 2);
+        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]+0.02, 2);
       }
     } else {
-      if (statistics[8] > 0.0) {
-        statistics[8] = MyPanel.roundToDecPlaces(statistics[8]-0.02, 2);
+      if (statistics[7] > 0.0) {
+        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.02, 2);
       }
     }
-    if (statistics[7] > 0.0) {
+    if (statistics[6] > 0.0) {
       if (statistics[0] > 0.0) {
-        statistics[0] = MyPanel.roundToDecPlaces(statistics[0]-(0.1+statistics[8]), 1);
+        statistics[0] = MyPanel.roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 1);
         if (statistics[0] < 0.0) {
           statistics[0] = 0.0;
         }
       } else {
-        statistics[7] = MyPanel.roundToDecPlaces(statistics[7]-0.1, 1);
-        if (statistics[7] < 0.0) {
-          statistics[7] = 0.0;
+        statistics[6] = MyPanel.roundToDecPlaces(statistics[6]-0.1, 1);
+        if (statistics[6] < 0.0) {
+          statistics[6] = 0.0;
         }
       }     
     } else {
@@ -195,11 +195,43 @@ public class Robot {
       default:
         break;
     }  
-    for (int i = 0; i < 4; i++) {
-      if (neurons[neurons.length-1][ououtputNeuronPos] > 0.5) {
-        //if(energiegenug) {
-            statistics[i+2] += 1;  
-        //}
+    for (int i = 0; i < 5; i++) {
+      if (neurons[neurons.length-1][outputNeuronPos] > 0.4) {
+        switch (i){
+          case  0:
+            if (manager.getBasePrice() + ((int)statistics[2]*2) < statistics[0]) {
+              statistics[0]-= manager.getBasePrice() + ((int)statistics[2]*2);
+              statistics[2] += 1;             
+            }
+            break;
+          case  1:
+            if (manager.getBasePrice() + ((int)statistics[3]*2) < statistics[0]) {
+              statistics[0]-= manager.getBasePrice() + ((int)statistics[3]*2);
+              statistics[3] += 1;             
+            }
+            break;
+          case  2:
+            if (manager.getBasePrice() + ((int)statistics[4]*2) < statistics[0]) {
+              statistics[0]-= manager.getBasePrice() + ((int)statistics[4]*2);
+              statistics[4] += 1;             
+            }
+            break;
+          case  3:
+            if (manager.getBasePrice() + ((int)statistics[5]*2) < statistics[0]) {
+              statistics[0]-= manager.getBasePrice() + ((int)statistics[5]*2);
+              statistics[5] += 1;             
+            }
+            break;
+          case  4:
+            if (manager.getBasePrice() + ((int)statistics[8]*2) < statistics[0]) {
+              statistics[0]-= manager.getBasePrice() + ((int)statistics[8]*2);
+              statistics[8] += 1;             
+            }
+            break;
+          default:
+          break;
+        }
+        statistics[0] = MyPanel.roundToDecPlaces(statistics[0],2); 
       }
       outputNeuronPos++;
     }

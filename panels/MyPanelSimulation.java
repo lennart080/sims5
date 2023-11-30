@@ -34,8 +34,14 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         int y = MyPanel.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
         g2D.drawString("ROBO_" + roboNumber[i], x, y);
         g2D.drawString("ENERGIE_" + roboStats[i][0], x, y+20);
-        g2D.drawString("HEALTH_" + roboStats[i][7], x, y+40);
-        g2D.drawString("RUST_" + roboStats[i][8], x, y+60);
+        g2D.drawString("SCHROTT_" + roboStats[i][1], x, y+40);
+        g2D.drawString("ATTAK_" + roboStats[i][2], x, y+60);
+        g2D.drawString("ENERGIE-SPEICHER_" + roboStats[i][3], x, y+80);
+        g2D.drawString("SPEED_" + roboStats[i][4], x, y+100);
+        g2D.drawString("DEFENCE_" + roboStats[i][5], x, y+120);
+        g2D.drawString("HEALTH_" + roboStats[i][6], x, y+140);
+        g2D.drawString("RUST_" + roboStats[i][7], x, y+160);
+        g2D.drawString("SOLAR_" + roboStats[i][8], x, y+180);
       }
     }
     //-------------------

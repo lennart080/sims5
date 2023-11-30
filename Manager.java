@@ -27,6 +27,7 @@ public class Manager {                        //Manager zuständig für timings 
   private Timer simulationTimer;
   private Timer guiTimer;
 
+  private int basePrice = 10;
   private int round = 0;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
@@ -180,5 +181,9 @@ public class Manager {                        //Manager zuständig für timings 
     if (robots.size() == 0) {
       startRound();
     }
+  }
+
+  public int getBasePrice() {
+    return basePrice;
   }
 }
