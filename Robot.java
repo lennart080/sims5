@@ -6,7 +6,6 @@ public class Robot {
   private int serialNumber;
   protected static int lastSerialNumber;
   private List<int[]> position = new ArrayList<>();
-  private int[] dna;
   private double[] statistics = new double[9];
 
   private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
@@ -14,11 +13,11 @@ public class Robot {
   private double[][] neurons = new double[5][];   //[] reihe [][] neuron
   private double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
-  public Robot(Manager pManager, int[] pDna, int[] pPosition) {
+  public Robot(Manager pManager, double[][][] pDna, int[] pPosition) {
     manager = pManager;
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
-    dna = pDna;
+
     for (int i = 0; i < 5; i++) {
       position.add(pPosition);
     }
@@ -29,6 +28,8 @@ public class Robot {
     neurons[3] = new double[10];
     neurons[4] = new double[10];   // 0-3 inRichtungBewegen; 4-7 atk,enSp,sp,def upgade; 8 attack; 9 kind
     
+    //weigths = pDna;
+
     for (int i = 0; i < weigths.length; i++) {
       weigths[i] = new double[neurons[i].length][neurons[i+1].length];
     }
