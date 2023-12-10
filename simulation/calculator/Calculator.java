@@ -1,6 +1,16 @@
-package panels;
+package simulation.calculator;
 
-public class MyPanel{  
+public class Calculator{  
+  static long seed;
+
+  public static void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
+    if (pSeed >= 1) {
+      seed = pSeed;
+    } else {
+      seed = 1;
+    } 
+  }
+
   public static int normaliseValue(double value, int oldMax, int newMax) {       //linear mapping
     int originalMax = oldMax;
     double originalRange = (double) (originalMax);
@@ -20,5 +30,15 @@ public class MyPanel{
 
   public static int prozentage(int value, int prozentage) {
     return (int)((double)value/100.0)*prozentage;
+  }
+
+  public static double newRandom() {   
+    long a = 1103515245; // multiplier
+    long c = 12345; // increment
+    long m = (long) Math.pow(2, 31); // modulus
+    do {
+      seed = (a * seed + c) % m;     
+    } while (((double) seed / m) < 0 && ((double) seed / m) > 1);        
+    return (double) seed / m;  
   }
 }
