@@ -7,7 +7,6 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import simulation.calculator.Calculator;
 import simulation.panels.MyPanelData;
 import simulation.panels.MyPanelGraphs;
 import simulation.panels.MyPanelRobotData;
@@ -104,16 +103,16 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   }
 
   public void repaintScreen() {
-    if (this.getContentPane.isAncestorOf(simulationPanel)) {
+    if (this.getContentPane().isAncestorOf(simulationPanel)) {
       simulationPanel.repaint();
     }
-    if (this.getContentPane.isAncestorOf(dataPanel)) {
+    if (this.getContentPane().isAncestorOf(dataPanel)) {
       dataPanel.repaint();
     } 
-    if (this.getContentPane.isAncestorOf(graphPanel)) {
+    if (this.getContentPane().isAncestorOf(graphPanel)) {
       graphPanel.repaint();
     }
-    if (this.getContentPane.isAncestorOf(robotDataPanel)) {
+    if (this.getContentPane().isAncestorOf(robotDataPanel)) {
       robotDataPanel.repaint();
     }
   }

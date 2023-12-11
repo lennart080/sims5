@@ -1,8 +1,11 @@
 package simulation.panels;
 import javax.swing.*;
 
+import simulation.MyRobot;
 import simulation.calculator.Calculator;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.awt.*;
 public class MyPanelSimulation extends JPanel {         //graphic classe der simulation
   private int zahl;
@@ -12,9 +15,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
 
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-  private int[] roboNumber;
-  private int[][] roboPos;
-  private double[][] roboStats;
+  private List<MyRobot> robots = new ArrayList<>();
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -31,11 +32,11 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     g2D.drawString("" + zahl2, 20, 80);
     g2D.drawString("" + zahl3, 20, 100);
     //-------test--------
-    if (roboNumber != null) {
-      for (int i = 0; i < roboNumber.length; i++) {
-        int x = Calculator.normaliseValue(roboPos[i][0], screenWidth, this.getWidth());
-        int y = Calculator.normaliseValue(roboPos[i][1], screenHeight, this.getHeight());
-        g2D.drawString("ROBO_" + roboNumber[i], x, y);
+    if (robots.size() != 0) {
+      for (int i = 0; i < robots.size(); i++) {
+        int x = Calculator.normaliseValue(robots.get(i).getPositions()[robots.get(i).getPositions().length-1][0], screenWidth, this.getWidth());
+        int y = Calculator.normaliseValue(robots.get(i).getPositions()[robots.get(i).getPositions().length-1][1], screenHeight, this.getHeight());
+        g2D.drawString("ROBO_" + robots.get(i).getSerialNumber(), x, y);
         g2D.drawString("ENERGIE_" + roboStats[i][0], x, y+20);
         g2D.drawString("SCHROTT_" + roboStats[i][1], x, y+40);
         g2D.drawString("ATTAK_" + roboStats[i][2], x, y+60);
@@ -56,9 +57,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     zahl3 = (int)((System.currentTimeMillis()-start)/1000);
   }
 
-  public void roboUpdate(int[] pNumber, int[][] pPosition, double[][] pStatistics) {               //test
-    roboNumber = pNumber;
-    roboPos = pPosition;
-    roboStats = pStatistics;
+  public void roboUpdate(List<MyRobot> pRobots) {               //test
+    robots = pRobots;
   }
 }

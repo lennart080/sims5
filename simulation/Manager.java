@@ -21,7 +21,7 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<MyRobot> robots = new ArrayList<>();
-  private int robotsPerRound = 10;
+  private int robotsPerRound = 2;
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
   private int permutPos = 0;
 
@@ -30,17 +30,15 @@ public class Manager {                        //Manager zuständig für timings 
   private double[][] fieldInfos = new double[4][3];
   private int startSeed = 54674;
 
-  private Timer simulationTimer;
-  private Timer guiTimer;
+  private Timer timer;
 
   private int basePrice = 10;
   private int round = 0;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
-  private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
-  private int simulationUpdatesPerSec = 1;
+  private int programmSpeed = 1;   //um ... schneller als echtzeit (0-100)
   private int fps;
-  private int sollFps = 100;
+  private int sollFps = 20;
 
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
@@ -75,46 +73,23 @@ public class Manager {                        //Manager zuständig für timings 
     startStatistics[7] = 0.0; 
     //solar                         solar panele welche energie gewinnen
     startStatistics[8] = 1.0; 
-  
-    ActionListener taskPerformerSimulation = new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        updates++;
-        simulateData(); 
-        if (updates == (int)((double)updates/10.0)*10) {
-          time++;       
-        } 
-      }
-    };
-    simulationTimer = new Timer(1000/(simulationUpdatesPerSec*programmSpeed), taskPerformerSimulation);
-    simulationTimer.start(); 
-
-    /* 
-    ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        // Hier wird die Aufgabe definiert, die alle 100 Mikrosekunden ausgeführt wird
-    Runnable task = () -> {
-        // Deine Aufgabenlogik hier einfügen
-      System.out.println("Aufgabe ausgeführt!");
-    };
-
-        // Zeitintervall in Mikrosekunden (hier 100 Mikrosekunden = 0.1 Millisekunden)
-    long intervalMicroseconds = 100;
-
-        // Umrechnung des Intervalls in Nanosekunden für die Planung des Tasks
-    long intervalNanos = TimeUnit.MICROSECONDS.toNanos(intervalMicroseconds);
-
-        // Starte die Aufgabe mit dem angegebenen Intervall
-    executor.scheduleAtFixedRate(task, 0, intervalNanos, TimeUnit.NANOSECONDS);
-    */
 
     ActionListener taskPerformerGui = new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
+        for (int i = 0; i < programmSpeed; i++) {
+          updates++;
+          simulateData(); 
+          if (updates == (int)((double)updates/10.0)*10) {
+            time++;       
+          }
+        }
         fpsUpdate();
         updateGraphicData();
         updateScreen();
       }
     };
-    guiTimer = new Timer(1000/sollFps, taskPerformerGui);
-    guiTimer.start();
+    timer = new Timer(1000/sollFps, taskPerformerGui);
+    timer.start();
   }  
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
@@ -190,22 +165,10 @@ public class Manager {                        //Manager zuständig für timings 
     graphPanel.myUpdate(simulationData.getLightIntensityAtTime(time));
     //test
     if (robots.size() != 0) {
-      int[] roboNumber = new int[robots.size()];
-      for (int i = 0; i < roboNumber.length; i++) {
-        roboNumber[i] = robots.get(i).getSerialNumber();
-      }
-      int[][] roboPos = new int[robots.size()][2];
-      for (int i = 0; i < roboPos.length; i++) {
-        roboPos[i] = robots.get(i).getPositions()[robots.get(i).getPositions().length-1];
-      }
-      double[][] roboStats = new double[robots.size()][7];
-      for (int i = 0; i < roboStats.length; i++) {
-        roboStats[i] = robots.get(i).getStatistics();
-      } 
-      simulationPanel.roboUpdate(roboNumber, roboPos, roboStats); 
+      simulationPanel.roboUpdate(robots); 
       robotDataPanel.myUpdate(robots.get(0));
     } else {
-      simulationPanel.roboUpdate(null, null, null);
+      simulationPanel.roboUpdate(null);
     }
   }
   

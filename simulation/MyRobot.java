@@ -61,6 +61,7 @@ public class MyRobot {
     setInputs();
     calculate();
     setOutputs();
+    System.out.println(serialNumber + "  " + statistics[0]);
   }
 
   private void updateStatistics() {
@@ -101,7 +102,7 @@ public class MyRobot {
   private void setInputs() {
     int zähler = 0;
     for (int i = 0; i < statistics.length; i++) {
-      neurons[0][i] = statistics[i];
+      neurons[0][i] = statistics[zähler];
       zähler++;
     }
     for (int i = 0; i < fieldInfos.length; i++) {
@@ -166,6 +167,7 @@ public class MyRobot {
       default:
         break;
     }  
+    /* 
     for (int i = 0; i < 5; i++) {
       if (neurons[neurons.length-1][outputNeuronPos] > 0.4) {
         switch (i){
@@ -206,5 +208,6 @@ public class MyRobot {
       }
       outputNeuronPos++;
     }
+    */
   }
 }
