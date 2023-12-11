@@ -102,6 +102,21 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     }
     revalidate();
   }
+
+  public void repaintScreen() {
+    if (this.getContentPane.isAncestorOf(simulationPanel)) {
+      simulationPanel.repaint();
+    }
+    if (this.getContentPane.isAncestorOf(dataPanel)) {
+      dataPanel.repaint();
+    } 
+    if (this.getContentPane.isAncestorOf(graphPanel)) {
+      graphPanel.repaint();
+    }
+    if (this.getContentPane.isAncestorOf(robotDataPanel)) {
+      robotDataPanel.repaint();
+    }
+  }
   
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
     @Override

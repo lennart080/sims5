@@ -168,7 +168,7 @@ public class Manager {                        //Manager zuständig für timings 
     for (int i = 0; i < weigths.length; i++) {
       for (int j = 0; j < weigths[i].length; j++) {
         for (int j2 = 0; j2 < weigths[i][j].length; j2++) {
-          weigths[i][j][j2] = (Calculator.newRandom()-0.5)/10;
+          weigths[i][j][j2]+= (Calculator.newRandom()-0.5)/10;
         }
       }
     }
@@ -210,10 +210,7 @@ public class Manager {                        //Manager zuständig für timings 
   }
   
   private void updateScreen() {           //methode für neuzeichnen des bildschirms
-    simulationPanel.repaint();
-    dataPanel.repaint();
-    graphPanel.repaint();
-    robotDataPanel.repaint();
+    screen.repaintScreen();
   }
 
   public void deleteRobo(int roboNumber) {

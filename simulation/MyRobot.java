@@ -53,12 +53,6 @@ public class MyRobot {
   public int getSerialNumber() {
     return serialNumber;
   }
-  
-  //set methoden des Roboters 
-  
-  public void setStatistic(String statistic, int value) {
-    
-  }
 
   //hirn des robos
 
