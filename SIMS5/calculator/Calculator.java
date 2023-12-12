@@ -1,4 +1,4 @@
-package simulation.calculator;
+package SIMS5.calculator;
 
 public class Calculator{  
   static long seed;

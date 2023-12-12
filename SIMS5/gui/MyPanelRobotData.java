@@ -1,10 +1,11 @@
-package simulation.panels;
-import simulation.MyRobot;
+package SIMS5.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
+
+import SIMS5.simulation.MyRobot;
 public class MyPanelRobotData extends JPanel {          //graphic classe der daten
   private MyRobot robot;
   public MyPanelRobotData() {

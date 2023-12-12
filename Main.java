@@ -1,4 +1,4 @@
-import simulation.Manager;
+import SIMS5.Manager;
 
 public class Main {
   public static void main(String[] args) {

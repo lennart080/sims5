@@ -1,11 +1,11 @@
-package simulation;
+package SIMS5.simulation;
+import SIMS5.calculator.Calculator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import simulation.calculator.Calculator;
 public class MyRobot {
-  private Manager manager;
+  private SimManager manager;
   private int serialNumber;
   protected static int lastSerialNumber;
   private List<int[]> position = new ArrayList<>();
@@ -16,7 +16,7 @@ public class MyRobot {
   private double[][] neurons;   //[] reihe [][] neuron
   private double[][][] weigths;  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
-  public MyRobot(Manager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics) {
+  public MyRobot(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics) {
     manager = pManager;
     weigths = Arrays.copyOf(pWeigths, pWeigths.length);
     neurons = Arrays.copyOf(pNeurons, pNeurons.length);

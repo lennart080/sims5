@@ -1,8 +1,8 @@
-package simulation.panels;
+package SIMS5.gui;
 import javax.swing.*;
 
-import simulation.MyRobot;
-import simulation.calculator.Calculator;
+import SIMS5.calculator.Calculator;
+import SIMS5.simulation.MyRobot;
 
 import java.util.ArrayList;
 import java.util.List;

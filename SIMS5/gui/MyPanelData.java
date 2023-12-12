@@ -1,4 +1,4 @@
-package simulation.panels;
+package SIMS5.gui;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;

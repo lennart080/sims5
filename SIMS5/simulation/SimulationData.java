@@ -1,7 +1,6 @@
-package simulation;
+package SIMS5.simulation;
 public class SimulationData {
   private PerlinNoise noise;
-  private int[][] board; 
   private double dayStart;
   private double dayEnd;
   private double lightIntensity;
@@ -17,7 +16,6 @@ public class SimulationData {
     setNoiseAmplitude(100.0);
     setLightIntensity(100.0);
     noise = new PerlinNoise(seed);
-    //newBoard(100, 70);
   }
   
   //set methoden der simulation daten
@@ -37,12 +35,6 @@ public class SimulationData {
       if (dayStart < pDayEnd) {
         dayEnd = pDayEnd;     
       } 
-    }
-  }
-  
-  public void setBoardSize(int x, int y) {            //erstellen der größe der simulation (einzige einstellung die nur einmal gesetzt werden kann)
-    if (board == null) {
-      board = new int[x][y];
     }
   }
   

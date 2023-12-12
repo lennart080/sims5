@@ -1,4 +1,4 @@
-package simulation.panels;
+package SIMS5.gui;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;

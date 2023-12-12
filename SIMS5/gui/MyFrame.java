@@ -1,4 +1,4 @@
-package simulation;
+package SIMS5.gui;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.awt.event.KeyAdapter;
@@ -7,12 +7,10 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import simulation.panels.MyPanelData;
-import simulation.panels.MyPanelGraphs;
-import simulation.panels.MyPanelRobotData;
-import simulation.panels.MyPanelSimulation;
+import SIMS5.Manager;
 public class MyFrame extends JFrame {                 //graphic manager (zuständig für wo welche fenster/menüs angezeigt werden)
   private Manager manager;
+  private GuiManager guiManager;
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
@@ -21,14 +19,15 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
   
-  public MyFrame(Manager mp, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {            //zuweißung der graphic componenten(fenster/menüs usw.)
+  public MyFrame(Manager mp,GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {
     simulationPanel = sp;
     dataPanel = dp;
     graphPanel = gp;
     manager = mp;
+    guiManager = gm;
     robotDataPanel = rdp;
 
-    this.setTitle("Info-Projekt");
+    this.setTitle("SIMS5");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setUndecorated(true);
     this.setResizable(false);
@@ -57,6 +56,18 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
 
   public int getScreenHeight() {
     return screenHeight;
+  }
+
+  public int getSimulationSize() {
+    if (screenHeight < 1000 || screenWidth < 1000) {
+      if (screenHeight < screenWidth) {
+        return screenHeight;
+      } else {
+        return screenWidth;
+      }
+    } else {
+      return 1000;    
+    }
   }
   
   private void GuiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
@@ -135,7 +146,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
             GuiModes(4);
             break;
           case KeyEvent.VK_R  :                    //test taste
-            manager.startRound();  
+            guiManager.startSim();
             break;
           default: 
         }
