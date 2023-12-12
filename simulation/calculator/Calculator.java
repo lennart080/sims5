@@ -29,7 +29,7 @@ public class Calculator{
   }
 
   public static int prozentage(int value, int prozentage) {
-    return (int)((double)value/100.0)*prozentage;
+    return (int)(((double)value/100.0)*prozentage);
   }
 
   public static double newRandom() {   

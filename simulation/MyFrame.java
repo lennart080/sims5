@@ -136,7 +136,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
             break;
           case KeyEvent.VK_R  :                    //test taste
             manager.startRound();  
-            break;   
+            break;
           default: 
         }
       }

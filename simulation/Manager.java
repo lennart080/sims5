@@ -21,7 +21,7 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<MyRobot> robots = new ArrayList<>();
-  private int robotsPerRound = 20;
+  private int robotsPerRound;
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
 
   private int[] neuronLayers = {10, 10, 10};
@@ -55,6 +55,8 @@ public class Manager {                        //Manager zuständig für timings 
     
     simulationData = new SimulationData(startSeed);
     Calculator.setSeed(startSeed);
+
+    setRobotsPerRound(20);
 
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
     startStatistics[0] = 100.0;
@@ -93,6 +95,14 @@ public class Manager {                        //Manager zuständig für timings 
     timer.start();
   }  
 
+  public void setRobotsPerRound(int pRobotsPerRound) {
+    if (pRobotsPerRound < 10) {
+      robotsPerRound = 10;
+    } else {
+      robotsPerRound = 10 * (int)((double)pRobotsPerRound/10.0);
+    }
+  }
+
   public boolean ready() {
     if (screen != null && simulationPanel != null && dataPanel != null && graphPanel != null && robotDataPanel != null && simulationData != null) {
       return true;
@@ -127,7 +137,6 @@ public class Manager {                        //Manager zuständig für timings 
         newRobot(newRandomPos(), -1);
       }
     } else {
-      System.out.println(round);
       for (int i = 0; i < bestPerformersWeights.size(); i++) {
         System.out.println(i);
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
@@ -198,7 +207,7 @@ public class Manager {                        //Manager zuständig für timings 
   public void deleteRobo(int roboNumber) {
     for (int i = 0; i < robots.size(); i++) {
       if (robots.get(i).getSerialNumber() == roboNumber) {
-        if (robots.size() <= Calculator.prozentage(robotsPerRound, 5)) {
+        if (robots.size() <= Calculator.prozentage(robotsPerRound, 10)) {
           bestPerformersWeights.add(robots.get(i).getWeights());
         }   
         robots.remove(i);       
