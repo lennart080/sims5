@@ -1,5 +1,6 @@
 package simulation;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import simulation.calculator.Calculator;
@@ -8,18 +9,18 @@ public class MyRobot {
   private int serialNumber;
   protected static int lastSerialNumber;
   private List<int[]> position = new ArrayList<>();
-  private double[] statistics = new double[9];
+  private double[] statistics;
 
   private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
 
-  private double[][] neurons = new double[5][];   //[] reihe [][] neuron
-  private double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
+  private double[][] neurons;   //[] reihe [][] neuron
+  private double[][][] weigths;  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   
   public MyRobot(Manager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics) {
     manager = pManager;
-    weigths = pWeigths;
-    neurons = pNeurons;
-    statistics = startStatistics;
+    weigths = Arrays.copyOf(pWeigths, pWeigths.length);
+    neurons = Arrays.copyOf(pNeurons, pNeurons.length);
+    statistics = Arrays.copyOf(startStatistics, startStatistics.length);
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
 
@@ -61,7 +62,6 @@ public class MyRobot {
     setInputs();
     calculate();
     setOutputs();
-    System.out.println(serialNumber + "  " + statistics[0]);
   }
 
   private void updateStatistics() {

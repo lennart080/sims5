@@ -21,9 +21,8 @@ public class Manager {                        //Manager zuständig für timings 
   private SimulationData simulationData;
 
   private List<MyRobot> robots = new ArrayList<>();
-  private int robotsPerRound = 2;
+  private int robotsPerRound = 20;
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
-  private int permutPos = 0;
 
   private int[] neuronLayers = {10, 10, 10};
   private double[] startStatistics = new double[9];
@@ -36,9 +35,10 @@ public class Manager {                        //Manager zuständig für timings 
   private int round = 0;
   private int updates = 0;        //anzahl der updates seit start des programms  
   private int time = 0;           //simulations zeit in sec
-  private int programmSpeed = 1;   //um ... schneller als echtzeit (0-100)
+  private int programmSpeed = 10;   //um ... schneller als echtzeit (0-100)
   private int fps;
   private int sollFps = 20;
+  private int simulationSize;
 
   private int fpsCounter = 0;
   private long timeSave = System.currentTimeMillis()/1000;
@@ -50,6 +50,7 @@ public class Manager {                        //Manager zuständig für timings 
       graphPanel = new MyPanelGraphs();
       robotDataPanel = new MyPanelRobotData();
       screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel);
+      setSimulationSize();
     });
     
     simulationData = new SimulationData(startSeed);
@@ -91,6 +92,25 @@ public class Manager {                        //Manager zuständig für timings 
     timer = new Timer(1000/sollFps, taskPerformerGui);
     timer.start();
   }  
+
+  public boolean ready() {
+    if (screen != null && simulationPanel != null && dataPanel != null && graphPanel != null && robotDataPanel != null && simulationData != null) {
+      return true;
+    }
+    return false;
+  }
+
+  public void setSimulationSize() {
+    if (screen.getScreenHeight() < 1000 || screen.getScreenWidth() < 1000) {
+      if (screen.getScreenHeight() < screen.getScreenWidth()) {
+        simulationSize = screen.getScreenHeight();
+      } else {
+        simulationSize = screen.getScreenWidth();
+      }
+    } else {
+      simulationSize = 1000;    
+    }
+  }
   
   private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
     if ((timeSave+1) <= (System.currentTimeMillis()/1000)) {
@@ -102,28 +122,27 @@ public class Manager {                        //Manager zuständig für timings 
   }
 
   public void startRound() {
-    int maxInt = simulationData.getMaxPermute();
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
-        int[] pos = new int[2];
-        pos[0] = Calculator.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
-        pos[1] = Calculator.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());  
-        permutPos+= 2;        
-        newRobot(pos, -1);
+        newRobot(newRandomPos(), -1);
       }
     } else {
       System.out.println(round);
       for (int i = 0; i < bestPerformersWeights.size(); i++) {
+        System.out.println(i);
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
-          int[] pos = new int[2];
-          pos[0] = Calculator.normaliseValue((double)simulationData.getPermut()[permutPos*2], maxInt, screen.getScreenWidth());
-          pos[1] = Calculator.normaliseValue((double)simulationData.getPermut()[(permutPos*2)+1], maxInt, screen.getScreenHeight());    
-          permutPos+= 2;       
-          newRobot(pos, i);  
+          newRobot(newRandomPos(), i);
         }
       }
     }
     round++;       
+  }
+
+  private int[] newRandomPos() {
+    int[] pos = new int[2];
+    pos[0] = Calculator.normaliseValue(Calculator.newRandom(), 1, simulationSize);
+    pos[1] = Calculator.normaliseValue(Calculator.newRandom(), 1, simulationSize);  
+    return pos;  
   }
 
   private void newRobot(int[] pPos, int bestPerformersPos) {  
@@ -161,7 +180,7 @@ public class Manager {                        //Manager zuständig für timings 
   
   private void updateGraphicData() {               //methode für die daten updates die graphic panele
     simulationPanel.myUpdate(updates, time);  
-    dataPanel.myUpdate(fps);
+    dataPanel.myUpdate(fps, robotsPerRound, robots.size());
     graphPanel.myUpdate(simulationData.getLightIntensityAtTime(time));
     //test
     if (robots.size() != 0) {
@@ -181,7 +200,7 @@ public class Manager {                        //Manager zuständig für timings 
       if (robots.get(i).getSerialNumber() == roboNumber) {
         if (robots.size() <= Calculator.prozentage(robotsPerRound, 5)) {
           bestPerformersWeights.add(robots.get(i).getWeights());
-        }
+        }   
         robots.remove(i);       
       }   
     }
