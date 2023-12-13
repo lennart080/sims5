@@ -20,6 +20,7 @@ public class GuiManager {
   private int fps;
 
   public GuiManager() {
+    System.out.println(""+this.getClass());
     setSeed(54674);
     setBasePrice(10);
     setSollFps(20);

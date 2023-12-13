@@ -54,6 +54,7 @@ public class Manager {                        //Manager zuständig für timings 
       public void actionPerformed(ActionEvent evt) {
         for (int i = 0; i < programmSpeed; i++) {
           updates++;
+          System.out.println(""+ready());
           simManager.simulateData(timeInMin); 
           if (updates == (int)((double)updates/10.0)*10) {
             timeInMin++;       
