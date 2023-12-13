@@ -45,7 +45,7 @@ public class SimManager {
   }
 
   public double getLightIntensityAtTime() {
-    return simData.getLightIntensityAtTime(manager.getTimeInMin());
+    return simData.getLightIntensityAtTime(manager.getTime());
   }
 
   public void startRound() {

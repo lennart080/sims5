@@ -24,11 +24,10 @@ public class Manager {                        //Manager zuständig für timings 
   private MyPanelRobotData robotDataPanel;
   private SimulationData simulationData;
 
-  private Timer timer;
-
-  //mit 20fps ist 1tag ~ 1:30min
   private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
-  private int timeInMin = 0;           //simulations zeit in min (ingame) //10 updates
+  private int time = 0;           //fictive zeiteinheit 60ze = 1tag
+  private int day = 0;               //in game tag (relativ zur runde)
+  private int dayLengthRealTimeInMin = 2;
   private int programmSpeed = 1;   // berechnungen pro frame
 
   public Manager() {
@@ -51,42 +50,25 @@ public class Manager {                        //Manager zuständig für timings 
     simManager = new SimManager(this, guiManager, simulationData);
     guiManager.setSimManager(simManager);
 
-    /*ActionListener taskPerformerGui = new ActionListener() {
-      public void actionPerformed(ActionEvent evt) {
-        for (int i = 0; i < programmSpeed; i++) {
-          updates++;
-          System.out.println(""+ready());
-          simManager.simulateData(timeInMin); 
-          if (updates == (int)((double)updates/10.0)*10) {
-            timeInMin++;       
-          }
-        }
-        guiManager.updateGui(updates, timeInMin);
-      }
-    };
-    timer = new Timer(1000/guiManager.getSollFps(), taskPerformerGui);
-    timer.start();
-    */
-
     while (true) {
       long startTime, endTime, elapsedTime;
       startTime = System.nanoTime();
 
-      for (int i = 0; i < programmSpeed; i++) {
-        updates++;
-        simManager.simulateData(timeInMin); 
-        if (updates == (int)((double)updates/10.0)*10) {
-          timeInMin++;       
-        }
+      simManager.simulateData(time);
+      updates++;
+      if (updates % 60 == 0) {
+        time++;
       }
-      guiManager.updateGui(updates, timeInMin);
+      if (time % 60 == 0) {
+        day++;
+      }
 
       endTime = System.nanoTime();
-      elapsedTime = (endTime - startTime) / 1000;
-      long remainingTime = (1000/guiManager.getSollFps()) - elapsedTime;
+      elapsedTime = (endTime - startTime);
+      long remainingTime = (((programmSpeed*dayLengthRealTimeInMin)*1000000)/60) - elapsedTime;
       if (remainingTime > 0) {
         try {
-          Thread.sleep(remainingTime /* / 1000, (int) (remainingTime % 1000) */);       
+          Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -110,8 +92,12 @@ public class Manager {                        //Manager zuständig für timings 
     return false;
   }
 
-  public int getTimeInMin() {
-    return timeInMin;
+  public int getTime() {
+    return time;
+  }
+
+  public int getDay() {
+    return day;
   }
 
   public int getUpdates() {
