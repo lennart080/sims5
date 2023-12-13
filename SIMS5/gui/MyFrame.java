@@ -131,7 +131,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
     @Override
     public void keyPressed(KeyEvent e) {
-      if (manager.ready() == true) {
+      if (manager.guiReady() == true) {
         switch (e.getKeyCode()) {
           case KeyEvent.VK_A  :                         //test taste
             GuiModes(1);
@@ -146,7 +146,9 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
             GuiModes(4);
             break;
           case KeyEvent.VK_R  :                    //test taste
-            guiManager.startSim();
+          if (manager.simReady()) {
+            guiManager.startSim();          
+          }
             break;
           default: 
         }

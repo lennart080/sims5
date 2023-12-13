@@ -29,7 +29,7 @@ public class Manager {                        //Manager zuständig für timings 
   //mit 20fps ist 1tag ~ 1:30min
   private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
   private int timeInMin = 0;           //simulations zeit in min (ingame) //10 updates
-  private int programmSpeed = 10;   // berechnungen pro frame
+  private int programmSpeed = 1;   // berechnungen pro frame
 
   public Manager() {
     guiManager = new GuiManager();
@@ -41,7 +41,8 @@ public class Manager {                        //Manager zuständig für timings 
       screen = new MyFrame(this, guiManager, simulationPanel, dataPanel, graphPanel, robotDataPanel);
     });
     do {
-    } while (!ready());
+      System.out.println(""+guiReady());
+    } while (!guiReady());
     guiManager.setGraphicObjekts(screen, simulationPanel, dataPanel, graphPanel, robotDataPanel);
 
     //wait until sim starts for user imput
@@ -50,7 +51,7 @@ public class Manager {                        //Manager zuständig für timings 
     simManager = new SimManager(this, guiManager, simulationData);
     guiManager.setSimManager(simManager);
 
-    ActionListener taskPerformerGui = new ActionListener() {
+    /*ActionListener taskPerformerGui = new ActionListener() {
       public void actionPerformed(ActionEvent evt) {
         for (int i = 0; i < programmSpeed; i++) {
           updates++;
@@ -65,10 +66,45 @@ public class Manager {                        //Manager zuständig für timings 
     };
     timer = new Timer(1000/guiManager.getSollFps(), taskPerformerGui);
     timer.start();
+    */
+
+    while (true) {
+      long startTime, endTime, elapsedTime;
+      startTime = System.nanoTime();
+
+      for (int i = 0; i < programmSpeed; i++) {
+        updates++;
+        simManager.simulateData(timeInMin); 
+        if (updates == (int)((double)updates/10.0)*10) {
+          timeInMin++;       
+        }
+      }
+      guiManager.updateGui(updates, timeInMin);
+
+      endTime = System.nanoTime();
+      elapsedTime = (endTime - startTime) / 1000;
+      long remainingTime = (1000/guiManager.getSollFps()) - elapsedTime;
+      if (remainingTime > 0) {
+        try {
+          Thread.sleep(remainingTime /* / 1000, (int) (remainingTime % 1000) */);       
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      } else {
+        guiManager.setSollFps((int)(guiManager.getSollFps() - 1));
+      }
+    }
   }  
 
-  public boolean ready() {
-    if (screen != null && simulationPanel != null && dataPanel != null && graphPanel != null && robotDataPanel != null && simulationData != null) {
+  public boolean simReady() {
+    if (simulationData != null && simManager != null) {
+      return true;
+    }
+    return false;
+  }
+
+  public boolean guiReady() {
+    if (screen != null && simulationPanel != null && dataPanel != null && graphPanel != null && robotDataPanel != null && guiManager != null) {
       return true;
     }
     return false;
