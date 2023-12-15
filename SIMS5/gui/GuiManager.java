@@ -1,7 +1,11 @@
 package SIMS5.gui;
 
-import SIMS5.simulation.SimManager;
+import java.util.concurrent.Semaphore;
 
+import javax.swing.SwingUtilities;
+
+import SIMS5.calculator.Calculator;
+import SIMS5.simulation.SimManager;
 public class GuiManager {
   private SimManager simManager;
   private MyFrame screen;
@@ -10,6 +14,7 @@ public class GuiManager {
   private MyPanelGraphs graphPanel;
   private MyPanelRobotData robotDataPanel;
 
+  private boolean graphicMode;
   private int startSeed;
   private int basePrice;
   private double[] startStatistics = new double[9];
@@ -20,10 +25,29 @@ public class GuiManager {
   private int fps;
 
   public GuiManager() {
-    System.out.println(""+this.getClass());
+    //----erstellen der graphic elemente----
+    Semaphore initialisationSemaphore = new Semaphore(0);
+    SwingUtilities.invokeLater(() -> {;                     
+      simulationPanel = new MyPanelSimulation();
+      dataPanel = new MyPanelData();
+      graphPanel = new MyPanelGraphs();
+      robotDataPanel = new MyPanelRobotData();
+      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel);
+      initialisationSemaphore.release();
+    });
+    try {
+      initialisationSemaphore.acquire();
+    } catch (Exception e) {
+      Thread.currentThread().interrupt();
+      System.out.println("initialisation failed");
+    }
+    //-------------------------------------
+
+    //-----------user sets data------------
     setSeed(54674);
     setBasePrice(10);
     setSollFps(20);
+    setGraphicMode(true);
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
     startStatistics[0] = 100.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
@@ -42,15 +66,45 @@ public class GuiManager {
     startStatistics[7] = 0.0; 
     //solar                         solar panele welche energie gewinnen
     startStatistics[8] = 1.0; 
+    //------------------------------------
   }
 
+  public void myRun() {
+    while (true) {
+      long startTime, endTime, elapsedTime;
+      startTime = System.nanoTime();
+
+      this.updateGui();
+
+      endTime = System.nanoTime();
+      elapsedTime = (endTime - startTime);
+      long remainingTime = (1000000/sollFps) - elapsedTime;
+      if (remainingTime > 0) {
+        try {
+          Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  public void startSimulation() {
+    Calculator.setSeed(startSeed);
+    simManager.startThread();
+    if (graphicMode == true) {
+      myRun();
+    }
+  }
+
+  //---------------set----------------
   public void setSimManager(SimManager pSimManager) {
     simManager = pSimManager;
     simManager.setRobotsPerRound(20);
   }
 
-  public int getSollFps() {
-    return sollFps;
+  public void setGraphicMode(boolean trueOrFalse) {
+    graphicMode = trueOrFalse;
   }
 
   public void setSeed(int pSeed) {  
@@ -72,44 +126,15 @@ public class GuiManager {
       basePrice = pBasePrice;    
     }
   }
+  //----------------------------------
+
+  //---------------get----------------
+  public int getSollFps() {
+    return sollFps;
+  }
 
   public int getSimulationSize() {
     return screen.getSimulationSize();
-  }
-
-  public void setGraphicObjekts(MyFrame mf, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {
-    screen = mf;
-    simulationPanel = sp;
-    dataPanel = dp;
-    graphPanel = gp;
-    robotDataPanel = rdp;
-  }
-
-  private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
-    if ((timeSave+1) <= (System.currentTimeMillis()/1000)) {
-      timeSave = System.currentTimeMillis()/1000;
-      fps = fpsCounter;
-      fpsCounter = 0;
-    }
-    fpsCounter++;
-  }
-
-  public void updateScreen() {           //methode für neuzeichnen des bildschirms
-    screen.repaintScreen();
-  }
-
-  public void updateGui(int updates, int timeInMin) {           
-    simulationPanel.myUpdate(updates, timeInMin);  
-    dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
-    graphPanel.myUpdate(simManager.getLightIntensityAtTime());
-    if (simManager.getRobots().size() != 0) {
-      simulationPanel.roboUpdate(simManager.getRobots()); 
-      robotDataPanel.myUpdate(simManager.getRobots().get(0));
-    } else {
-      simulationPanel.roboUpdate(null);
-    }
-    fpsUpdate();
-    updateScreen();
   }
 
   public int getBasePrice() {
@@ -123,10 +148,28 @@ public class GuiManager {
   public int getSeed() {
     return startSeed;
   }
+  //----------------------------------
 
-  public void startSim() {
-    if (simManager.getRound() == 0) {
-      simManager.startRound(); 
+  private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
+    if ((timeSave+1) <= (System.currentTimeMillis()/1000)) {
+      timeSave = System.currentTimeMillis()/1000;
+      fps = fpsCounter;
+      fpsCounter = 0;
     }
+    fpsCounter++;
+  }
+
+  private void updateGui() {           
+    simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime());  
+    dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
+    graphPanel.myUpdate(simManager.getLightIntensityAtTime());
+    if (simManager.getRobots().size() != 0) {
+      simulationPanel.roboUpdate(simManager.getRobots()); 
+      robotDataPanel.myUpdate(simManager.getRobots().get(0));
+    } else {
+      simulationPanel.roboUpdate(null);
+    }
+    fpsUpdate();
+    screen.repaintScreen();
   }
 }

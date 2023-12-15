@@ -3,31 +3,70 @@ package SIMS5.simulation;
 import java.util.ArrayList;
 import java.util.List;
 
-import SIMS5.Manager;
 import SIMS5.calculator.Calculator;
 import SIMS5.gui.GuiManager;
 
-public class SimManager {
-  private Manager manager;
+public class SimManager implements Runnable {
   private GuiManager guiManager;
   private SimulationData simData;
+
+  private Thread simThread;
 
   private int robotsPerRound;
   private int round = 0;
   private int simulationSize;
+  private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
+  private int time = 0;           //fictive zeiteinheit 60ze = 1tag
+  private int day = 0;               //in game tag (relativ zur runde)
+  private int dayLengthRealTimeInMin = 2;
+  private int programmSpeed = 1;   // 1 = 2min day,  2 = 4min day...  
 
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
   private int[] neuronLayers = {10, 10, 10};
   private double[][] fieldInfos = new double[4][3];
 
-  public SimManager(Manager pManager, GuiManager pGuiManager, SimulationData sd) {
-    manager = pManager;
-    guiManager = pGuiManager;
-    simData = sd;
-    simulationSize = guiManager.getSimulationSize();
+  public SimManager() {
+
   }
 
+  public void startThread() {
+    simThread = new Thread(this);
+    simThread.start();
+  }
+
+  @Override
+  public void run() {
+    simulationSize = guiManager.getSimulationSize();
+    simData = new SimulationData(guiManager.getSeed());
+    startRound();
+    while (true) {
+      long startTime, endTime, elapsedTime;
+      startTime = System.nanoTime();
+
+      this.simulateData(time);
+      updates++;
+      if (updates % 60 == 0) {
+        time++;
+      }
+      if (time % 60 == 0) {
+        day++;
+      }
+
+      endTime = System.nanoTime();
+      elapsedTime = (endTime - startTime);
+      long remainingTime = (((programmSpeed*dayLengthRealTimeInMin)*1000000)/60) - elapsedTime;
+      if (remainingTime > 0) {
+        try {
+          Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
+        } catch (Exception e) {
+          e.printStackTrace();
+        }
+      }
+    }
+  }
+
+  //---------------set------------------
   public void setRobotsPerRound(int pRobotsPerRound) {
     if (pRobotsPerRound < 10) {
       robotsPerRound = 10;
@@ -36,26 +75,55 @@ public class SimManager {
     }
   }
 
+  public void setGuiManager(GuiManager gm) {
+    guiManager = gm;
+  }
+  //------------------------------------
+
+  //---------------get------------------
   public int getRobotsPerRound() {
     return robotsPerRound;
+  }
+
+  public List<MyRobot> getRobots() {
+    return robots;
   }
 
   public int getRound() {
     return round;
   }
 
-  public double getLightIntensityAtTime() {
-    return simData.getLightIntensityAtTime(manager.getTime());
+  public int getTime() {
+    return time;
   }
 
-  public void startRound() {
+  public int getDay() {
+    return day;
+  }
+
+  public int getUpdates() {
+    return updates;
+  }
+
+  public int getProgrammSpeed() {
+    return programmSpeed;
+  }
+
+  public double getLightIntensityAtTime() {
+    if (simData != null) {
+      return simData.getLightIntensityAtTime(time);   
+    }
+    return 0.0;
+  }
+  //-----------------------------------
+
+  private void startRound() {
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
         newRobot(newRandomPos(), -1);
       }
     } else {
       for (int i = 0; i < bestPerformersWeights.size(); i++) {
-        System.out.println(i);
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
           newRobot(newRandomPos(), i);
         }
@@ -109,16 +177,12 @@ public class SimManager {
     }
   }
 
-  public void simulateData(int timeInMin) {         //methode für die simulations berechnungen
+  private void simulateData(int timeInMin) {         //methode für die simulations berechnungen
     if (robots.size() != 0) {
       double lightIntensity = simData.getLightIntensityAtTime(timeInMin);
       for (int i = 0; i < robots.size(); i++) {
         robots.get(i).simulate(lightIntensity);
       }    
     }
-  }
-
-  public List<MyRobot> getRobots() {
-    return robots;
   }
 }

@@ -7,9 +7,7 @@ import java.awt.event.KeyEvent;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import SIMS5.Manager;
 public class MyFrame extends JFrame {                 //graphic manager (zuständig für wo welche fenster/menüs angezeigt werden)
-  private Manager manager;
   private GuiManager guiManager;
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
@@ -19,11 +17,10 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
   
-  public MyFrame(Manager mp,GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {
+  public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {
     simulationPanel = sp;
     dataPanel = dp;
     graphPanel = gp;
-    manager = mp;
     guiManager = gm;
     robotDataPanel = rdp;
 
@@ -131,7 +128,6 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
     @Override
     public void keyPressed(KeyEvent e) {
-      if (manager.guiReady() == true) {
         switch (e.getKeyCode()) {
           case KeyEvent.VK_A  :                         //test taste
             GuiModes(1);
@@ -145,14 +141,11 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           case KeyEvent.VK_D  :                     //test taste
             GuiModes(4);
             break;
-          case KeyEvent.VK_R  :                    //test taste
-          if (manager.simReady()) {
-            guiManager.startSim();          
-          }
+          case KeyEvent.VK_R  :                     //test taste
+            guiManager.startSimulation();
             break;
           default: 
         }
-      }
       /* 
       if(47 < e.getKeyCode() && e.getKeyCode() < 58) {
         int zahl = (int)(e.getKeyCode()-38);    
