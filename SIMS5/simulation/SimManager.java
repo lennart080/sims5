@@ -6,11 +6,10 @@ import java.util.List;
 import SIMS5.calculator.Calculator;
 import SIMS5.gui.GuiManager;
 
-public class SimManager implements Runnable {
+public class SimManager {
   private GuiManager guiManager;
   private SimulationData simData;
 
-  private Thread simThread;
 
   private int robotsPerRound;
   private int round = 0;
@@ -30,16 +29,8 @@ public class SimManager implements Runnable {
 
   }
 
-  public void startThread() {
-    simThread = new Thread(this);
-    simThread.start();
-  }
-
-  @Override
-  public void run() {
-    simulationSize = guiManager.getSimulationSize();
+  public void setSimulation() {     
     simData = new SimulationData(guiManager.getSeed());
-    startRound();
     while (true) {
       long startTime, endTime, elapsedTime;
       startTime = System.nanoTime();
@@ -55,7 +46,7 @@ public class SimManager implements Runnable {
 
       endTime = System.nanoTime();
       elapsedTime = (endTime - startTime);
-      long remainingTime = (((programmSpeed*dayLengthRealTimeInMin)*1000000)/60) - elapsedTime;
+      long remainingTime = (((programmSpeed*dayLengthRealTimeInMin)*1000000)/60)  /* - elapsedTime */;
       if (remainingTime > 0) {
         try {
           Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
@@ -64,6 +55,11 @@ public class SimManager implements Runnable {
         }
       }
     }
+  }
+
+  public void startSimulation() {
+    simulationSize = guiManager.getSimulationSize(); 
+    startRound();
   }
 
   //---------------set------------------
@@ -129,6 +125,9 @@ public class SimManager implements Runnable {
         }
       }
     }
+    updates = 0;
+    time = 0;
+    day = 0;
     round++;       
   }
 

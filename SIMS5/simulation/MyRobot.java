@@ -84,7 +84,7 @@ public class MyRobot {
     }
     if (statistics[6] > 0.0) {
       if (statistics[0] > 0.0) {
-        statistics[0] = Calculator.roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 1);
+        statistics[0] = Calculator.roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 2);
         if (statistics[0] < 0.0) {
           statistics[0] = 0.0;
         }

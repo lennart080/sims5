@@ -1,7 +1,5 @@
 package SIMS5.gui;
 
-import java.util.concurrent.Semaphore;
-
 import javax.swing.SwingUtilities;
 
 import SIMS5.calculator.Calculator;
@@ -14,7 +12,6 @@ public class GuiManager {
   private MyPanelGraphs graphPanel;
   private MyPanelRobotData robotDataPanel;
 
-  private boolean graphicMode;
   private int startSeed;
   private int basePrice;
   private double[] startStatistics = new double[9];
@@ -26,28 +23,16 @@ public class GuiManager {
 
   public GuiManager() {
     //----erstellen der graphic elemente----
-    Semaphore initialisationSemaphore = new Semaphore(0);
     SwingUtilities.invokeLater(() -> {;                     
       simulationPanel = new MyPanelSimulation();
       dataPanel = new MyPanelData();
       graphPanel = new MyPanelGraphs();
       robotDataPanel = new MyPanelRobotData();
       screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel);
-      initialisationSemaphore.release();
     });
-    try {
-      initialisationSemaphore.acquire();
-    } catch (Exception e) {
-      Thread.currentThread().interrupt();
-      System.out.println("initialisation failed");
-    }
     //-------------------------------------
 
-    //-----------user sets data------------
-    setSeed(54674);
-    setBasePrice(10);
-    setSollFps(20);
-    setGraphicMode(true);
+    //--------default data gets set--------
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
     startStatistics[0] = 100.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
@@ -69,7 +54,19 @@ public class GuiManager {
     //------------------------------------
   }
 
-  public void myRun() {
+  public void startGui() {
+    setUserInputs();
+    //startSimulation();
+    runGui();
+  }
+
+  public void setUserInputs() {
+    setSeed(54674);
+    setBasePrice(10);
+    setSollFps(20);
+  }
+
+  public void runGui() {
     while (true) {
       long startTime, endTime, elapsedTime;
       startTime = System.nanoTime();
@@ -91,20 +88,13 @@ public class GuiManager {
 
   public void startSimulation() {
     Calculator.setSeed(startSeed);
-    simManager.startThread();
-    if (graphicMode == true) {
-      myRun();
-    }
+    simManager.startSimulation();
   }
 
   //---------------set----------------
   public void setSimManager(SimManager pSimManager) {
     simManager = pSimManager;
-    simManager.setRobotsPerRound(20);
-  }
-
-  public void setGraphicMode(boolean trueOrFalse) {
-    graphicMode = trueOrFalse;
+    simManager.setRobotsPerRound(100);
   }
 
   public void setSeed(int pSeed) {  
@@ -134,7 +124,10 @@ public class GuiManager {
   }
 
   public int getSimulationSize() {
-    return screen.getSimulationSize();
+    if (screen != null) {
+      return screen.getSimulationSize();      
+    } 
+    return -1;
   }
 
   public int getBasePrice() {
@@ -159,17 +152,19 @@ public class GuiManager {
     fpsCounter++;
   }
 
-  private void updateGui() {           
-    simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime());  
-    dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
-    graphPanel.myUpdate(simManager.getLightIntensityAtTime());
-    if (simManager.getRobots().size() != 0) {
-      simulationPanel.roboUpdate(simManager.getRobots()); 
-      robotDataPanel.myUpdate(simManager.getRobots().get(0));
-    } else {
-      simulationPanel.roboUpdate(null);
+  private void updateGui() {  
+    if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null) {         
+      simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime());  
+      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
+      graphPanel.myUpdate(simManager.getLightIntensityAtTime());
+      if (simManager.getRobots().size() != 0) {
+        simulationPanel.roboUpdate(simManager.getRobots()); 
+        robotDataPanel.myUpdate(simManager.getRobots().get(0));
+      } else {
+        simulationPanel.roboUpdate(null);
+      }
+      fpsUpdate();
+      screen.repaintScreen();
     }
-    fpsUpdate();
-    screen.repaintScreen();
   }
 }

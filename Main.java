@@ -6,5 +6,19 @@ public class Main {
     SimManager simM = new SimManager();
     guiM.setSimManager(simM);
     simM.setGuiManager(guiM);
+
+    Thread simulationThread = new Thread(() -> {
+      System.out.println("trys new thread");
+      simM.setSimulation();
+      System.out.println("sim new thread");
+    });
+
+    simulationThread.start();
+
+    Thread guiThread = new Thread(() -> {
+      guiM.startGui();
+    });
+
+    guiThread.start();
   }
 }
