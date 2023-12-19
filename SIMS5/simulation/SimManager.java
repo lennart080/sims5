@@ -17,8 +17,7 @@ public class SimManager {
   private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
   private int time = 0;           //fictive zeiteinheit 60ze = 1tag
   private int day = 0;               //in game tag (relativ zur runde)
-  private int dayLengthRealTimeInMin = 2;
-  private int programmSpeed = 1;   // 1 = 2min day,  2 = 4min day...  
+  private int dayLengthRealTimeInSec = 60;  
 
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
@@ -32,7 +31,7 @@ public class SimManager {
   public void setSimulation() {     
     simData = new SimulationData(guiManager.getSeed());
     while (true) {
-      long startTime, endTime, elapsedTime;
+      long startTime, elapsedTime;
       startTime = System.nanoTime();
 
       this.simulateData(time);
@@ -44,9 +43,10 @@ public class SimManager {
         day++;
       }
 
-      endTime = System.nanoTime();
-      elapsedTime = (endTime - startTime);
-      long remainingTime = (((programmSpeed*dayLengthRealTimeInMin)*1000000)/60)  /* - elapsedTime */;
+      elapsedTime = (System.nanoTime() - startTime)/100;
+      long remainingTime = (long)Math.round((((double)dayLengthRealTimeInSec/60)*1000000)/60) - elapsedTime;
+      System.out.println(remainingTime + " rt");
+      System.out.println(elapsedTime + " et");
       if (remainingTime > 0) {
         try {
           Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
@@ -101,8 +101,8 @@ public class SimManager {
     return updates;
   }
 
-  public int getProgrammSpeed() {
-    return programmSpeed;
+  public int getDayLengthRealTimeInSec() {
+    return dayLengthRealTimeInSec;
   }
 
   public double getLightIntensityAtTime() {
