@@ -25,11 +25,10 @@ public class SimManager {
   private double[][] fieldInfos = new double[4][3];
 
   public SimManager() {
-
+    simData = new SimulationData();
   }
 
-  public void setSimulation() {     
-    simData = new SimulationData(guiManager.getSeed());
+  public void startSim() {     
     while (true) {
       long startTime, elapsedTime;
       startTime = System.nanoTime();
@@ -57,7 +56,11 @@ public class SimManager {
 
   public void startSimulation() {
     simulationSize = guiManager.getSimulationSize(); 
-    startRound();
+    Thread simulationThread = new Thread(() -> {
+      startRounds();
+      startSim();
+    });
+    simulationThread.start();
   }
 
   //---------------set------------------
@@ -71,6 +74,14 @@ public class SimManager {
 
   public void setGuiManager(GuiManager gm) {
     guiManager = gm;
+  }
+
+  public void setSeed(int pSeed) {  
+    if (pSeed >= 1) {
+      simData.newNoise(pSeed);
+    } else {
+      simData.newNoise(1);
+    } 
   }
   //------------------------------------
 
@@ -111,7 +122,7 @@ public class SimManager {
   }
   //-----------------------------------
 
-  private void startRound() {
+  private void startRounds() {
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
         newRobot(newRandomPos(), -1);
@@ -170,7 +181,7 @@ public class SimManager {
       }   
     }
     if (robots.size() <= 0) {
-      startRound();
+      startRounds();
     }
   }
 

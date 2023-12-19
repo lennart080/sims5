@@ -56,18 +56,6 @@ public class GuiManager {
     //------------------------------------
   }
 
-  public void startGui() {
-    setUserInputs();
-    //startSimulation();
-    runGui();
-  }
-
-  public void setUserInputs() {
-    setSeed(54674);
-    setBasePrice(10);
-    setSollFps(20);
-  }
-
   public void runGui() {
     while (true) {
       long startTime, endTime, elapsedTime;
@@ -89,7 +77,12 @@ public class GuiManager {
   }
 
   public void startSimulation() {
+    setSeed(54674);
+    setBasePrice(10);
+    setSollFps(20);
     Calculator.setSeed(startSeed);
+    simManager.setSeed(startSeed);
+    runGui();
     simManager.startSimulation();
   }
 

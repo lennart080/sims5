@@ -2,23 +2,9 @@ import SIMS5.gui.GuiManager;
 import SIMS5.simulation.SimManager;
 public class Main {
   public static void main(String[] args) {
-    GuiManager guiM = new GuiManager();
     SimManager simM = new SimManager();
+    GuiManager guiM = new GuiManager();
     guiM.setSimManager(simM);
     simM.setGuiManager(guiM);
-
-    Thread simulationThread = new Thread(() -> {
-      System.out.println("trys new thread");
-      simM.setSimulation();
-      System.out.println("sim new thread");
-    });
-
-    simulationThread.start();
-
-    Thread guiThread = new Thread(() -> {
-      guiM.startGui();
-    });
-
-    guiThread.start();
   }
 }

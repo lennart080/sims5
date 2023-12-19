@@ -8,14 +8,12 @@ public class SimulationData {
   private double noiseStrength;
   private int seed;
 
-  public SimulationData(int startSeed) {              //generirien und laden des simulations umfelds
-    setSeed(startSeed);
+  public SimulationData() {              //generirien und laden des simulations umfelds
     setNoiseStrength(0.4);
     setDayStart(7.0);
     setDayEnd(20.0);
     setNoiseAmplitude(100.0);
     setLightIntensity(100.0);
-    noise = new PerlinNoise(seed);
   }
   
   //set methoden der simulation daten
@@ -46,7 +44,12 @@ public class SimulationData {
     } 
   }
   
-  public void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
+  public void newNoise(int pSeed) {
+    setSeed(pSeed);
+    noise = new PerlinNoise(seed);
+  }
+
+  private void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
     if (pSeed >= 1) {
       seed = pSeed;
     } else {

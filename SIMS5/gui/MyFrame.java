@@ -17,6 +17,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
+  private int guiMode;
   
   public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp, MyPanelInput ip) {
     simulationPanel = sp;
@@ -70,6 +71,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   }
   
   private void GuiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
+    guiMode = mode;
     myRemove(simulationPanel);
     myRemove(dataPanel);
     myRemove(graphPanel);
@@ -138,24 +140,28 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
     @Override
     public void keyPressed(KeyEvent e) {
-        switch (e.getKeyCode()) {
-          case KeyEvent.VK_A  :                         //test taste
-            GuiModes(1);
-            break;
-          case KeyEvent.VK_S  :              //test taste
-            GuiModes(2);
-            break;
-          case KeyEvent.VK_W  :                   //test taste
-            GuiModes(3);
-            break;
-          case KeyEvent.VK_D  :                     //test taste
-            GuiModes(4);
-            break;
-          case KeyEvent.VK_R  :                     //test taste
-            guiManager.startSimulation();
-            break;
-          default: 
+      if (guiMode == 5) {
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+          GuiModes(4);
+          guiManager.startSimulation();
         }
+      } else {
+        switch (e.getKeyCode()) {
+        case KeyEvent.VK_A  :                         //test taste
+          GuiModes(1);
+          break;
+        case KeyEvent.VK_S  :              //test taste
+          GuiModes(2);
+          break;
+        case KeyEvent.VK_W  :                   //test taste
+          GuiModes(3);
+          break;
+        case KeyEvent.VK_D  :                     //test taste
+          GuiModes(4);
+          break;
+        default: 
+        }
+      }
       /* 
       if(47 < e.getKeyCode() && e.getKeyCode() < 58) {
         int zahl = (int)(e.getKeyCode()-38);    
