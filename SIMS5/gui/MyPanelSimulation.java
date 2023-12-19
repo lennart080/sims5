@@ -8,9 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 public class MyPanelSimulation extends JPanel {         //graphic classe der simulation
-  private int zahl;
-  private int zahl2;
-  private int zahl3;
+  private int updates;
+  private int time;
+  private int day;
+  private long realTimeSinceStart;
   private long start;
 
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -28,9 +29,10 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     Graphics2D g2D = (Graphics2D) g;
     g2D.setPaint(Color.BLUE);
     g2D.drawString("Simulation-Panel", 20, 40);
-    g2D.drawString("" + zahl, 20, 60);
-    g2D.drawString("" + zahl2, 20, 80);
-    g2D.drawString("" + zahl3, 20, 100);
+    g2D.drawString("Updates: " + updates, 20, 60);
+    g2D.drawString("Time: " + time, 20, 80);
+    g2D.drawString("Day: " + day, 20, 100);
+    g2D.drawString("Real_Time_Since_Start: " + realTimeSinceStart, 20, 120);
     //-------test--------
     if (robots != null && robots.size() != 0) {
       for (int i = 0; i < robots.size(); i++) {
@@ -51,10 +53,11 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     //-------------------
   }
   
-  public void myUpdate(int pz, int pg) {                 //aktualisiren der daten
-    zahl = pz;
-    zahl2 = pg;
-    zahl3 = (int)((System.currentTimeMillis()-start)/1000);
+  public void myUpdate(int pUpdates, int pTime, int pDay) {                 //aktualisiren der daten
+    updates = pUpdates;
+    time = pTime;
+    day = pDay;
+    realTimeSinceStart = (int)((System.currentTimeMillis()-start)/1000);
   }
 
   public void roboUpdate(List<MyRobot> pRobots) {               //test

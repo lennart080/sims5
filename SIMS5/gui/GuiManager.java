@@ -11,6 +11,7 @@ public class GuiManager {
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
   private MyPanelRobotData robotDataPanel;
+  private MyPanelInput inputPanel;
 
   private int startSeed;
   private int basePrice;
@@ -28,7 +29,8 @@ public class GuiManager {
       dataPanel = new MyPanelData();
       graphPanel = new MyPanelGraphs();
       robotDataPanel = new MyPanelRobotData();
-      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel);
+      inputPanel = new MyPanelInput();
+      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel, inputPanel);
     });
     //-------------------------------------
 
@@ -153,10 +155,11 @@ public class GuiManager {
   }
 
   private void updateGui() {  
-    if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null) {         
-      simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime());  
+    if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
+      simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime(), simManager.getDay());  
       dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
       graphPanel.myUpdate(simManager.getLightIntensityAtTime());
+      inputPanel.myUpdate();
       if (simManager.getRobots().size() != 0) {
         simulationPanel.roboUpdate(simManager.getRobots()); 
         robotDataPanel.myUpdate(simManager.getRobots().get(0));

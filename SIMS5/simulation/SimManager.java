@@ -38,15 +38,13 @@ public class SimManager {
       updates++;
       if (updates % 60 == 0) {
         time++;
+        if (time % 60 == 0) {
+          day++;        
       }
-      if (time % 60 == 0) {
-        day++;
       }
 
       elapsedTime = (System.nanoTime() - startTime)/100;
       long remainingTime = (long)Math.round((((double)dayLengthRealTimeInSec/60)*1000000)/60) - elapsedTime;
-      System.out.println(remainingTime + " rt");
-      System.out.println(elapsedTime + " et");
       if (remainingTime > 0) {
         try {
           Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       

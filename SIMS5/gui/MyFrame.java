@@ -13,23 +13,25 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
   private MyPanelRobotData robotDataPanel;
+  private MyPanelInput inputPanel;
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
   
-  public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp) {
+  public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp, MyPanelInput ip) {
     simulationPanel = sp;
     dataPanel = dp;
     graphPanel = gp;
     guiManager = gm;
     robotDataPanel = rdp;
+    inputPanel = ip;
 
     this.setTitle("SIMS5");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setUndecorated(true);
     this.setResizable(false);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    GuiModes(1);
+    GuiModes(5);
     this.setLayout(null);
     this.addKeyListener(new MyKeyListener());
     this.setVisible(true);
@@ -72,6 +74,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     myRemove(dataPanel);
     myRemove(graphPanel);
     myRemove(robotDataPanel);
+    myRemove(inputPanel);
     switch (mode) {
       case 1 :                      
         myAdd(dataPanel);  
@@ -105,6 +108,10 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         graphPanel.setBounds(300, 0, screenWidth-300, 200);
         simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
         break;
+      case 5 :
+        myAdd(inputPanel);
+        inputPanel.setBounds(0, 0, screenWidth, screenHeight);
+        break;
       default:   
     }
     revalidate();
@@ -122,6 +129,9 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     }
     if (this.getContentPane().isAncestorOf(robotDataPanel)) {
       robotDataPanel.repaint();
+    }
+    if (this.getContentPane().isAncestorOf(inputPanel)) {
+      inputPanel.repaint();
     }
   }
   
