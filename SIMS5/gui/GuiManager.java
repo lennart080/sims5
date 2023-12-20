@@ -82,8 +82,11 @@ public class GuiManager {
     setSollFps(20);
     Calculator.setSeed(startSeed);
     simManager.setSeed(startSeed);
-    runGui();
     simManager.startSimulation();
+    Thread guiThread = new Thread(() -> {
+      runGui();
+    });
+    guiThread.start();
   }
 
   //---------------set----------------
