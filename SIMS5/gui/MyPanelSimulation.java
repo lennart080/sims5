@@ -36,6 +36,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     //-------test--------
     if (robots != null && robots.size() != 0) {
       for (int i = 0; i < robots.size(); i++) {
+        try {
         int x = Calculator.normaliseValue(robots.get(i).getPositions()[robots.get(i).getPositions().length-1][0], screenWidth, this.getWidth());
         int y = Calculator.normaliseValue(robots.get(i).getPositions()[robots.get(i).getPositions().length-1][1], screenHeight, this.getHeight());
         g2D.drawString("ROBO_" + robots.get(i).getSerialNumber(), x, y);
@@ -47,7 +48,9 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         g2D.drawString("DEFENCE_" + robots.get(i).getStatistics()[5], x, y+120);
         g2D.drawString("HEALTH_" + robots.get(i).getStatistics()[6], x, y+140);
         g2D.drawString("RUST_" + robots.get(i).getStatistics()[7], x, y+160);
-        g2D.drawString("SOLAR_" + robots.get(i).getStatistics()[8], x, y+180);
+        g2D.drawString("SOLAR_" + robots.get(i).getStatistics()[8], x, y+180);         
+        } catch (Exception e) {
+        }
       }
     }
     //-------------------

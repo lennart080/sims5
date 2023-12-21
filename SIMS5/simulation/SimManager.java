@@ -116,7 +116,7 @@ public class SimManager {
 
   public double getLightIntensityAtTime() {
     if (simData != null) {
-      return simData.getLightIntensityAtTime(time);   
+      return simData.getLightIntensityAtTime(updates);   
     }
     return 0.0;
   }

@@ -36,7 +36,7 @@ public class GuiManager {
 
     //--------default data gets set--------
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
-    startStatistics[0] = 100.0;
+    startStatistics[0] = 1000.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
     startStatistics[1] = 100.0;
     //attack                        schaden welcher pro atacke zugerichtet wird

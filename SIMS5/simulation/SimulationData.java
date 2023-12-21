@@ -1,38 +1,25 @@
 package SIMS5.simulation;
+
 public class SimulationData {
   private PerlinNoise noise;
-  private double dayStart;
-  private double dayEnd;
+  private double lightTime;
   private double lightIntensity;
-  private double noiseAmplitude;
   private double noiseStrength;
+  private double noiseSize;
   private int seed;
 
-  public SimulationData() {              //generirien und laden des simulations umfelds
-    setNoiseStrength(0.4);
-    setDayStart(7.0);
-    setDayEnd(20.0);
-    setNoiseAmplitude(100.0);
-    setLightIntensity(100.0);
-  }
-  
-  //set methoden der simulation daten
-
-  public void setDayStart(double pDayStart) {
-    dayStart = 7.0;
-    if (23.99 > pDayStart && pDayStart >= 0.0) {
-      if (dayEnd > pDayStart || dayEnd == 0.0) {
-        dayStart = pDayStart;
-      } 
-    } 
+  public SimulationData() {        
+    setNoiseStrength(0.02);
+    setLightTime(40);
+    setLightIntensity(80.0);
+    noiseSize = 0.03;
   }
 
-  public void setDayEnd(double pDayEnd) {
-    dayEnd = 20.0;
-    if (24.0 >= pDayEnd && pDayEnd > 0.1) {
-      if (dayStart < pDayEnd) {
-        dayEnd = pDayEnd;     
-      } 
+  public void setLightTime(int lightTimeOf60) {
+    if (60 > lightTimeOf60 && lightTimeOf60 > 0) {
+        lightTime = lightTimeOf60*60;
+    } else {
+      lightTime = 40*60;
     }
   }
   
@@ -50,25 +37,19 @@ public class SimulationData {
   }
 
   private void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
-    if (pSeed >= 1) {
+    if (pSeed > 1) {
       seed = pSeed;
     } else {
       seed = 1;
     } 
   }
 
-  public void setNoiseStrength(double waight) {
-    if (waight > 0 && waight < 1) {
-      noiseStrength = waight;
-    }
-  }
-  
-  public void setNoiseAmplitude(double pNoiseAmplitude) {             //setzen der schwankungen mit der zeit der stärke des lichts 
-    if (pNoiseAmplitude > 0.0) {
-      noiseAmplitude = pNoiseAmplitude;
+  public void setNoiseStrength(double weight) {
+    if (weight > 0) {
+      noiseStrength = weight;
     } else {
-      noiseAmplitude = 0.1;
-    } 
+      noiseStrength = 0.0;
+    }
   }
 
   public int getMaxPermute() {
@@ -79,10 +60,6 @@ public class SimulationData {
 
   public double getLightIntensity() {
     return lightIntensity;
-  }
-  
-  public double getNoiseAmplitude() {
-    return noiseAmplitude;
   }
   
   public int getSeed() {
@@ -98,29 +75,15 @@ public class SimulationData {
   }
   
   public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit
-    double perlinTime = ((double)pTime / 86400.0);
-    double time;
-    if (perlinTime == (int)perlinTime && perlinTime != 0.0) {
-      time = 1.0;
-    } else {
-      time = perlinTime - (int)perlinTime;
-    }
-    if ((time) > (dayStart/24.0) && (time) < (dayEnd/24.0)) {
-      
-      double w = this.getNoiseStrength();
-      double fx = Math.cos(time*Math.PI*(24.0/(dayEnd-dayStart)))*(-1);
-      double gx = noise.getPerlinNoise((perlinTime)*noiseAmplitude);
-      if (((gx*w)+(fx*(1-w))*lightIntensity) > 0.0) {
-      return (gx*w)+(fx*(1-w))*lightIntensity;
-      }
-    }
+    double time = pTime;
+    if ((time % 3600.0) <= lightTime) {
+      double gx = noise.getPerlinNoise(time/(noiseSize*noise.getTableSize()))*noiseStrength;
+      double fx = 0.0;
+      fx = Math.sin(((time % 3600.0)*Math.PI)/lightTime);
+      double noiseFade = (1 - Math.abs(((time % 3600.0)/lightTime)-0.5)*2)/2;
+      return ((gx*noiseFade*2)+fx)*lightIntensity;
+    } 
     return 0.0;
-  }
-
-  public void Write() {                //comadline augabe zu testzweken der überprüfung von generirten funktionen
-    for (int x = 0; x < noise.getpermut().length; x++) {
-      System.out.println(x + ": " + noise.getpermut()[x]);
-    }
   }
 
   //klasse und methoden zur erstellung des 1d perlin noise
@@ -188,6 +151,10 @@ public class SimulationData {
 
     public int getMaxPermute() {
       return maxPermute;
+    }
+
+    public int getTableSize() {
+      return TABLE_SIZE;
     }
   }
 }
