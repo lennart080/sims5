@@ -32,7 +32,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     this.setUndecorated(true);
     this.setResizable(false);
     this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    GuiModes(5);
+    guiModes(5);
     this.setLayout(null);
     this.addKeyListener(new MyKeyListener());
     this.setVisible(true);
@@ -70,7 +70,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     }
   }
   
-  private void GuiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
+  private void guiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
     guiMode = mode;
     myRemove(simulationPanel);
     myRemove(dataPanel);
@@ -97,7 +97,8 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         myAdd(graphPanel);
         
         simulationPanel.setBounds(0, 200, screenWidth, screenHeight-200);
-        graphPanel.setBounds(0, 0, screenWidth, 200);    
+        graphPanel.setBounds(0, 0, screenWidth, 200);  
+        graphPanel.updateMySize();  
         break;
       case 4 :               
         myAdd(simulationPanel);
@@ -108,6 +109,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         dataPanel.setBounds(0,0,300,screenHeight/2);
         robotDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
         graphPanel.setBounds(300, 0, screenWidth-300, 200);
+        graphPanel.updateMySize();
         simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
         break;
       case 5 :
@@ -142,22 +144,22 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     public void keyPressed(KeyEvent e) {
       if (guiMode == 5) {
         if (e.getKeyCode() == KeyEvent.VK_R) {
-          GuiModes(4);
+          guiModes(4);
           guiManager.startSimulation();
         }
       } else {
         switch (e.getKeyCode()) {
         case KeyEvent.VK_A  :                         //test taste
-          GuiModes(1);
+          guiModes(1);
           break;
         case KeyEvent.VK_S  :              //test taste
-          GuiModes(2);
+          guiModes(2);
           break;
         case KeyEvent.VK_W  :                   //test taste
-          GuiModes(3);
+          guiModes(3);
           break;
         case KeyEvent.VK_D  :                     //test taste
-          GuiModes(4);
+          guiModes(4);
           break;
         default: 
         }

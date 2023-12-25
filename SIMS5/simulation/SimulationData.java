@@ -11,69 +11,15 @@ public class SimulationData {
   public SimulationData() {        
     setNoiseStrength(0.02);
     setLightTime(40);
-    setLightIntensity(80.0);
-    noiseSize = 0.03;
+    setLightIntensity(10.0);
+    setNoiseSize(0.03);
   }
 
-  public void setLightTime(int lightTimeOf60) {
-    if (60 > lightTimeOf60 && lightTimeOf60 > 0) {
-        lightTime = lightTimeOf60*60;
-    } else {
-      lightTime = 40*60;
-    }
-  }
-  
-  public void setLightIntensity(double intensity) {            //setzen der licht stärke in der simulation
-    if (intensity >= 0) {
-      lightIntensity = intensity;  
-    } else {
-      lightIntensity = 0;
-    } 
-  }
-  
-  public void newNoise(int pSeed) {
+  public void newNoise(int pSeed) {  //noise objekt wird erstellt
     setSeed(pSeed);
     noise = new PerlinNoise(seed);
   }
 
-  private void setSeed(int pSeed) {              //setzen des seed welcher zb. für die zufällichkeit der simulation sorgt
-    if (pSeed > 1) {
-      seed = pSeed;
-    } else {
-      seed = 1;
-    } 
-  }
-
-  public void setNoiseStrength(double weight) {
-    if (weight > 0) {
-      noiseStrength = weight;
-    } else {
-      noiseStrength = 0.0;
-    }
-  }
-
-  public int getMaxPermute() {
-    return noise.getMaxPermute();
-  }
-  
-  //get methoden der simulation daten
-
-  public double getLightIntensity() {
-    return lightIntensity;
-  }
-  
-  public int getSeed() {
-    return seed;
-  }
-
-  public double getNoiseStrength() {
-    return noiseStrength;
-  }
-
-  public int[] getPermut() {
-    return noise.getpermut();
-  }
-  
   public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit
     double time = pTime;
     if ((time % 3600.0) <= lightTime) {
@@ -86,7 +32,97 @@ public class SimulationData {
     return 0.0;
   }
 
-  //klasse und methoden zur erstellung des 1d perlin noise
+  //--------------set---------------
+
+  public void setNoiseSize(double size) {  //je kleiner deszo schneller werden die schwingungen des Noise
+    if (size > 0) {
+      if (size < 0.5) {
+        noiseSize = size;
+      } else {
+        noiseSize = 0.5;
+      }
+    } else {
+      noiseSize = 0.01;
+    }
+  }
+
+  public void setLightTime(int lightTimeOf60) {  // wie lange die sonne pro tag scheint 
+    if (lightTimeOf60 > 0) {
+        if (lightTimeOf60 < 60) {
+          lightTime = lightTimeOf60*60;          
+        } else {
+          lightTime = 59*60;
+        }
+    } else {
+      lightTime = 1*60;
+    }
+  }
+  
+  public void setLightIntensity(double intensity) {            // wie stark das licht scheint
+    if (intensity > 0) {
+      if (intensity < 10) {
+        lightIntensity = intensity;        
+      } else {
+        lightIntensity = 10; 
+      }
+    } else {
+      lightIntensity = 1;
+    } 
+  }
+
+  private void setSeed(int pSeed) {    // setzt den seed
+    if (pSeed > 0) {
+      seed = pSeed;
+    } else {
+      seed = 1;
+    } 
+  }
+
+  public void setNoiseStrength(double weight) {  // wie starke schwankungen das Noise haben soll
+    if (weight > 0) {
+      if (weight < 0.1) {
+        noiseStrength = weight;      
+      } else {
+        noiseStrength = 0.1;
+      }
+    } else {
+      noiseStrength = 0.0;
+    }
+  }
+
+  //-----------------------------
+  
+  //------------get--------------
+
+  public double getMaxLight() {
+    return (noiseStrength + 1.1)*lightIntensity;
+  }
+
+  public int getMaxPermute() {
+    return noise.getMaxPermute();
+  }
+
+  public double getLightIntensity() {
+    return lightIntensity;
+  }
+  
+  public int getSeed() {
+    return seed;
+  }
+
+  public double getNoiseSize() {
+    return noiseSize;
+  }
+
+  public double getNoiseStrength() {
+    return noiseStrength;
+  }
+
+  public int[] getPermut() {
+    return noise.getpermut();
+  }
+
+  //-------------perlin---------------
   
   private static class PerlinNoise {
     private static final int TABLE_SIZE = 2048;          //bestimmt die rauschgöße des perlin noise
@@ -145,7 +181,9 @@ public class SimulationData {
       return lerp(u, grad(permutation[c], xf), grad(permutation[c + 1], xf - 1)) * 2; 
     }
 
-    public int[] getpermut() {            //übergabe des niose musters zu testzwecken
+    //-----------get------------
+
+    public int[] getpermut() {          
       return permutation;
     }
 

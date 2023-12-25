@@ -1,5 +1,8 @@
 package SIMS5.gui;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.swing.SwingUtilities;
 
 import SIMS5.calculator.Calculator;
@@ -22,6 +25,9 @@ public class GuiManager {
   private int sollFps;
   private int fps;
 
+  private int graphCounter = 0;
+  private List<Boolean> isGraphAlreadyBuffed = new ArrayList<>();
+
   public GuiManager() {
     //----erstellen der graphic elemente----
     SwingUtilities.invokeLater(() -> {;                     
@@ -36,7 +42,7 @@ public class GuiManager {
 
     //--------default data gets set--------
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
-    startStatistics[0] = 1000.0;
+    startStatistics[0] = 10000.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
     startStatistics[1] = 100.0;
     //attack                        schaden welcher pro atacke zugerichtet wird
@@ -82,6 +88,8 @@ public class GuiManager {
     setSollFps(20);
     Calculator.setSeed(startSeed);
     simManager.setSeed(startSeed);
+    graphPanel.start();
+    graphPanel.updateGraphSize((int)simManager.getMaxLight());
     simManager.startSimulation();
     Thread guiThread = new Thread(() -> {
       runGui();
@@ -92,7 +100,7 @@ public class GuiManager {
   //---------------set----------------
   public void setSimManager(SimManager pSimManager) {
     simManager = pSimManager;
-    simManager.setRobotsPerRound(100);
+    simManager.setRobotsPerRound(2);
   }
 
   public void setSeed(int pSeed) {  
@@ -154,7 +162,7 @@ public class GuiManager {
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
       simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime(), simManager.getDay());  
       dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
-      graphPanel.myUpdate(simManager.getLightIntensityAtTime());
+      graphUpdate();
       inputPanel.myUpdate();
       if (simManager.getRobots().size() != 0) {
         simulationPanel.roboUpdate(simManager.getRobots()); 
@@ -165,5 +173,18 @@ public class GuiManager {
       fpsUpdate();
       screen.repaintScreen();
     }
+  }
+
+  private void graphUpdate() {
+    if (isGraphAlreadyBuffed.size() == (int)((simManager.getUpdates()/graphPanel.getBuffedImageTime()))) {
+      double[] light = new double[graphPanel.getBuffedImageTime()];
+      for (int i = 0; i < light.length; i++) {
+        light[i] = simManager.getLightIntensityAtTime(i+((isGraphAlreadyBuffed.size()*graphPanel.getBuffedImageTime())+(graphPanel.getBuffedImageTime()/2)));
+      }
+      graphPanel.myUpdate(light, (isGraphAlreadyBuffed.size()*graphPanel.getBuffedImageTime())+(graphPanel.getBuffedImageTime()/2));
+      isGraphAlreadyBuffed.add(true);
+      System.out.println("buffed");
+    }   
+    graphPanel.setTime(simManager.getUpdates());
   }
 }

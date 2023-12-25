@@ -17,7 +17,7 @@ public class SimManager {
   private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
   private int time = 0;           //fictive zeiteinheit 60ze = 1tag
   private int day = 0;               //in game tag (relativ zur runde)
-  private int dayLengthRealTimeInSec = 60;  
+  private int dayLengthRealTimeInSec = 30;  
 
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
@@ -37,9 +37,12 @@ public class SimManager {
       updates++;
       if (updates % 60 == 0) {
         time++;
+        if (time >= 60) {
+          time = 0;
+        }
         if (time % 60 == 0) {
           day++;        
-      }
+        }
       }
 
       elapsedTime = (System.nanoTime() - startTime)/100;
@@ -86,6 +89,11 @@ public class SimManager {
   //------------------------------------
 
   //---------------get------------------
+
+  public double getMaxLight() {
+    return simData.getMaxLight();
+  }
+
   public int getRobotsPerRound() {
     return robotsPerRound;
   }
@@ -120,6 +128,14 @@ public class SimManager {
     }
     return 0.0;
   }
+
+  public double getLightIntensityAtTime(int pTime) {
+    if (simData != null) {
+      return simData.getLightIntensityAtTime(pTime);   
+    }
+    return 0.0;
+  }
+  
   //-----------------------------------
 
   private void startRounds() {
