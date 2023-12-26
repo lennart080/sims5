@@ -106,9 +106,9 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         myAdd(dataPanel);
         myAdd(robotDataPanel);
                 
-        dataPanel.setBounds(0,0,300,screenHeight/2);
+        dataPanel.setBounds(0,200,300,(screenHeight/2)-200);
         robotDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
-        graphPanel.setBounds(300, 0, screenWidth-300, 200);
+        graphPanel.setBounds(0, 0, screenWidth, 200);
         graphPanel.updateMySize();
         simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
         break;

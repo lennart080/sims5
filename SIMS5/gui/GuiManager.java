@@ -1,8 +1,5 @@
 package SIMS5.gui;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.swing.SwingUtilities;
 
 import SIMS5.calculator.Calculator;
@@ -25,8 +22,7 @@ public class GuiManager {
   private int sollFps;
   private int fps;
 
-  private int graphCounter = 0;
-  private List<Boolean> isGraphAlreadyBuffed = new ArrayList<>();
+  private int isGraphAlreadyBuffed = 0;
 
   public GuiManager() {
     //----erstellen der graphic elemente----
@@ -88,7 +84,14 @@ public class GuiManager {
     setSollFps(20);
     Calculator.setSeed(startSeed);
     simManager.setSeed(startSeed);
-    graphPanel.start();
+    double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
+    for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
+      double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
+      for (int j = 0; j < oneDayLight.length; j++) {
+        startLight[j+(3600*i)] = oneDayLight[j];
+      }
+    }
+    graphPanel.start(startLight);
     graphPanel.updateGraphSize((int)simManager.getMaxLight());
     simManager.startSimulation();
     Thread guiThread = new Thread(() -> {
@@ -176,14 +179,17 @@ public class GuiManager {
   }
 
   private void graphUpdate() {
-    if (isGraphAlreadyBuffed.size() == (int)((simManager.getUpdates()/graphPanel.getBuffedImageTime()))) {
-      double[] light = new double[graphPanel.getBuffedImageTime()];
-      for (int i = 0; i < light.length; i++) {
-        light[i] = simManager.getLightIntensityAtTime(i+((isGraphAlreadyBuffed.size()*graphPanel.getBuffedImageTime())+(graphPanel.getBuffedImageTime()/2)));
+    if (isGraphAlreadyBuffed == (int)((simManager.getUpdates()/(graphPanel.getDaysOnSlide()*3600)))) {
+      double[] light = new double[3600*graphPanel.getDaysOnSlide()];
+      for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
+        double[] oneDayLight = simManager.getLightOfDay((isGraphAlreadyBuffed*graphPanel.getDaysOnSlide())+i+((double)graphPanel.getDaysOnSlide()/2));
+        for (int j = 0; j < oneDayLight.length; j++) {
+          light[j+(3600*i)] = oneDayLight[j];
+        }
       }
-      graphPanel.myUpdate(light, (isGraphAlreadyBuffed.size()*graphPanel.getBuffedImageTime())+(graphPanel.getBuffedImageTime()/2));
-      isGraphAlreadyBuffed.add(true);
-      System.out.println("buffed");
+      graphPanel.myUpdate(light);
+
+      isGraphAlreadyBuffed++;
     }   
     graphPanel.setTime(simManager.getUpdates());
   }
