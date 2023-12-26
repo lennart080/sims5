@@ -98,7 +98,6 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         
         simulationPanel.setBounds(0, 200, screenWidth, screenHeight-200);
         graphPanel.setBounds(0, 0, screenWidth, 200);  
-        graphPanel.updateMySize();  
         break;
       case 4 :               
         myAdd(simulationPanel);
@@ -109,7 +108,6 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         dataPanel.setBounds(0,200,300,(screenHeight/2)-200);
         robotDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
         graphPanel.setBounds(0, 0, screenWidth, 200);
-        graphPanel.updateMySize();
         simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
         break;
       case 5 :

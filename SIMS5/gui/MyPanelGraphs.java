@@ -7,14 +7,14 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
-public class MyPanelGraphs extends JPanel {         //graphic classe der simulation
+public class MyPanelGraphs extends JPanel {      
   private List<Double> loadedLight = new ArrayList<>();
   private BufferedImage graphImage;
   private BufferedImage bufferdGraphImage;
   private BufferedImage coordinateSystem;
   private double maximumLight;
-  private int randGröße = 25;
-  private int daysOnSlide = 3;
+  private int randGröße;
+  private int daysOnSlide;
   private double updatesPerPixel;
   private int time;
   private int biWidth = 1800;
@@ -23,18 +23,19 @@ public class MyPanelGraphs extends JPanel {         //graphic classe der simulat
   private int startPosBufferdGraph;
   private double[] startLight;
   private boolean start = true;
+
   public MyPanelGraphs() {
     this.setBackground(Color.BLACK);
     repaint(); 
   }
   
   @Override
-  public void paint(Graphics g) {               //output methode(anzeigen der simulation)
+  public void paint(Graphics g) {             
     super.paint(g);
     Graphics2D g2D = (Graphics2D) g;
     g2D.setPaint(Color.GRAY);
     g2D.drawString("Graph-Panel", 20, 40);
-    if (bufferdGraphImage != null && graphImage != null) {
+    if (bufferdGraphImage != null && graphImage != null && coordinateSystem != null) {
       int graphImageXpos = (int)(startPosGraph+((-1)*((time % (graphImage.getWidth()*updatesPerPixel))/updatesPerPixel)));
       int bufferdGraphImageXpos = (int)(startPosBufferdGraph+((-1)*((time % (bufferdGraphImage.getWidth()*updatesPerPixel))/updatesPerPixel)));
       g2D.drawImage(coordinateSystem, startPosGraph, randGröße, null);
@@ -98,17 +99,38 @@ public class MyPanelGraphs extends JPanel {         //graphic classe der simulat
     }
   }
 
+  //----------set-----------
+
+  //intern
   public void setTime(int pTime) {
     time = pTime;
   }
 
-  public void updateGraphSize(int maxLight) {
+  public void setGraphSizeY(int maxLight) {
     maximumLight = maxLight;
   } 
+  //------
 
-  public void updateMySize() {
-    updatesPerPixel = 1/(biWidth/(3600.0*(double)daysOnSlide));   
+  public void setRandgröße(int pRandGröße) {
+    if (pRandGröße > 0) {
+      randGröße = pRandGröße;      
+    } else {
+      randGröße = 0;
+    }
   }
+
+  public void setDaysOnSlide(int pDaysOnSlide) {
+    if (pDaysOnSlide > 1) {
+      daysOnSlide = pDaysOnSlide;
+    } else {
+      daysOnSlide = 1;
+    }
+    updatesPerPixel = 1/(biWidth/(3600.0*(double)daysOnSlide));
+  }
+
+  //------------------------
+
+  //----------get-----------
 
   public int getDaysOnSlide() {
     return daysOnSlide;

@@ -1,5 +1,4 @@
 package SIMS5.simulation;
-import SIMS5.calculator.Calculator;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -64,6 +63,10 @@ public class MyRobot {
     setOutputs();
   }
 
+  public double roundToDecPlaces(double value, int decPlaces) {
+    return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
+  }
+
   private void updateStatistics() {
     int x = 0;
     boolean posWechsel = false;
@@ -75,21 +78,21 @@ public class MyRobot {
     } while (position.size() > x+2);
     if (posWechsel == false) {
       if (position.get(position.size()-1) == position.get(position.size()-2)) {
-        statistics[7] = Calculator.roundToDecPlaces(statistics[7]+0.02, 2);
+        statistics[7] = roundToDecPlaces(statistics[7]+0.02, 2);
       }
     } else {
       if (statistics[7] > 0.0) {
-        statistics[7] = Calculator.roundToDecPlaces(statistics[7]-0.02, 2);
+        statistics[7] = roundToDecPlaces(statistics[7]-0.02, 2);
       }
     }
     if (statistics[6] > 0.0) {
       if (statistics[0] > 0.0) {
-        statistics[0] = Calculator.roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 2);
+        statistics[0] = roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 2);
         if (statistics[0] < 0.0) {
           statistics[0] = 0.0;
         }
       } else {
-        statistics[6] = Calculator.roundToDecPlaces(statistics[6]-0.1, 1);
+        statistics[6] = roundToDecPlaces(statistics[6]-0.1, 1);
         if (statistics[6] < 0.0) {
           statistics[6] = 0.0;
         }
@@ -120,7 +123,7 @@ public class MyRobot {
         for (int j2 = 0; j2 < neurons[i-1].length; j2++) {
           neurons[i][j] += neurons[i-1][j2] * weigths[i-1][j2][j];
         }
-        neurons[i][j] = Calculator.sigmoid(neurons[i][j]);
+        neurons[i][j] = roundToDecPlaces(1 / (1 + Math.pow(2.71, -(neurons[i][j]))), 3);
       }
     }
   }
@@ -129,7 +132,7 @@ public class MyRobot {
     int outputNeuronPos = 0;
     int highestPosneuron = -1;
     double highestPos = 0;
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 4; i++) {
       if (neurons[neurons.length-1][outputNeuronPos] > highestPos) {
         highestPos = neurons[neurons.length-1][outputNeuronPos];
         if (highestPos > 0.5) {
@@ -142,72 +145,69 @@ public class MyRobot {
     switch (highestPosneuron) {
       case 0:
         pos[0] = position.get(position.size()-1)[0];
-        pos[1] = position.get(position.size()-1)[1]+1;
+        pos[1] = position.get(position.size()-1)[1]+(int)statistics[4];
         position.add(pos);
         position.remove(0);       
         break;
       case 1:
-        pos[0] = position.get(position.size()-1)[0]+1;
+        pos[0] = position.get(position.size()-1)[0]+(int)statistics[4];
         pos[1] = position.get(position.size()-1)[1];
         position.add(pos);   
         position.remove(0);    
         break;
       case 2:
         pos[0] = position.get(position.size()-1)[0];
-        pos[1] = position.get(position.size()-1)[1]-1;
+        pos[1] = position.get(position.size()-1)[1]-(int)statistics[4];
         position.add(pos);      
         position.remove(0); 
         break;
       case 3:
-        pos[0] = position.get(position.size()-1)[0]-1;
+        pos[0] = position.get(position.size()-1)[0]-(int)statistics[4];
         pos[1] = position.get(position.size()-1)[1];
         position.add(pos);
         position.remove(0);        
         break;
       default:
         break;
-    }  
-    /* 
+    }   
     for (int i = 0; i < 5; i++) {
-      if (neurons[neurons.length-1][outputNeuronPos] > 0.4) {
+      if (neurons[neurons.length-1][outputNeuronPos] >= 0.5) {
         switch (i){
-          case  0:
-            if (manager.getBasePrice() + ((int)statistics[2]*2) < statistics[0]) {
-              statistics[0]-= manager.getBasePrice() + ((int)statistics[2]*2);
+          case  0:     //atk
+            if (manager.getBasePrice()[0] + ((int)statistics[2]*2) < statistics[1]) {
+              statistics[1]-= manager.getBasePrice()[0] + ((int)statistics[2]*2);
               statistics[2] += 1;             
             }
             break;
-          case  1:
-            if (manager.getBasePrice() + ((int)statistics[3]*2) < statistics[0]) {
-              statistics[0]-= manager.getBasePrice() + ((int)statistics[3]*2);
-              statistics[3] += 1;             
+          case  1:     //energie speicher
+            if (manager.getBasePrice()[1] + ((int)statistics[3]*2) < statistics[1]) {
+              statistics[1]-= manager.getBasePrice()[1] + ((int)statistics[3]*2);
+              statistics[3] += 10;             
             }
             break;
-          case  2:
-            if (manager.getBasePrice() + ((int)statistics[4]*2) < statistics[0]) {
-              statistics[0]-= manager.getBasePrice() + ((int)statistics[4]*2);
+          case  2:     //speed
+            if (manager.getBasePrice()[2] + ((int)statistics[4]*2) < statistics[1]) {
+              statistics[1]-= manager.getBasePrice()[2] + ((int)statistics[4]*2);
               statistics[4] += 1;             
             }
             break;
-          case  3:
-            if (manager.getBasePrice() + ((int)statistics[5]*2) < statistics[0]) {
-              statistics[0]-= manager.getBasePrice() + ((int)statistics[5]*2);
+          case  3:     //defence
+            if (manager.getBasePrice()[3] + ((int)statistics[5]*2) < statistics[1]) {
+              statistics[1]-= manager.getBasePrice()[3] + ((int)statistics[5]*2);
               statistics[5] += 1;             
             }
             break;
-          case  4:
-            if (manager.getBasePrice() + ((int)statistics[8]*2) < statistics[0]) {
-              statistics[0]-= manager.getBasePrice() + ((int)statistics[8]*2);
+          case  4:     //solar
+            if (manager.getBasePrice()[4] + ((int)statistics[8]*2) < statistics[1]) {
+              statistics[1]-= manager.getBasePrice()[4] + ((int)statistics[8]*2);
               statistics[8] += 1;             
             }
             break;
           default:
           break;
         }
-        statistics[0] = Calculator.roundToDecPlaces(statistics[0],2); 
       }
       outputNeuronPos++;
     }
-    */
   }
 }

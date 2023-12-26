@@ -2,7 +2,6 @@ package SIMS5.gui;
 
 import javax.swing.SwingUtilities;
 
-import SIMS5.calculator.Calculator;
 import SIMS5.simulation.SimManager;
 public class GuiManager {
   private SimManager simManager;
@@ -14,7 +13,7 @@ public class GuiManager {
   private MyPanelInput inputPanel;
 
   private int startSeed;
-  private int basePrice;
+  private int[] basePrice = new int[5];
   private double[] startStatistics = new double[9];
 
   private long timeSave = System.currentTimeMillis()/1000;
@@ -38,7 +37,7 @@ public class GuiManager {
 
     //--------default data gets set--------
     //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
-    startStatistics[0] = 10000.0;
+    startStatistics[0] = 100.0;
     //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
     startStatistics[1] = 100.0;
     //attack                        schaden welcher pro atacke zugerichtet wird
@@ -46,7 +45,7 @@ public class GuiManager {
     //energie speicher              max energie die der robo haben kann
     startStatistics[3] = 100.0;
     //speed                         ...pixel pro sec werden max zurückgelegt     
-    startStatistics[4] = 10.0;
+    startStatistics[4] = 1.0;
     //defense                       wird von der gegnerischen attake abgezogen
     startStatistics[5] = 0.0; 
     //health                        anzahl der leben welche von ataken veringert werden kann und sinkt wenn energie 0 ist. bei 0 leben stirbt er
@@ -56,6 +55,11 @@ public class GuiManager {
     //solar                         solar panele welche energie gewinnen
     startStatistics[8] = 1.0; 
     //------------------------------------
+    basePrice[0] = 25; //atk
+    basePrice[1] = 10; //eSp
+    basePrice[2] = 20; //spe
+    basePrice[3] = 25; //def
+    basePrice[4] = 20; //sol
   }
 
   public void runGui() {
@@ -80,10 +84,10 @@ public class GuiManager {
 
   public void startSimulation() {
     setSeed(54674);
-    setBasePrice(10);
     setSollFps(20);
-    Calculator.setSeed(startSeed);
     simManager.setSeed(startSeed);
+    graphPanel.setDaysOnSlide(2);
+    graphPanel.setRandgröße(25);
     double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
     for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
       double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
@@ -92,7 +96,7 @@ public class GuiManager {
       }
     }
     graphPanel.start(startLight);
-    graphPanel.updateGraphSize((int)simManager.getMaxLight());
+    graphPanel.setGraphSizeY((int)simManager.getMaxLight());
     simManager.startSimulation();
     Thread guiThread = new Thread(() -> {
       runGui();
@@ -119,12 +123,6 @@ public class GuiManager {
       sollFps = pFps;    
     }
   }
-
-  public void setBasePrice(int pBasePrice) {
-    if (pBasePrice > 0) {
-      basePrice = pBasePrice;    
-    }
-  }
   //----------------------------------
 
   //---------------get----------------
@@ -139,7 +137,7 @@ public class GuiManager {
     return -1;
   }
 
-  public int getBasePrice() {
+  public int[] getBasePrice() {
     return basePrice;
   }
 
