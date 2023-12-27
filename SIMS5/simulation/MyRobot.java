@@ -54,6 +54,14 @@ public class MyRobot {
     return serialNumber;
   }
 
+  public double getEnergieLoss() {
+    return roundToDecPlaces(((0.1*(manager.getDay()+1))+statistics[7]), 2);
+  }
+
+  public double getEnergiePlus() {
+    return roundToDecPlaces(((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
+  }
+
   //hirn des robos
 
   public void simulate(double pLightIntensity){
@@ -87,12 +95,16 @@ public class MyRobot {
     }
     if (statistics[6] > 0.0) {
       if (statistics[0] > 0.0) {
-        statistics[0] = roundToDecPlaces(statistics[0]-(0.1+statistics[7]), 2);
+        statistics[0] = roundToDecPlaces(statistics[0]-((0.1*(manager.getDay()+1))+statistics[7]), 2);
+        if (statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60) <= statistics[3]) {
+          statistics[0] = roundToDecPlaces(statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
+        }
         if (statistics[0] < 0.0) {
           statistics[0] = 0.0;
         }
       } else {
         statistics[6] = roundToDecPlaces(statistics[6]-0.1, 1);
+        statistics[0] = roundToDecPlaces(statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
         if (statistics[6] < 0.0) {
           statistics[6] = 0.0;
         }

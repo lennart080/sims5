@@ -22,6 +22,8 @@ public class MyPanelRobotData extends JPanel {          //graphic classe der dat
     if (robot != null) {
       g2D.drawString("" + robot.getSerialNumber(), 20, 60);
       g2D.drawString("" + robot.getPositions()[0][0] + "  " + robot.getPositions()[0][1], 20, 80);
+      g2D.drawString("Loss: " + robot.getEnergieLoss(), 20, 100);
+      g2D.drawString("Plus: " + robot.getEnergiePlus(), 100, 100);
       for (int i = 0; i < robot.getNeurons().length; i++) {
         for (int j = 0; j < robot.getNeurons()[i].length; j++) {
           g2D.drawString("" + robot.getNeurons()[i][j], (i*50)+20, (j*20)+120);

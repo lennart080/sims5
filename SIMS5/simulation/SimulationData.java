@@ -11,7 +11,7 @@ public class SimulationData {
   public SimulationData() {        
     setNoiseStrength(0.02);
     setLightTime(40);
-    setLightIntensity(10.0);
+    setLightIntensity(1.0);
     setNoiseSize(0.03);
   }
 
@@ -95,7 +95,7 @@ public class SimulationData {
   //------------get--------------
 
   public double getMaxLight() {
-    return (noiseStrength + 1.1)*lightIntensity;
+    return (noiseStrength+2)*lightIntensity;
   }
 
   public int getMaxPermute() {

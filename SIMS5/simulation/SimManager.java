@@ -14,8 +14,8 @@ public class SimManager {
   private int robotsPerRound;
   private int round = 0;
   private int simulationSize;
-  private int updates = 0;        //anzahl der updates seit start des programms //um programmSpeed pro sec 
-  private int time = 0;           //fictive zeiteinheit 60ze = 1tag
+  private int updates = 0;        //anzahl der updates seit start des programms (60updates = 1zeiteinheit)
+  private int time = 0;           //fictive zeiteinheit (60ze = 1tag)
   private int day = 0;               //in game tag (relativ zur runde)
   private int dayLengthRealTimeInSec = 30;  
 

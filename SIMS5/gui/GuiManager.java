@@ -161,15 +161,14 @@ public class GuiManager {
 
   private void updateGui() {  
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
-      simulationPanel.myUpdate(simManager.getUpdates(), simManager.getTime(), simManager.getDay());  
-      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size());
+      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound());
       graphUpdate();
       inputPanel.myUpdate();
       if (simManager.getRobots().size() != 0) {
-        simulationPanel.roboUpdate(simManager.getRobots()); 
+        simulationPanel.myUpdate(simManager.getRobots());  
         robotDataPanel.myUpdate(simManager.getRobots().get(0));
       } else {
-        simulationPanel.roboUpdate(null);
+        simulationPanel.myUpdate(null);
       }
       fpsUpdate();
       screen.repaintScreen();
