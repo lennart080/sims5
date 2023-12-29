@@ -17,12 +17,14 @@ public class SimManager {
   private int updates = 0;        //anzahl der updates seit start des programms (60updates = 1zeiteinheit)
   private int time = 0;           //fictive zeiteinheit (60ze = 1tag)
   private int day = 0;               //in game tag (relativ zur runde)
-  private int dayLengthRealTimeInSec = 30;  
+  private int dayLengthRealTimeInSec = 60;  
+  private int longestRobot;
 
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
   private int[] neuronLayers = {10, 10, 10};
   private double[][] fieldInfos = new double[4][3];
+
 
   public SimManager() {
     simData = new SimulationData();
@@ -33,7 +35,7 @@ public class SimManager {
       long startTime, elapsedTime;
       startTime = System.nanoTime();
 
-      this.simulateData(time);
+      this.simulateData();
       updates++;
       if (updates % 60 == 0) {
         time++;
@@ -42,6 +44,9 @@ public class SimManager {
         }
         if (time % 60 == 0) {
           day++;        
+          for (int i = 0; i < robots.size(); i++) {
+            robots.get(i).setDay(day);
+          }
         }
       }
 
@@ -59,6 +64,7 @@ public class SimManager {
 
   public void startSimulation() {
     simulationSize = guiManager.getSimulationSize(); 
+    simData.setSimulationSize(simulationSize);
     Thread simulationThread = new Thread(() -> {
       startRounds();
       startSim();
@@ -69,7 +75,8 @@ public class SimManager {
   //---------------set------------------
   public void setRobotsPerRound(int pRobotsPerRound) {
     if (pRobotsPerRound < 10) {
-      robotsPerRound = 10;
+      //robotsPerRound = 10;
+      robotsPerRound = 2;
     } else {
       robotsPerRound = 10 * (int)((double)pRobotsPerRound/10.0);
     }
@@ -91,6 +98,10 @@ public class SimManager {
   //------------------------------------
 
   //---------------get------------------
+
+  public int getLongestRobot() {
+    return longestRobot;
+  }
 
   public int[] getBasePrice() {
     return guiManager.getBasePrice();
@@ -212,7 +223,7 @@ public class SimManager {
         }
       }
     }
-    robots.add(new MyRobot(this, weigths, neurons, pPos, guiManager.getStartStatistics()));
+    robots.add(new MyRobot(this, weigths, neurons, pPos, guiManager.getStartStatistics(), guiManager.getBasePrice()));
   }
 
   public void deleteRobo(int roboNumber) {
@@ -222,7 +233,10 @@ public class SimManager {
         if (robots.size() <= (int)(((double)robotsPerRound/100.0)*10)) {
           bestPerformersWeights.add(robots.get(i).getWeights());
         }   
-        robots.remove(i);       
+        robots.remove(i);      
+        if (robots.size() == 0) {
+          longestRobot = updates;
+        } 
       }   
     }
     if (robots.size() <= 0) {
@@ -230,12 +244,19 @@ public class SimManager {
     }
   }
 
-  private void simulateData(int timeInMin) {         //methode für die simulations berechnungen
+  private void simulateData() {         //methode für die simulations berechnungen
     if (robots.size() != 0) {
-      double lightIntensity = simData.getLightIntensityAtTime(timeInMin);
       for (int i = 0; i < robots.size(); i++) {
-        robots.get(i).simulate(lightIntensity);
+        robots.get(i).simulate(simData.getLightIntensityAtTime(updates));
       }    
     }
+  }
+
+  public void checkHitBoxes(int roboNumber) {
+    for (int i = 0; i < robots.size(); i++) {
+      if (robots.get(i).getSerialNumber() == roboNumber) {
+        simData.checkHitBoxes(robots, i);
+      }
+    }  
   }
 }

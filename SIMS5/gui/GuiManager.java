@@ -86,7 +86,7 @@ public class GuiManager {
     setSeed(54674);
     setSollFps(20);
     simManager.setSeed(startSeed);
-    graphPanel.setDaysOnSlide(2);
+    graphPanel.setDaysOnSlide(4);
     graphPanel.setRandgröße(25);
     double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
     for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
@@ -98,6 +98,7 @@ public class GuiManager {
     graphPanel.start(startLight);
     graphPanel.setGraphSizeY((int)simManager.getMaxLight());
     simManager.startSimulation();
+    simulationPanel.setSimulationSize(getSimulationSize());
     Thread guiThread = new Thread(() -> {
       runGui();
     });
@@ -107,7 +108,7 @@ public class GuiManager {
   //---------------set----------------
   public void setSimManager(SimManager pSimManager) {
     simManager = pSimManager;
-    simManager.setRobotsPerRound(2);
+    simManager.setRobotsPerRound(100);
   }
 
   public void setSeed(int pSeed) {  
@@ -161,7 +162,7 @@ public class GuiManager {
 
   private void updateGui() {  
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
-      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound());
+      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestRobot());
       graphUpdate();
       inputPanel.myUpdate();
       if (simManager.getRobots().size() != 0) {

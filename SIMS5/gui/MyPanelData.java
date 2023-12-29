@@ -11,6 +11,7 @@ public class MyPanelData extends JPanel {          //graphic classe der daten
   private int time;
   private int day;
   private int round;
+  private int longestRobot;
   public MyPanelData() {
     this.setBackground(Color.BLUE);
     repaint(); 
@@ -29,9 +30,10 @@ public class MyPanelData extends JPanel {          //graphic classe der daten
     g2D.drawString("Time: " + time, 20, 140);
     g2D.drawString("Day: " + day, 20, 160);
     g2D.drawString("Round: " + round, 20, 180);
+    g2D.drawString("Longest-Robot: " + longestRobot, 20, 200);
   }
   
-  public void myUpdate(int pFps, int pRobotsPerRound, int pSollRobotsPerRound, int pUpdates, int pTime, int pDay, int pRound) {                 //aktualisiren der daten
+  public void myUpdate(int pFps, int pRobotsPerRound, int pSollRobotsPerRound, int pUpdates, int pTime, int pDay, int pRound, int pLongestRobot) {                 //aktualisiren der daten
     fps = pFps;
     robotsPerRound = pRobotsPerRound;
     sollRobotsPerRound = pSollRobotsPerRound;
@@ -39,5 +41,6 @@ public class MyPanelData extends JPanel {          //graphic classe der daten
     time = pTime;
     day = pDay;
     round = pRound;
+    longestRobot = pLongestRobot;
   }
 }

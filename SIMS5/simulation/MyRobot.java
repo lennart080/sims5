@@ -8,14 +8,20 @@ public class MyRobot {
   private int serialNumber;
   protected static int lastSerialNumber;
   private List<int[]> position = new ArrayList<>();
+  private List<Boolean> positionSwitch = new ArrayList<>();
   private double[] statistics;
+  private int day;
+  private int[] priceList;
 
-  private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
+  //private double[][] fieldInfos = new double[4][3];      //4 richtungen(0=oben,1=rechts,2=unten,3=links) 3 entfenrung(0=wandt,1=gegner,2=schrott)
 
   private double[][] neurons;   //[] reihe [][] neuron
   private double[][][] weigths;  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
+
+  private long[] calcTime = new long[4];
+  private long calcTimeSave;
   
-  public MyRobot(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics) {
+  public MyRobot(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics, int[] pPriceList) {
     manager = pManager;
     weigths = Arrays.copyOf(pWeigths, pWeigths.length);
     neurons = Arrays.copyOf(pNeurons, pNeurons.length);
@@ -26,6 +32,10 @@ public class MyRobot {
     for (int i = 0; i < 5; i++) {
       position.add(pPosition);
     }
+    for (int i = 0; i < 5; i++) {
+      positionSwitch.add(true);
+    }
+    priceList = pPriceList;
   }
   
   //get methoden des roboters 
@@ -62,70 +72,78 @@ public class MyRobot {
     return roundToDecPlaces(((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
   }
 
+  public long[] getCalcTime() {
+    return calcTime;
+  }
+
+  public void moveRobot(int x, int y) {
+    //position.get(position.size()-1)[0]+=x;
+    //position.get(position.size()-1)[1]+=y;
+    //System.out.println("x: " + x);
+    //System.out.println("y: " + y);
+  }
+
+  public void setDay(int pDay) {
+    day = pDay;
+  }
+
   //hirn des robos
 
-  public void simulate(double pLightIntensity){
-    updateStatistics();
+  public void simulate(double lightIntensity) {
+    calcTimeSave = System.nanoTime();
+    updateStatistics(lightIntensity);
+    calcTime[0] = System.nanoTime() - calcTimeSave;
+    calcTimeSave = System.nanoTime();
     setInputs();
+    calcTime[1] = System.nanoTime() - calcTimeSave;
+    calcTimeSave = System.nanoTime();
     calculate();
+    calcTime[2] = System.nanoTime() - calcTimeSave;
+    calcTimeSave = System.nanoTime();
     setOutputs();
+    calcTime[3] = System.nanoTime() - calcTimeSave;
   }
 
   public double roundToDecPlaces(double value, int decPlaces) {
     return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
   }
 
-  private void updateStatistics() {
-    int x = 0;
+  private void updateStatistics(double lightIntensity) {
     boolean posWechsel = false;
-    do {
-      if (position.get(x) != position.get(x+1)) {
+    for (int i = 0; i < positionSwitch.size(); i++) {
+      if (positionSwitch.get(i) == true) {
         posWechsel = true;
       }
-      x++;
-    } while (position.size() > x+2);
+    }
     if (posWechsel == false) {
-      if (position.get(position.size()-1) == position.get(position.size()-2)) {
-        statistics[7] = roundToDecPlaces(statistics[7]+0.02, 2);
-      }
+        statistics[7] = roundToDecPlaces(statistics[7]+0.01, 2);
     } else {
-      if (statistics[7] > 0.0) {
-        statistics[7] = roundToDecPlaces(statistics[7]-0.02, 2);
+      if (statistics[7] >= 0.01) {
+        statistics[7] = roundToDecPlaces(statistics[7]-0.01, 2);
       }
     }
     if (statistics[6] > 0.0) {
-      if (statistics[0] > 0.0) {
-        statistics[0] = roundToDecPlaces(statistics[0]-((0.1*(manager.getDay()+1))+statistics[7]), 2);
-        if (statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60) <= statistics[3]) {
-          statistics[0] = roundToDecPlaces(statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
+      statistics[0] = roundToDecPlaces(statistics[0]-((0.1*(day+1))+statistics[7]), 2);
+      if (statistics[0] < statistics[3]) {
+        statistics[0] = roundToDecPlaces(statistics[0]+((statistics[8]*lightIntensity)/60), 2); 
+        if (statistics[0] > statistics[3]) {
+          statistics[0] = statistics[3];
         }
-        if (statistics[0] < 0.0) {
-          statistics[0] = 0.0;
-        }
-      } else {
+      }
+      if (statistics[0] <= 0.0) {
         statistics[6] = roundToDecPlaces(statistics[6]-0.1, 1);
-        statistics[0] = roundToDecPlaces(statistics[0]+((statistics[8]*manager.getLightIntensityAtTime())/60), 2);
         if (statistics[6] < 0.0) {
           statistics[6] = 0.0;
         }
-      }     
+      }    
     } else {
       manager.deleteRobo(serialNumber);       
     }
   }
 
   private void setInputs() {
-    int zähler = 0;
-    for (int i = 0; i < statistics.length; i++) {
-      neurons[0][i] = statistics[zähler];
-      zähler++;
-    }
-    for (int i = 0; i < fieldInfos.length; i++) {
-      for (int j = 0; j < fieldInfos[i].length; j++) {
-        neurons[0][zähler] = fieldInfos[i][j];
-        zähler++;
-      }
-    }
+    System.arraycopy(statistics, 0, neurons[0], 0, statistics.length);
+    //System.arraycopy(fieldInfos, 0, neurons[0], statistics.length, fieldInfo.length);
   }
 
   private void calculate() {
@@ -154,69 +172,76 @@ public class MyRobot {
       outputNeuronPos++;
     }
     int[] pos = new int[2];
+    if (0 <= highestPosneuron && highestPosneuron <= 3) {
+      positionSwitch.add(true);
+      positionSwitch.remove(0);
+    } else {
+      positionSwitch.add(false);
+      positionSwitch.remove(0);      
+    }
     switch (highestPosneuron) {
       case 0:
         pos[0] = position.get(position.size()-1)[0];
         pos[1] = position.get(position.size()-1)[1]+(int)statistics[4];
         position.add(pos);
-        position.remove(0);       
+        position.remove(0);   
+        manager.checkHitBoxes(serialNumber);    
         break;
       case 1:
         pos[0] = position.get(position.size()-1)[0]+(int)statistics[4];
         pos[1] = position.get(position.size()-1)[1];
         position.add(pos);   
-        position.remove(0);    
+        position.remove(0);   
+        manager.checkHitBoxes(serialNumber); 
         break;
       case 2:
         pos[0] = position.get(position.size()-1)[0];
         pos[1] = position.get(position.size()-1)[1]-(int)statistics[4];
         position.add(pos);      
         position.remove(0); 
+        manager.checkHitBoxes(serialNumber);
         break;
       case 3:
         pos[0] = position.get(position.size()-1)[0]-(int)statistics[4];
         pos[1] = position.get(position.size()-1)[1];
         position.add(pos);
-        position.remove(0);        
-        break;
-      default:
+        position.remove(0);   
+        manager.checkHitBoxes(serialNumber);     
         break;
     }   
     for (int i = 0; i < 5; i++) {
       if (neurons[neurons.length-1][outputNeuronPos] >= 0.5) {
         switch (i){
           case  0:     //atk
-            if (manager.getBasePrice()[0] + ((int)statistics[2]*2) < statistics[1]) {
-              statistics[1]-= manager.getBasePrice()[0] + ((int)statistics[2]*2);
+            if (priceList[0] + (statistics[2]*2) < statistics[1]) {
+              statistics[1]-= priceList[0] + (statistics[2]*2);
               statistics[2] += 1;             
             }
             break;
           case  1:     //energie speicher
-            if (manager.getBasePrice()[1] + ((int)statistics[3]*2) < statistics[1]) {
-              statistics[1]-= manager.getBasePrice()[1] + ((int)statistics[3]*2);
+            if (priceList[1] + (statistics[3]*2) < statistics[1]) {
+              statistics[1]-= priceList[1] + (statistics[3]*2);
               statistics[3] += 10;             
             }
             break;
           case  2:     //speed
-            if (manager.getBasePrice()[2] + ((int)statistics[4]*2) < statistics[1]) {
-              statistics[1]-= manager.getBasePrice()[2] + ((int)statistics[4]*2);
+            if (priceList[2] + (statistics[4]*2) < statistics[1]) {
+              statistics[1]-= priceList[2] + (statistics[4]*2);
               statistics[4] += 1;             
             }
             break;
           case  3:     //defence
-            if (manager.getBasePrice()[3] + ((int)statistics[5]*2) < statistics[1]) {
-              statistics[1]-= manager.getBasePrice()[3] + ((int)statistics[5]*2);
+            if (priceList[3] + (statistics[5]*2) < statistics[1]) {
+              statistics[1]-= priceList[3] + (statistics[5]*2);
               statistics[5] += 1;             
             }
             break;
           case  4:     //solar
-            if (manager.getBasePrice()[4] + ((int)statistics[8]*2) < statistics[1]) {
-              statistics[1]-= manager.getBasePrice()[4] + ((int)statistics[8]*2);
+            if (priceList[4] + (statistics[8]*2) < statistics[1]) {
+              statistics[1]-= priceList[4] + (statistics[8]*2);
               statistics[8] += 1;             
             }
             break;
-          default:
-          break;
         }
       }
       outputNeuronPos++;
