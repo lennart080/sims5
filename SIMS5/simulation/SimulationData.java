@@ -1,6 +1,5 @@
 package SIMS5.simulation;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationData {

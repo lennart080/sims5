@@ -22,7 +22,7 @@ public class SimManager {
 
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
-  private int[] neuronLayers = {10, 10, 10};
+  private int[] neuronLayers = {12, 9, 11};
   private double[][] fieldInfos = new double[4][3];
 
 
@@ -178,6 +178,7 @@ public class SimManager {
           newRobot(newRandomPos(), i);
         }
       }
+      bestPerformersWeights.clear();
     }
     updates = 0;
     time = 0;
@@ -226,14 +227,13 @@ public class SimManager {
     robots.add(new MyRobot(this, weigths, neurons, pPos, guiManager.getStartStatistics(), guiManager.getBasePrice()));
   }
 
-  public void deleteRobo(int roboNumber) {
+  public void deleteRobo(MyRobot robo) {
     for (int i = 0; i < robots.size(); i++) {
-      if (robots.get(i).getSerialNumber() == roboNumber) {
-        
+      if (robots.get(i) == robo) {
         if (robots.size() <= (int)(((double)robotsPerRound/100.0)*10)) {
           bestPerformersWeights.add(robots.get(i).getWeights());
-        }   
-        robots.remove(i);      
+        }  
+        robots.remove(i);     
         if (robots.size() == 0) {
           longestRobot = updates;
         } 

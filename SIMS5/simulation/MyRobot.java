@@ -137,7 +137,7 @@ public class MyRobot {
         }
       }    
     } else {
-      manager.deleteRobo(serialNumber);       
+      manager.deleteRobo(this);     
     }
   }
 
