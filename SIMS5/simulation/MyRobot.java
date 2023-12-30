@@ -208,7 +208,7 @@ public class MyRobot {
         position.remove(0);   
         manager.checkHitBoxes(serialNumber);     
         break;
-    }   
+    } 
     for (int i = 0; i < 5; i++) {
       if (neurons[neurons.length-1][outputNeuronPos] >= 0.5) {
         switch (i){

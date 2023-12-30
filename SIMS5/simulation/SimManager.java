@@ -168,14 +168,26 @@ public class SimManager {
   //-----------------------------------
 
   private void startRounds() {
+    int gridPosX = 0;
+    int gridPosY = 0;
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
-        newRobot(newRandomPos(), -1);
+        newRobot(newRandomPos(gridPosX, gridPosY), -1);
+        gridPosX++;
+        if (gridPosX >= (int)Math.sqrt(robotsPerRound)) {
+          gridPosX = 0;
+          gridPosY++;
+        }
       }
     } else {
       for (int i = 0; i < bestPerformersWeights.size(); i++) {
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
-          newRobot(newRandomPos(), i);
+          newRobot(newRandomPos(gridPosX, gridPosY), i);
+          gridPosX++;
+          if (gridPosX >= (int)Math.sqrt(robotsPerRound)) {
+            gridPosX = 0;
+            gridPosY++;
+          }
         }
       }
       bestPerformersWeights.clear();
@@ -186,10 +198,12 @@ public class SimManager {
     round++;       
   }
 
-  private int[] newRandomPos() {
+  private int[] newRandomPos(int pGridPosX, int pGridPosY) {
+    pGridPosX *= (int)(simulationSize/Math.sqrt(robotsPerRound));
+    pGridPosY *= (int)(simulationSize/Math.sqrt(robotsPerRound));
     int[] pos = new int[2];
-    pos[0] = Calculator.normaliseValue(newRandom(), 1, simulationSize);
-    pos[1] = Calculator.normaliseValue(newRandom(), 1, simulationSize);  
+    pos[0] = pGridPosX + 20 + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-40);
+    pos[1] = pGridPosY + 20 + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-40);
     return pos;  
   }
 
@@ -199,7 +213,7 @@ public class SimManager {
     long m = (long) Math.pow(2, 31); // modulus
     do {
       extendetSeed = (a * extendetSeed + c) % m;     
-    } while (((double) extendetSeed / m) < 0 && ((double) extendetSeed / m) > 1);        
+    } while (((double) extendetSeed / m) < 0 && ((double) extendetSeed / m) > 1);     
     return (double) extendetSeed / m;  
   }
 

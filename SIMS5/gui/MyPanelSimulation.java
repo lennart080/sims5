@@ -54,9 +54,14 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     }
     g2D.setColor(Color.CYAN);
     if (simulationSize != 0) {
-      for (int i = 0; i < 4; i++) {
-        g2D.drawRect(0, 0, simulationSize, simulationSize);
-      }
+      g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
+    }
+    g2D.setColor(Color.BLACK);
+    for (int i = 0; i < Math.sqrt(100); i++) {
+      g2D.drawLine(i*(int)(simulationSize/Math.sqrt(100)), 0, i*(int)(simulationSize/Math.sqrt(100)), this.getHeight());
+    }
+    for (int i = 0; i < Math.sqrt(100); i++) {
+      g2D.drawLine(0, i*(int)(simulationSize/Math.sqrt(100)), this.getWidth(), i*(int)(simulationSize/Math.sqrt(100)));
     }
     //-------------------
   }
