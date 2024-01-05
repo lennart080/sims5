@@ -26,11 +26,10 @@ public class MyPanelRobotData extends JPanel {          //graphic classe der dat
       g2D.drawString("Plus: " + robot.getEnergiePlus(), 100, 100);
       for (int i = 0; i < robot.getCalcTime().length; i++) {
         g2D.drawString("CT: " + robot.getCalcTime()[i], 20, (i*18)+120);
-        //System.out.println(i + ": " + robot.getCalcTime()[i]);
       }
       for (int i = 0; i < robot.getNeurons().length; i++) {
         for (int j = 0; j < robot.getNeurons()[i].length; j++) {
-          g2D.drawString("" + robot.getNeurons()[i][j], (i*50)+20, (j*18)+190);
+          g2D.drawString("" + robot.getNeurons()[i][j], (i*50)+20, (j*18)+210);
         }
       }
     }

@@ -4,6 +4,7 @@ import javax.swing.SwingUtilities;
 
 import SIMS5.simulation.SimManager;
 public class GuiManager {
+  //objekts
   private SimManager simManager;
   private MyFrame screen;
   private MyPanelSimulation simulationPanel;
@@ -12,15 +13,16 @@ public class GuiManager {
   private MyPanelRobotData robotDataPanel;
   private MyPanelInput inputPanel;
 
+  //get set
   private int startSeed;
+  private int sollFps;
   private int[] basePrice = new int[5];
   private double[] startStatistics = new double[9];
 
+  //run time
   private long timeSave = System.currentTimeMillis()/1000;
   private int fpsCounter = 0;
-  private int sollFps;
-  private int fps;
-
+  private int fps = 0;
   private int isGraphAlreadyBuffed = 0;
 
   public GuiManager() {
@@ -83,32 +85,52 @@ public class GuiManager {
   }
 
   public void startSimulation() {
+    //Set GuiManager
     setSeed(54674);
     setSollFps(20);
+    //Set SimManager
+    simManager.setNoiseStrength(0.02);
+    simManager.setLightTime(40);
+    simManager.setLightIntensity(1.0);
+    simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
+    simManager.setRobotsPerRound(100);
+    simManager.setSimulationSize(getSimulationSize());
+    simManager.setRobotSize(40);
+    simManager.setDayLengthRealTimeInSec(60);
+    simManager.setRandomlyPickedOnes(2);
+    int[] n = {8};
+    simManager.setNeuronLayers(n);
+    //Set GraphPanel
     graphPanel.setDaysOnSlide(4);
     graphPanel.setRandgröße(25);
-    double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
-    for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
-      double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
-      for (int j = 0; j < oneDayLight.length; j++) {
-        startLight[j+(3600*i)] = oneDayLight[j];
-      }
-    }
-    graphPanel.start(startLight);
-    graphPanel.setGraphSizeY((int)simManager.getMaxLight());
-    simManager.startSimulation();
+    //Set SimPanel
     simulationPanel.setSimulationSize(getSimulationSize());
+    simulationPanel.setRobotsPerRound(100);
+    //start
+    initialiseGraphpanel();
+    simManager.startSimulation();
     Thread guiThread = new Thread(() -> {
       runGui();
     });
     guiThread.start();
   }
 
+  private void initialiseGraphpanel() {
+    double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
+      for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
+        double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
+        for (int j = 0; j < oneDayLight.length; j++) {
+          startLight[j+(3600*i)] = oneDayLight[j];
+        }
+      }
+    graphPanel.start(startLight);
+    graphPanel.setGraphSizeY((int)simManager.getMaxLight());
+  }
+
   //---------------set----------------
   public void setSimManager(SimManager pSimManager) {
     simManager = pSimManager;
-    simManager.setRobotsPerRound(100);
   }
 
   public void setSeed(int pSeed) {  

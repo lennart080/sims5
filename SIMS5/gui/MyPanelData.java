@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
 public class MyPanelData extends JPanel {          //graphic classe der daten
+  // start attributes
   private int fps;
   private int robotsPerRound;
   private int sollRobotsPerRound;
@@ -12,11 +13,13 @@ public class MyPanelData extends JPanel {          //graphic classe der daten
   private int day;
   private int round;
   private int longestRobot;
+  // end attributes
   public MyPanelData() {
     this.setBackground(Color.BLUE);
     repaint(); 
   }
   
+  // start methods
   @Override
   public void paint(Graphics g) {               //output methode(anzeigen der daten)
     super.paint(g);
@@ -43,4 +46,5 @@ public class MyPanelData extends JPanel {          //graphic classe der daten
     round = pRound;
     longestRobot = pLongestRobot;
   }
+  // end methods
 }

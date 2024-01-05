@@ -1,33 +1,37 @@
 package SIMS5.simulation;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import SIMS5.calculator.Calculator;
 import SIMS5.gui.GuiManager;
 
 public class SimManager {
+  //objekts
   private GuiManager guiManager;
-  private SimulationData simData;
+  private LightData simData;
 
+  //get set
   private long extendetSeed;
   private int robotsPerRound;
-  private int round = 0;
   private int simulationSize;
-  private int updates = 0;        //anzahl der updates seit start des programms (60updates = 1zeiteinheit)
-  private int time = 0;           //fictive zeiteinheit (60ze = 1tag)
-  private int day = 0;               //in game tag (relativ zur runde)
-  private int dayLengthRealTimeInSec = 60;  
-  private int longestRobot;
+  private int dayLengthRealTimeInSec;  
+  private int[] randomRobot;
+  private int[] neuronLayers;
+  private int robotSize;
 
+  //run time
+  private int round = 0;            
+  private int updates = 0;        
+  private int time = 0;           
+  private int day = 0;               
+  private int longestRobot = 0;
   private List<MyRobot> robots = new ArrayList<>();
   private List<double[][][]> bestPerformersWeights = new ArrayList<>();
-  private int[] neuronLayers = {12, 9, 11};
-  private double[][] fieldInfos = new double[4][3];
-
 
   public SimManager() {
-    simData = new SimulationData();
+    simData = new LightData();
   }
 
   public void startSim() {     
@@ -63,8 +67,6 @@ public class SimManager {
   }
 
   public void startSimulation() {
-    simulationSize = guiManager.getSimulationSize(); 
-    simData.setSimulationSize(simulationSize);
     Thread simulationThread = new Thread(() -> {
       startRounds();
       startSim();
@@ -73,13 +75,53 @@ public class SimManager {
   }
 
   //---------------set------------------
+
+  public void setSimulationSize(int pSimSize) {
+    simulationSize = pSimSize;
+  }
+
+  public void setNoiseStrength(double noiseStrength) {
+    simData.setNoiseStrength(noiseStrength);
+  }
+
+  public void setLightTime(int lightTime) {
+    simData.setLightTime(lightTime);
+  }
+
+  public void setLightIntensity(double lightIntensity) {
+    simData.setLightIntensity(lightIntensity);
+  }
+
+  public void setNoiseSize(double noiseSize) {
+    simData.setNoiseSize(noiseSize);
+  }
+
   public void setRobotsPerRound(int pRobotsPerRound) {
     if (pRobotsPerRound < 10) {
-      //robotsPerRound = 10;
-      robotsPerRound = 2;
+      robotsPerRound = 10;
     } else {
       robotsPerRound = 10 * (int)((double)pRobotsPerRound/10.0);
     }
+  }
+
+  public void setDayLengthRealTimeInSec(int sec) {
+    if (sec < 1) {
+      dayLengthRealTimeInSec = 1;
+    } else {
+      dayLengthRealTimeInSec = sec;
+    }
+  }
+
+  public void setRobotSize(int pRoboSize) {
+    robotSize = pRoboSize;
+  }
+
+  public void setNeuronLayers(int[] pNeuronLayers) {
+    neuronLayers = Arrays.copyOf(pNeuronLayers, pNeuronLayers.length);
+  }
+
+  public void setRandomlyPickedOnes(int count) {
+    randomRobot = new int[count];
   }
 
   public void setGuiManager(GuiManager gm) {
@@ -146,13 +188,6 @@ public class SimManager {
     return 0.0;
   }
 
-  public double getLightIntensityAtTime(int pTime) {
-    if (simData != null) {
-      return simData.getLightIntensityAtTime(pTime);   
-    }
-    return 0.0;
-  }
-
   public double[] getLightOfDay(double pDay) {
     double[] lightOfDay = new double[3600];
     for (int i = 0; i < lightOfDay.length; i++) {
@@ -168,11 +203,13 @@ public class SimManager {
   //-----------------------------------
 
   private void startRounds() {
+    randomRobot[0] = (int)(((double)robotsPerRound/100.0)*10)+Calculator.normaliseValue(newRandom(), 1, robotsPerRound-(int)(((double)robotsPerRound/100.0)*10));
+    randomRobot[1] = (int)(((double)robotsPerRound/100.0)*10)+Calculator.normaliseValue(newRandom(), 1, robotsPerRound-(int)(((double)robotsPerRound/100.0)*10));
     int gridPosX = 0;
     int gridPosY = 0;
     if (round == 0) {
       for (int i = 0; i < robotsPerRound; i++) {
-        newRobot(newRandomPos(gridPosX, gridPosY), -1);
+        newRobot(newRandomPos(gridPosX, gridPosY), -1, false);
         gridPosX++;
         if (gridPosX >= (int)Math.sqrt(robotsPerRound)) {
           gridPosX = 0;
@@ -182,7 +219,13 @@ public class SimManager {
     } else {
       for (int i = 0; i < bestPerformersWeights.size(); i++) {
         for (int j = 0; j < robotsPerRound/bestPerformersWeights.size(); j++) {
-          newRobot(newRandomPos(gridPosX, gridPosY), i);
+          if (j == 0) {
+            newRobot(newRandomPos(gridPosX, gridPosY), i, true);
+          } else if (j == 1 && i == 0) {
+            newRobot(newRandomPos(gridPosX, gridPosY), -1, false);
+          } else {
+            newRobot(newRandomPos(gridPosX, gridPosY), i, false);
+          }
           gridPosX++;
           if (gridPosX >= (int)Math.sqrt(robotsPerRound)) {
             gridPosX = 0;
@@ -202,8 +245,8 @@ public class SimManager {
     pGridPosX *= (int)(simulationSize/Math.sqrt(robotsPerRound));
     pGridPosY *= (int)(simulationSize/Math.sqrt(robotsPerRound));
     int[] pos = new int[2];
-    pos[0] = pGridPosX + 20 + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-40);
-    pos[1] = pGridPosY + 20 + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-40);
+    pos[0] = pGridPosX + (robotSize/2) + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-robotSize);
+    pos[1] = pGridPosY + (robotSize/2) + Calculator.normaliseValue(newRandom(), 1, (int)(simulationSize/Math.sqrt(robotsPerRound))-robotSize);
     return pos;  
   }
 
@@ -217,10 +260,14 @@ public class SimManager {
     return (double) extendetSeed / m;  
   }
 
-  private void newRobot(int[] pPos, int bestPerformersPos) {  
+  public double roundToDecPlaces(double value, int decPlaces) {
+    return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
+  }
+
+  private void newRobot(int[] pPos, int bestPerformersPos, boolean old) {  
     double[][] neurons = new double[2+neuronLayers.length][];   //[] reihe [][] neuron
     double[][][] weigths = new double[neurons.length-1][][];  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
-    neurons[0] = new double [guiManager.getStartStatistics().length+(fieldInfos[0].length*fieldInfos.length)];
+    neurons[0] = new double [guiManager.getStartStatistics().length + 3];
     for (int i = 0; i < neuronLayers.length; i++) {
       neurons[1+i] = new double[neuronLayers[i]];
     }
@@ -230,23 +277,37 @@ public class SimManager {
     }
     if (bestPerformersPos >= 0) {
       weigths = bestPerformersWeights.get(bestPerformersPos);
-    }
-    for (int i = 0; i < weigths.length; i++) {
-      for (int j = 0; j < weigths[i].length; j++) {
-        for (int j2 = 0; j2 < weigths[i][j].length; j2++) {
-          weigths[i][j][j2]+= (newRandom()-0.5)/10;
+      for (int i = 0; i < weigths.length; i++) {
+        for (int j = 0; j < weigths[i].length; j++) {
+          for (int j2 = 0; j2 < weigths[i][j].length; j2++) {
+            if (newRandom() > 0.8 && old == false) {
+              weigths[i][j][j2]+= (newRandom()-0.25)/50;
+              weigths[i][j][j2] = roundToDecPlaces(weigths[i][j][j2], 5);
+            }
+         }
         }
       }
+    } else {
+      for (int i = 0; i < weigths.length; i++) {
+        for (int j = 0; j < weigths[i].length; j++) {
+          for (int j2 = 0; j2 < weigths[i][j].length; j2++) {
+            weigths[i][j][j2]+= ((newRandom()*3.0)-1.0);
+            weigths[i][j][j2] = roundToDecPlaces(weigths[i][j][j2], 5);
+         }
+        }
+      } 
     }
-    robots.add(new MyRobot(this, weigths, neurons, pPos, guiManager.getStartStatistics(), guiManager.getBasePrice()));
+    robots.add(new MyRobot(this, weigths, neurons, pPos, guiManager.getStartStatistics(), guiManager.getBasePrice(), robotSize, simulationSize));
   }
 
   public void deleteRobo(MyRobot robo) {
     for (int i = 0; i < robots.size(); i++) {
       if (robots.get(i) == robo) {
-        if (robots.size() <= (int)(((double)robotsPerRound/100.0)*10)) {
+        if (robots.size() <= ((int)(((double)robotsPerRound/100.0)*10))-2) {
           bestPerformersWeights.add(robots.get(i).getWeights());
-        }  
+        } else if (robots.size() == randomRobot[0] || robots.size() == randomRobot[1]) {
+          bestPerformersWeights.add(robots.get(i).getWeights());
+        }
         robots.remove(i);     
         if (robots.size() == 0) {
           longestRobot = updates;
@@ -264,13 +325,5 @@ public class SimManager {
         robots.get(i).simulate(simData.getLightIntensityAtTime(updates));
       }    
     }
-  }
-
-  public void checkHitBoxes(int roboNumber) {
-    for (int i = 0; i < robots.size(); i++) {
-      if (robots.get(i).getSerialNumber() == roboNumber) {
-        simData.checkHitBoxes(robots, i);
-      }
-    }  
   }
 }

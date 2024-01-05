@@ -11,6 +11,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   private long realTimeSinceStart;
   private long start;
   private int simulationSize;
+  private int robotsPerRound;
 
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
@@ -57,11 +58,11 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
       g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
     }
     g2D.setColor(Color.BLACK);
-    for (int i = 0; i < Math.sqrt(100); i++) {
-      g2D.drawLine(i*(int)(simulationSize/Math.sqrt(100)), 0, i*(int)(simulationSize/Math.sqrt(100)), this.getHeight());
+    for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
+      g2D.drawLine(i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), 0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getHeight());
     }
-    for (int i = 0; i < Math.sqrt(100); i++) {
-      g2D.drawLine(0, i*(int)(simulationSize/Math.sqrt(100)), this.getWidth(), i*(int)(simulationSize/Math.sqrt(100)));
+    for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
+      g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)));
     }
     //-------------------
   }
@@ -72,5 +73,9 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
 
   public void setSimulationSize(int simSize) {
     simulationSize = simSize;
+  }
+
+  public void setRobotsPerRound(int pRobotsPerRound) {
+    robotsPerRound = pRobotsPerRound;
   }
 }
