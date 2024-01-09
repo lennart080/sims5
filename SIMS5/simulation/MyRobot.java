@@ -8,6 +8,7 @@ public class MyRobot {
   private SimManager manager;
   //get set
   private double[] statistics;
+  private double[] defaultStats;
   private int[] priceList;
   private double[] updateList = {0.06, 0.6, 6.0, 2.5}; //rost plus, rost loss, energy loss, health loss --per sec
   private double walkActivasion = 0.6;
@@ -31,6 +32,7 @@ public class MyRobot {
     weigths = Arrays.copyOf(pWeigths, pWeigths.length);
     neurons = Arrays.copyOf(pNeurons, pNeurons.length);
     statistics = Arrays.copyOf(startStatistics, startStatistics.length);
+    defaultStats = Arrays.copyOf(startStatistics, startStatistics.length);
     roboSize = pRoboSize;
     simSize = pSimSize;
     serialNumber = lastSerialNumber;
@@ -177,7 +179,7 @@ public class MyRobot {
   }
 
   private void setInputs() {
-    neurons[0][0] =  roundToDecPlaces(statistics[0]/statistics[3], 4); 
+    neurons[0][0] =  roundToDecPlaces(statistics[0]/statistics[3], 4); //prozent des "akkus" (0-1) (energie/speicher)
     neurons[0][1] = statistics[2]/10; // atk/10
     neurons[0][2] = statistics[4]/10; // speed/10
     neurons[0][3] = statistics[5]/10; // defence/10
@@ -211,7 +213,7 @@ public class MyRobot {
     for (int i = 0; i < 4; i++) {
       neurons[neurons.length-1][i] = roundToDecPlaces(Math.exp(neurons[neurons.length-1][i]) / sumExp, 4);
     }
-    double sumExp2 = 0.0; // softmax funktion for the outputs 5 to 9 (walking)
+    double sumExp2 = 0.0; // softmax funktion for the outputs 5 to 9 (upgrades)
     for (int i = 4; i < 9; i++) {
       sumExp2 += Math.exp(neurons[neurons.length-1][i]);
     }
@@ -275,49 +277,10 @@ public class MyRobot {
         checkBounds();     
         break;
     } 
-    int relativeNeuronPos = outputNeuronPos;
-    highestPosneuron = -1;
-    highestPos = 0;
-    for (int i = 0; i < 5; i++) {
-      if (neurons[neurons.length-1][outputNeuronPos] > highestPos) {
-        highestPos = neurons[neurons.length-1][outputNeuronPos];
-        if (highestPos >= upgradActivasion) {
-          highestPosneuron = outputNeuronPos;        
-        }
-      }
-      outputNeuronPos++;
-    }
-    switch (outputNeuronPos-relativeNeuronPos){
-      case  0:     //atk
-        if (priceList[0] + (statistics[2]*2) < statistics[1]) {
-          statistics[1]-= priceList[0] + (statistics[2]*2);
-          statistics[2] += 1;             
-        }
-        break;
-      case 1: // energie speicher
-        if (priceList[1] + (statistics[3] * 2) < statistics[1]) {
-          statistics[1] -= priceList[1] + (statistics[3] * 2);
-          statistics[3] += 10;
-        }
-        break;
-      case 2: // speed
-        if (priceList[2] + (statistics[4] * 2) < statistics[1]) {
-          statistics[1] -= priceList[2] + (statistics[4] * 2);
-          statistics[4] += 1;
-        }
-        break;
-      case 3: // defence
-        if (priceList[3] + (statistics[5] * 2) < statistics[1]) {
-          statistics[1] -= priceList[3] + (statistics[5] * 2);
-          statistics[5] += 1;
-        }
-        break;
-      case 4: // solar
-        if (priceList[4] + (statistics[8] * 2) < statistics[1]) {
-          statistics[1] -= priceList[4] + (statistics[8] * 2);
-          statistics[8] += 1;
-        }
-        break;
-    }
+    statistics[2] = defaultStats[2] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos]);
+    statistics[3] = defaultStats[3] + (10*Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+1]));
+    statistics[4] = defaultStats[4] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+2]);
+    statistics[5] = defaultStats[5] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+3]);
+    statistics[8] = defaultStats[8] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+4]);
   }
 }
