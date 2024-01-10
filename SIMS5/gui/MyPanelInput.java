@@ -4,12 +4,16 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Toolkit;
+//import java.awt.event.MouseAdapter;
+//import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.File;
 import javax.imageio.ImageIO;
 
 import javax.swing.JPanel;
+
+//import org.w3c.dom.events.MouseEvent;
 public class MyPanelInput extends JPanel {
 
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -17,17 +21,26 @@ public class MyPanelInput extends JPanel {
   private int screenHeight = (int)screenSize.getHeight();
   private BufferedImage bufImg = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_RGB);
 
+  
+
   public MyPanelInput() {
-   // this.setBackground(Color.MAGENTA);
    try {
     bufImg = ImageIO.read(new File("Grafik/blackscreen.png"));
     }
     catch (IOException ex) {
     ex.printStackTrace();
     }
-   
+    //this.addMouseListener((MouseListener) this);
     repaint(); 
   }
+ /* 
+  private class MyMouseAdapter extends MouseAdapter{
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        System.out.println("Mouse " + e.getClickCount() + " times clicked at "
+                + e.getPoint());
+    }
+  }*/
 
   @Override
   public void paint(Graphics g) {               //output methode(anzeigen der daten)

@@ -1,4 +1,5 @@
 package SIMS5.gui;
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 import SIMS5.calculator.Calculator;
@@ -7,19 +8,33 @@ import SIMS5.simulation.MyRobot;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 public class MyPanelSimulation extends JPanel {         //graphic classe der simulation
   private long realTimeSinceStart;
   private long start;
   private int simulationSize;
   private int robotsPerRound;
-
+  
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+  private BufferedImage bufImgRoboter = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_RGB);
   private List<MyRobot> robots = new ArrayList<>();
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
-    repaint(); 
+
+    try {
+    bufImgRoboter = ImageIO.read(new File("Grafik/Roboter_V1.png"));
+    }
+    catch (IOException ex) {
+    ex.printStackTrace();
+    }
+
+    repaint();
+    
+    
   }
   
   @Override
@@ -49,6 +64,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         g2D.drawString("SOLAR_" + robots.get(i).getStatistics()[8], x, y+180);        
         g2D.setColor(Color.GREEN); 
         g2D.drawRect(x-20, y-20, 40, 40);
+        //g2D.drawImage(bufImgRoboter, x-20, x-20, null);
         } catch (Exception e) {
         }
       }
