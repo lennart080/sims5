@@ -1,16 +1,16 @@
 package SIMS5.gui;
-import javax.imageio.ImageIO;
-import javax.swing.*;
-
 import SIMS5.calculator.Calculator;
 import SIMS5.simulation.MyRobot;
 
+import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.io.File;
-import java.io.IOException;
+
 public class MyPanelSimulation extends JPanel {         //graphic classe der simulation
   private long realTimeSinceStart;
   private long start;
@@ -19,22 +19,21 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-  private BufferedImage bufImgRoboter = new BufferedImage(screenWidth,screenHeight,BufferedImage.TYPE_INT_RGB);
   private List<MyRobot> robots = new ArrayList<>();
+
+  private BufferedImage bufImgEntity;
+
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
-
+    
     try {
-    bufImgRoboter = ImageIO.read(new File("Grafik/Roboter_V1.png"));
-    }
-    catch (IOException ex) {
-    ex.printStackTrace();
+      bufImgEntity = ImageIO.read(new File(System.getProperty("user.dir") + "/SIMS5/gui/Grafik/Entity2.jpg"));
+    } catch (Exception e) {
+      System.out.println(e);
     }
 
     repaint();
-    
-    
   }
   
   @Override
@@ -62,24 +61,17 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         g2D.drawString("HEALTH_" + robots.get(i).getStatistics()[6], x, y+140);
         g2D.drawString("RUST_" + robots.get(i).getStatistics()[7], x, y+160);
         g2D.drawString("SOLAR_" + robots.get(i).getStatistics()[8], x, y+180);        
-        g2D.setColor(Color.GREEN); 
         g2D.drawRect(x-20, y-20, 40, 40);
-        //g2D.drawImage(bufImgRoboter, x-20, x-20, null);
-        } catch (Exception e) {
+        g2D.drawImage(bufImgEntity, x-20, y-20, null);
+        } catch (Exception e){
+          System.out.println(e);
         }
       }
-    }
-    g2D.setColor(Color.CYAN);
-    if (simulationSize != 0) {
-      g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
-    }
-    g2D.setColor(Color.BLACK);
-    for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
-      g2D.drawLine(i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), 0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getHeight());
     }
     for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
       g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)));
     }
+    g2D.dispose();
     //-------------------
   }
   

@@ -186,7 +186,6 @@ public class GuiManager {
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
       dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestRobot());
       graphUpdate();
-      inputPanel.myUpdate();
       if (simManager.getRobots().size() != 0) {
         simulationPanel.myUpdate(simManager.getRobots());  
         robotDataPanel.myUpdate(simManager.getRobots().get(0));
