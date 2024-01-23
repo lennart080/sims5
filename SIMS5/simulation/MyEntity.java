@@ -3,22 +3,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MyRobot {
+public class MyEntity {
   //objekts
   private SimManager manager;
   //get set
   private double[] statistics;
   private double[] defaultStats;
-  private int[] priceList;
   private double[] updateList = {0.06, 0.6, 6.0, 2.5}; //rost plus, rost loss, energy loss, health loss --per sec
-  private double walkActivasion = 0.6;
-  private double upgradActivasion = 0.9;
-  private int roboSize;
+  private double walkActivasion = 0.75;
+  private int entitySize;
   private int simSize;
   private double[][] neurons;   //[] reihe [][] neuron
   private double[][][] weigths;  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   private List<int[]> position = new ArrayList<>();
   //run time
+  private int[] endStats = new int[1];
+  private boolean alive = true;
   private int serialNumber;
   public static int lastSerialNumber;
   private List<Boolean> positionSwitch = new ArrayList<>();
@@ -27,13 +27,13 @@ public class MyRobot {
   private int day;
   private int lastMovment;
   
-  public MyRobot(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics, int[] pPriceList, int pRoboSize, int pSimSize) {
+  public MyEntity(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics, int pRoboSize, int pSimSize) {
     manager = pManager;
     weigths = Arrays.copyOf(pWeigths, pWeigths.length);
     neurons = Arrays.copyOf(pNeurons, pNeurons.length);
     statistics = Arrays.copyOf(startStatistics, startStatistics.length);
     defaultStats = Arrays.copyOf(startStatistics, startStatistics.length);
-    roboSize = pRoboSize;
+    entitySize = pRoboSize;
     simSize = pSimSize;
     serialNumber = lastSerialNumber;
     lastSerialNumber++;
@@ -44,10 +44,19 @@ public class MyRobot {
     for (int i = 0; i < 5; i++) {
       positionSwitch.add(true);
     }
-    priceList = pPriceList;
   }
+
+  //-------------------------------------
+
+  //--------------abfrage----------------
+
+  public boolean alive() {
+    return alive;
+  }
+
+  //-------------------------------------
   
-  //get methoden des roboters 
+  //----------------get------------------
   
   public double[][][] getWeights() {
     return weigths;
@@ -85,11 +94,21 @@ public class MyRobot {
     return calcTime;
   }
 
+  public int[] getEndStats() {
+    return endStats;
+  }
+
+  //-------------------------------------
+
+  //----------------set------------------
+
   public void setDay(int pDay) {
     day = pDay;
   }
 
-  //hirn des robos
+  //--------------------------------------
+
+  //-----------neural network-------------
 
   public void simulate(double lightIntensity) {
     calcTimeSave = System.nanoTime();
@@ -122,27 +141,27 @@ public class MyRobot {
   }
 
   public void checkBounds() {
-    int robotX = position.get(position.size()-1)[0]; 
-    int robotY = position.get(position.size()-1)[1];
-    if (robotX < (roboSize/2)) {
-      robotX = (roboSize/2);
+    int x = position.get(position.size()-1)[0]; 
+    int y = position.get(position.size()-1)[1];
+    if (x < (entitySize/2)) {
+      x = (entitySize/2);
     }
-    if (robotX > (simSize-(roboSize/2))) {
-      robotX = (simSize-(roboSize/2));
+    if (x > (simSize-(entitySize/2))) {
+      x = (simSize-(entitySize/2));
     }
-    if (robotY < (roboSize/2)) {
-      robotY = (roboSize/2);
+    if (y < (entitySize/2)) {
+      y = (entitySize/2);
     }
-    if (robotY > (simSize-(roboSize/2))) {
-      robotY = (simSize-(roboSize/2));
+    if (y > (simSize-(entitySize/2))) {
+      y = (simSize-(entitySize/2));
     }
-    if (position.get(position.size()-1)[0] != robotX) {
-      position.get(position.size()-1)[0] = robotX;
+    if (position.get(position.size()-1)[0] != x) {
+      position.get(position.size()-1)[0] = x;
       positionSwitch.set(positionSwitch.size()-1, false);
       lastMovment = 0;
     }
-    if (position.get(position.size()-1)[1] != robotY) {
-      position.get(position.size()-1)[1] = robotY;
+    if (position.get(position.size()-1)[1] != y) {
+      position.get(position.size()-1)[1] = y;
       positionSwitch.set(positionSwitch.size()-1, false);
       lastMovment = 0;
     }
@@ -174,6 +193,8 @@ public class MyRobot {
       statistics[6] = roundToDecPlaces(statistics[6]-(updateList[3]/60), 2); // leben verlust
       if (statistics[6] <= 0.0) { // wenn keine enerige
         manager.deleteRobo(this); // stirbt
+        endStats[0] = manager.getUpdates();
+        alive = false;
       }
     } 
   }

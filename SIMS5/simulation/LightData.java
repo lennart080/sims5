@@ -9,6 +9,7 @@ public class LightData {
   private double lightIntensity;
   private double noiseStrength;
   private double noiseSize;
+  private double dayLengthVariation;
 
   public void newNoise(int pSeed) {  //noise objekt wird erstellt
     noise = new PerlinNoise(pSeed);
@@ -16,10 +17,17 @@ public class LightData {
 
   public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit
     double time = pTime;
-    if ((time % 3600.0) <= lightTime) {
+    double dayVariation = noise.getPerlinNoise(time-(time % 3600)+Math.round(lightTime/2)/(0.2*noise.getTableSize()))*dayLengthVariation;
+    if ((lightTime+dayVariation) > 3600) {
+      dayVariation = 3600-lightTime;
+    }
+    if ((lightTime+dayVariation) < 0) {
+      dayVariation = 0;
+    }
+    if ((time % 3600.0) <= (lightTime+dayVariation)) {
       double gx = noise.getPerlinNoise(time/(noiseSize*noise.getTableSize()))*noiseStrength;
-      double fx = Math.sin(((time % 3600.0)*Math.PI)/lightTime);
-      double noiseFade = (1 - Math.abs(((time % 3600.0)/lightTime)-0.5)*2)/2;
+      double fx = Math.sin(((time % 3600.0)*Math.PI)/(lightTime+dayVariation));
+      double noiseFade = (1 - Math.abs(((time % 3600.0)/(lightTime+dayVariation))-0.5)*2)/2;
       return ((gx*noiseFade*2)+fx)*lightIntensity;
     } 
     return 0.0;
@@ -73,6 +81,10 @@ public class LightData {
     } else {
       noiseStrength = 0.0;
     }
+  }
+
+  public void setDayLengthVariation(double variation) {
+    dayLengthVariation = variation;
   }
 
   //-----------------------------

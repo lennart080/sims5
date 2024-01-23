@@ -10,13 +10,12 @@ public class GuiManager {
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
-  private MyPanelRobotData robotDataPanel;
+  private MyPanelEntityData entityDataPanel;
   private MyPanelInput inputPanel;
 
   //get set
   private int startSeed;
   private int sollFps;
-  private int[] basePrice = new int[5];
   private double[] startStatistics = new double[9];
 
   //run time
@@ -31,9 +30,9 @@ public class GuiManager {
       simulationPanel = new MyPanelSimulation();
       dataPanel = new MyPanelData();
       graphPanel = new MyPanelGraphs();
-      robotDataPanel = new MyPanelRobotData();
+      entityDataPanel = new MyPanelEntityData();
       inputPanel = new MyPanelInput();
-      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, robotDataPanel, inputPanel);
+      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, entityDataPanel, inputPanel);
     });
     //-------------------------------------
 
@@ -57,11 +56,6 @@ public class GuiManager {
     //solar                         solar panele welche energie gewinnen
     startStatistics[8] = 1.0; 
     //------------------------------------
-    basePrice[0] = 25; //atk
-    basePrice[1] = 10; //eSp
-    basePrice[2] = 20; //spe
-    basePrice[3] = 25; //def
-    basePrice[4] = 20; //sol
   }
 
   public void runGui() {
@@ -86,7 +80,7 @@ public class GuiManager {
 
   public void startSimulation() {
     //Set GuiManager
-    setSeed(54674);
+    setSeed(54678);
     setSollFps(20);
     //Set SimManager
     simManager.setNoiseStrength(0.02);
@@ -94,19 +88,20 @@ public class GuiManager {
     simManager.setLightIntensity(1.0);
     simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
-    simManager.setRobotsPerRound(100);
+    simManager.setEntitysPerRound(83);
     simManager.setSimulationSize(getSimulationSize());
-    simManager.setRobotSize(40);
-    simManager.setDayLengthRealTimeInSec(60);
+    simManager.setEntitySize(40);
+    simManager.setDayLengthRealTimeInSec(3);
     simManager.setRandomlyPickedOnes(2);
-    int[] n = {8};
+    simManager.setDayLengthVariation(1000);
+    int[] n = {8, 4};
     simManager.setNeuronLayers(n);
     //Set GraphPanel
-    graphPanel.setDaysOnSlide(4);
+    graphPanel.setDaysOnSlide(3);
     graphPanel.setRandgröße(25);
     //Set SimPanel
     simulationPanel.setSimulationSize(getSimulationSize());
-    simulationPanel.setRobotsPerRound(100);
+    simulationPanel.setEntitysPerRound(83);
     //start
     initialiseGraphpanel();
     simManager.startSimulation();
@@ -160,10 +155,6 @@ public class GuiManager {
     return -1;
   }
 
-  public int[] getBasePrice() {
-    return basePrice;
-  }
-
   public double[] getStartStatistics() {
     return startStatistics;
   }
@@ -184,11 +175,18 @@ public class GuiManager {
 
   private void updateGui() {  
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
-      dataPanel.myUpdate(fps, simManager.getRobotsPerRound(), simManager.getRobots().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestRobot());
+      dataPanel.myUpdate(fps, simManager.getEntitysPerRound(), simManager.getEntitys().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestEntity());
       graphUpdate();
+<<<<<<< Updated upstream
       if (simManager.getRobots().size() != 0) {
         simulationPanel.myUpdate(simManager.getRobots());  
         robotDataPanel.myUpdate(simManager.getRobots().get(0));
+=======
+      inputPanel.myUpdate();
+      if (simManager.getEntitys().size() != 0) {
+        simulationPanel.myUpdate(simManager.getEntitys());  
+        entityDataPanel.myUpdate(simManager.getEntitys().get(0));
+>>>>>>> Stashed changes
       } else {
         simulationPanel.myUpdate(null);
       }

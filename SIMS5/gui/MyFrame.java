@@ -12,19 +12,19 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
   private MyPanelGraphs graphPanel;
-  private MyPanelRobotData robotDataPanel;
+  private MyPanelEntityData entityDataPanel;
   private MyPanelInput inputPanel;
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
   private int guiMode;
   
-  public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelRobotData rdp, MyPanelInput ip) {
+  public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelEntityData edp, MyPanelInput ip) {
     simulationPanel = sp;
     dataPanel = dp;
     graphPanel = gp;
     guiManager = gm;
-    robotDataPanel = rdp;
+    entityDataPanel = edp;
     inputPanel = ip;
 
     this.setTitle("SIMS5");
@@ -76,16 +76,16 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     myRemove(simulationPanel);
     myRemove(dataPanel);
     myRemove(graphPanel);
-    myRemove(robotDataPanel);
+    myRemove(entityDataPanel);
     myRemove(inputPanel);
     switch (mode) {
       case 1 :                      
         myAdd(dataPanel);  
-        myAdd(robotDataPanel);      
+        myAdd(entityDataPanel);      
         myAdd(simulationPanel);
         
         dataPanel.setBounds(0,0,300,screenHeight/2);
-        robotDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
+        entityDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
         simulationPanel.setBounds(300,0, screenWidth-300, screenHeight); 
         break;
       case 2 : 
@@ -104,10 +104,10 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         myAdd(simulationPanel);
         myAdd(graphPanel);
         myAdd(dataPanel);
-        myAdd(robotDataPanel);
+        myAdd(entityDataPanel);
                 
         dataPanel.setBounds(0,200,300,(screenHeight/2)-200);
-        robotDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
+        entityDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
         graphPanel.setBounds(0, 0, screenWidth, 200);
         simulationPanel.setBounds(300, 200, screenWidth-300, screenHeight-200);  
         break;
@@ -130,8 +130,8 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     if (this.getContentPane().isAncestorOf(graphPanel)) {
       graphPanel.repaint();
     }
-    if (this.getContentPane().isAncestorOf(robotDataPanel)) {
-      robotDataPanel.repaint();
+    if (this.getContentPane().isAncestorOf(entityDataPanel)) {
+      entityDataPanel.repaint();
     }
     if (this.getContentPane().isAncestorOf(inputPanel)) {
       inputPanel.repaint();

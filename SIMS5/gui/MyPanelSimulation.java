@@ -1,6 +1,6 @@
 package SIMS5.gui;
 import SIMS5.calculator.Calculator;
-import SIMS5.simulation.MyRobot;
+import SIMS5.simulation.MyEntity;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,6 +15,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
   private long realTimeSinceStart;
   private long start;
   private int simulationSize;
+<<<<<<< Updated upstream
   private int robotsPerRound;
   
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
@@ -23,6 +24,13 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
 
   private BufferedImage bufImgEntity;
 
+=======
+  private int entitysPerRound;
+
+  private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
+  private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
+  private List<MyEntity> robots = new ArrayList<>();
+>>>>>>> Stashed changes
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -68,14 +76,27 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         }
       }
     }
+<<<<<<< Updated upstream
     for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
       g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)));
+=======
+    g2D.setColor(Color.CYAN);
+    if (simulationSize != 0) {
+      g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
+    }
+    g2D.setColor(Color.BLACK);
+    for (int i = 0; i < (int)Math.sqrt(entitysPerRound); i++) {
+      g2D.drawLine(i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), 0, i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getHeight());
+    }
+    for (int i = 0; i < (int)Math.sqrt(entitysPerRound); i++) {
+      g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)));
+>>>>>>> Stashed changes
     }
     g2D.dispose();
     //-------------------
   }
   
-  public void myUpdate(List<MyRobot> pRobots) {                 //aktualisiren der daten
+  public void myUpdate(List<MyEntity> pRobots) {                 //aktualisiren der daten
     robots = pRobots;    
   }
 
@@ -83,7 +104,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
     simulationSize = simSize;
   }
 
-  public void setRobotsPerRound(int pRobotsPerRound) {
-    robotsPerRound = pRobotsPerRound;
+  public void setEntitysPerRound(int pEntitysPerRound) {
+    entitysPerRound = pEntitysPerRound;
   }
 }

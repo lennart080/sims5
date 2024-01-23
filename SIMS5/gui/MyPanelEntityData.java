@@ -5,10 +5,10 @@ import java.awt.Graphics2D;
 
 import javax.swing.JPanel;
 
-import SIMS5.simulation.MyRobot;
-public class MyPanelRobotData extends JPanel {          //graphic classe der daten
-  private MyRobot robot;
-  public MyPanelRobotData() {
+import SIMS5.simulation.MyEntity;
+public class MyPanelEntityData extends JPanel {          //graphic classe der daten
+  private MyEntity robot;
+  public MyPanelEntityData() {
     this.setBackground(Color.BLACK);
     repaint(); 
   }
@@ -18,7 +18,7 @@ public class MyPanelRobotData extends JPanel {          //graphic classe der dat
     super.paint(g);
     Graphics2D g2D = (Graphics2D) g;
     g2D.setPaint(Color.RED);
-    g2D.drawString("RobotData-Panel", 20, 40);
+    g2D.drawString("EntityData-Panel", 20, 40);
     if (robot != null) {
       g2D.drawString("" + robot.getSerialNumber(), 20, 60);
       g2D.drawString("" + robot.getPositions()[0][0] + "  " + robot.getPositions()[0][1], 20, 80);
@@ -35,7 +35,7 @@ public class MyPanelRobotData extends JPanel {          //graphic classe der dat
     }
   }
   
-  public void myUpdate(MyRobot robot2) {                 //aktualisiren der daten
+  public void myUpdate(MyEntity robot2) {                 //aktualisiren der daten
     robot = robot2;
   }
 }
