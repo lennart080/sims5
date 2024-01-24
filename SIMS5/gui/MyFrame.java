@@ -84,9 +84,9 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
         myAdd(entityDataPanel);      
         myAdd(simulationPanel);
         
-        dataPanel.setBounds(0,0,300,screenHeight/2);
-        entityDataPanel.setBounds(0, screenHeight/2, 300, screenHeight);
-        simulationPanel.setBounds(300,0, screenWidth-300, screenHeight); 
+        dataPanel.setBounds(0,0,600,screenHeight/2);
+        entityDataPanel.setBounds(0, screenHeight/2, 600, screenHeight);
+        simulationPanel.setBounds(600,0, screenWidth-600, screenHeight); 
         break;
       case 2 : 
         myAdd(simulationPanel);

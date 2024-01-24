@@ -88,20 +88,19 @@ public class GuiManager {
     simManager.setLightIntensity(1.0);
     simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
-    simManager.setEntitysPerRound(83);
+    simManager.setEntitysPerRound(100);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(3);
-    simManager.setRandomlyPickedOnes(2);
+    simManager.setDayLengthRealTimeInSec(20);
     simManager.setDayLengthVariation(1000);
-    int[] n = {8, 4};
-    simManager.setNeuronLayers(n);
+    int[] n = {3, 2};
+    simManager.setHiddenLayers(n);
     //Set GraphPanel
     graphPanel.setDaysOnSlide(3);
     graphPanel.setRandgröße(25);
     //Set SimPanel
     simulationPanel.setSimulationSize(getSimulationSize());
-    simulationPanel.setEntitysPerRound(83);
+    simulationPanel.setEntitysPerRound(100);
     //start
     initialiseGraphpanel();
     simManager.startSimulation();
@@ -177,16 +176,9 @@ public class GuiManager {
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
       dataPanel.myUpdate(fps, simManager.getEntitysPerRound(), simManager.getEntitys().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestEntity());
       graphUpdate();
-<<<<<<< Updated upstream
-      if (simManager.getRobots().size() != 0) {
-        simulationPanel.myUpdate(simManager.getRobots());  
-        robotDataPanel.myUpdate(simManager.getRobots().get(0));
-=======
-      inputPanel.myUpdate();
       if (simManager.getEntitys().size() != 0) {
         simulationPanel.myUpdate(simManager.getEntitys());  
         entityDataPanel.myUpdate(simManager.getEntitys().get(0));
->>>>>>> Stashed changes
       } else {
         simulationPanel.myUpdate(null);
       }

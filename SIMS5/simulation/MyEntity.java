@@ -10,12 +10,13 @@ public class MyEntity {
   private double[] statistics;
   private double[] defaultStats;
   private double[] updateList = {0.06, 0.6, 6.0, 2.5}; //rost plus, rost loss, energy loss, health loss --per sec
-  private double walkActivasion = 0.75;
+  private double walkActivasion = 0.3;
   private int entitySize;
   private int simSize;
-  private double[][] neurons;   //[] reihe [][] neuron
-  private double[][][] weigths;  //[] reihe [][] neuron [][][] verbindung(2tes neuron)
   private List<int[]> position = new ArrayList<>();
+  private List<List<Double>> neurons; 
+  private List<List<List<Double[]>>> weights;
+
   //run time
   private int[] endStats = new int[1];
   private boolean alive = true;
@@ -27,10 +28,10 @@ public class MyEntity {
   private int day;
   private int lastMovment;
   
-  public MyEntity(SimManager pManager, double[][][] pWeigths, double[][] pNeurons, int[] pPosition, double[] startStatistics, int pRoboSize, int pSimSize) {
+  public MyEntity(SimManager pManager, List<List<List<Double[]>>> pWeigths, List<List<Double>> pNeurons, int[] pPosition, double[] startStatistics, int pRoboSize, int pSimSize) {
     manager = pManager;
-    weigths = Arrays.copyOf(pWeigths, pWeigths.length);
-    neurons = Arrays.copyOf(pNeurons, pNeurons.length);
+    neurons = new ArrayList<>(pNeurons);
+    weights = new ArrayList<>(pWeigths);
     statistics = Arrays.copyOf(startStatistics, startStatistics.length);
     defaultStats = Arrays.copyOf(startStatistics, startStatistics.length);
     entitySize = pRoboSize;
@@ -57,13 +58,13 @@ public class MyEntity {
   //-------------------------------------
   
   //----------------get------------------
-  
-  public double[][][] getWeights() {
-    return weigths;
+
+  public List<List<Double>> getNeurons() {
+    return neurons;
   }
 
-  public double[][] getNeurons() {
-    return neurons;
+  public List<List<List<Double[]>>> getWeights() {
+    return weights;
   }
   
   public int[][] getPositions() { 
@@ -111,6 +112,7 @@ public class MyEntity {
   //-----------neural network-------------
 
   public void simulate(double lightIntensity) {
+    //newSimulate(lightIntensity);
     calcTimeSave = System.nanoTime();
     updateStatistics(lightIntensity);
     calcTime[0] = System.nanoTime() - calcTimeSave;
@@ -200,28 +202,31 @@ public class MyEntity {
   }
 
   private void setInputs() {
-    neurons[0][0] =  roundToDecPlaces(statistics[0]/statistics[3], 4); //prozent des "akkus" (0-1) (energie/speicher)
-    neurons[0][1] = statistics[2]/10; // atk/10
-    neurons[0][2] = statistics[4]/10; // speed/10
-    neurons[0][3] = statistics[5]/10; // defence/10
-    neurons[0][4] = roundToDecPlaces(statistics[6]/10, 4); // health/10
-    neurons[0][5] = statistics[7]; // rust
-    neurons[0][6] = statistics[8]/10; // solar/10
-    neurons[0][7] = roundToDecPlaces((double)position.get(position.size()-1)[0]/(double)simSize, 4); // x pos in prozent zu max (0 bis 1)
-    neurons[0][8] = roundToDecPlaces((double)position.get(position.size()-1)[1]/(double)simSize, 4); // y pos in prozent zu max (0 bis 1)
-    neurons[0][9] = (double)lastMovment/4.0; //last movment (0 still, 0.25 up, 0.5 right, 0.75 down, 1.0 left)
+    neurons.get(0).set(0, roundToDecPlaces(statistics[0]/statistics[3], 4)); //prozent des "akkus" (0-1) (energie/speicher)
+    neurons.get(0).set(1, statistics[2]/10); // atk/10
+    neurons.get(0).set(2, statistics[4]/10); // speed/10
+    neurons.get(0).set(3, statistics[5]/10); // defence/10
+    neurons.get(0).set(4, roundToDecPlaces(statistics[6]/10, 4)); // health/10
+    neurons.get(0).set(5, statistics[7]); // rust
+    neurons.get(0).set(6, statistics[8]/10); // solar/10
+    neurons.get(0).set(7, roundToDecPlaces((double)position.get(position.size()-1)[0]/(double)simSize, 4)); // x pos in prozent zu max (0 bis 1)
+    neurons.get(0).set(8, roundToDecPlaces((double)position.get(position.size()-1)[1]/(double)simSize, 4)); // y pos in prozent zu max (0 bis 1)
+    neurons.get(0).set(9, (double)lastMovment/4.0); //last movment (0 still, 0.25 up, 0.5 right, 0.75 down, 1.0 left)
   }
 
+
   private void calculate() {
-    for (int i = 1; i < neurons.length; i++) {
-      for (int j = 0; j < neurons[i].length; j++) {
-        neurons[i][j] = 0;
-        for (int j2 = 0; j2 < neurons[i-1].length; j2++) {
-          neurons[i][j] += neurons[i-1][j2] * weigths[i-1][j2][j];
+    for (int i = 1; i < weights.size(); i++) {
+      for (int j = 0; j < weights.get(i).size(); j++) {
+        neurons.get(i).set(j, 0.0);
+        for (int j2 = 0; j2 < weights.get(i).get(j).size(); j2++) {
+          double cnv = neurons.get(weights.get(i).get(j).get(j2)[0].intValue()).get(weights.get(i).get(j).get(j2)[1].intValue());
+          double w = weights.get(i).get(j).get(j2)[2];
+          neurons.get(i).set(j, neurons.get(i).get(j)+(w*cnv));
         }
-        if (i != neurons.length-1) { // LReLU funktion for hidden neurons
-          neurons[i][j] = roundToDecPlaces((neurons[i][j] > 0) ? neurons[i][j] : 0.01 * neurons[i][j], 4);
-        } 
+        if (i != neurons.size()-1) {  // LReLU funktion for hidden neurons
+          neurons.get(i).set(j, roundToDecPlaces((neurons.get(i).get(j) > 0) ? neurons.get(i).get(j) : 0.01 * neurons.get(i).get(j), 4));
+        }
       }
     }
   }
@@ -229,17 +234,17 @@ public class MyEntity {
   private void formatOutputNeurons() {
     double sumExp = 0.0; // softmax funktion for the first 4 outputs (walking)
     for (int i = 0; i < 4; i++) {
-      sumExp += Math.exp(neurons[neurons.length-1][i]);
+      sumExp += Math.exp(neurons.get(neurons.size()-1).get(i));
     }
     for (int i = 0; i < 4; i++) {
-      neurons[neurons.length-1][i] = roundToDecPlaces(Math.exp(neurons[neurons.length-1][i]) / sumExp, 4);
+      neurons.get(neurons.size()-1).set(i, roundToDecPlaces(Math.exp(neurons.get(neurons.size()-1).get(i)) / sumExp, 4));
     }
     double sumExp2 = 0.0; // softmax funktion for the outputs 5 to 9 (upgrades)
     for (int i = 4; i < 9; i++) {
-      sumExp2 += Math.exp(neurons[neurons.length-1][i]);
+      sumExp2 += Math.exp(neurons.get(neurons.size()-1).get(i));
     }
     for (int i = 4; i < 9; i++) {
-      neurons[neurons.length-1][i] = roundToDecPlaces(Math.exp(neurons[neurons.length-1][i]) / sumExp2, 4);
+      neurons.get(neurons.size()-1).set(i, roundToDecPlaces(Math.exp(neurons.get(neurons.size()-1).get(i)) / sumExp2, 4));
     }
   }
 
@@ -248,8 +253,8 @@ public class MyEntity {
     int highestPosneuron = -1;
     double highestPos = 0;
     for (int i = 0; i < 4; i++) {
-      if (neurons[neurons.length-1][outputNeuronPos] > highestPos) {
-        highestPos = neurons[neurons.length-1][outputNeuronPos];
+      if (neurons.get(neurons.size()-1).get(outputNeuronPos) > highestPos) {
+        highestPos = neurons.get(neurons.size()-1).get(outputNeuronPos);
         if (highestPos >= walkActivasion) {
           highestPosneuron = outputNeuronPos;        
         }
@@ -298,10 +303,10 @@ public class MyEntity {
         checkBounds();     
         break;
     } 
-    statistics[2] = defaultStats[2] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos]);
-    statistics[3] = defaultStats[3] + (10*Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+1]));
-    statistics[4] = defaultStats[4] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+2]);
-    statistics[5] = defaultStats[5] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+3]);
-    statistics[8] = defaultStats[8] + Math.round(statistics[1]*neurons[neurons.length-1][outputNeuronPos+4]);
+    statistics[2] = defaultStats[2] + Math.round(statistics[1]*neurons.get(neurons.size()-1).get(outputNeuronPos));
+    statistics[3] = defaultStats[3] + (10*Math.round(statistics[1]*neurons.get(neurons.size()-1).get(outputNeuronPos+1)));
+    statistics[4] = defaultStats[4] + Math.round(statistics[1]*neurons.get(neurons.size()-1).get(outputNeuronPos+2));
+    statistics[5] = defaultStats[5] + Math.round(statistics[1]*neurons.get(neurons.size()-1).get(outputNeuronPos+3));
+    statistics[8] = defaultStats[8] + Math.round(statistics[1]*neurons.get(neurons.size()-1).get(outputNeuronPos+4));
   }
 }

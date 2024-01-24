@@ -8,29 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
 import java.io.File;
 
 public class MyPanelSimulation extends JPanel {         //graphic classe der simulation
   private long realTimeSinceStart;
   private long start;
   private int simulationSize;
-<<<<<<< Updated upstream
-  private int robotsPerRound;
-  
-  private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
-  private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
-  private List<MyRobot> robots = new ArrayList<>();
-
-  private BufferedImage bufImgEntity;
-
-=======
   private int entitysPerRound;
 
   private int screenHeight = (int)Toolkit.getDefaultToolkit().getScreenSize().getHeight();
   private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
   private List<MyEntity> robots = new ArrayList<>();
->>>>>>> Stashed changes
+
+  private BufferedImage bufImgEntity;
   public MyPanelSimulation() {
     start = System.currentTimeMillis();
     this.setBackground(Color.RED);
@@ -76,23 +66,21 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         }
       }
     }
-<<<<<<< Updated upstream
-    for (int i = 0; i < (int)Math.sqrt(robotsPerRound); i++) {
-      g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(robotsPerRound)));
-=======
-    g2D.setColor(Color.CYAN);
-    if (simulationSize != 0) {
-      g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
-    }
-    g2D.setColor(Color.BLACK);
-    for (int i = 0; i < (int)Math.sqrt(entitysPerRound); i++) {
-      g2D.drawLine(i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), 0, i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getHeight());
-    }
     for (int i = 0; i < (int)Math.sqrt(entitysPerRound); i++) {
       g2D.drawLine(0, i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getWidth(), i*(int)((double)simulationSize/Math.sqrt(entitysPerRound)));
->>>>>>> Stashed changes
+      g2D.setColor(Color.CYAN);
+      if (simulationSize != 0) {
+        g2D.drawRect(0, 0, Calculator.normaliseValue(simulationSize, screenWidth, this.getWidth()), Calculator.normaliseValue(simulationSize, screenHeight, this.getHeight()));
+      }
+      g2D.setColor(Color.BLACK);
+      for (int j = 0; j < (int)Math.sqrt(entitysPerRound); j++) {
+        g2D.drawLine(j*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), 0, j*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getHeight());
+      }
+      for (int l = 0; l < (int)Math.sqrt(entitysPerRound); l++) {
+        g2D.drawLine(0, l*(int)((double)simulationSize/Math.sqrt(entitysPerRound)), this.getWidth(), l*(int)((double)simulationSize/Math.sqrt(entitysPerRound)));
+      }
+      g2D.dispose();
     }
-    g2D.dispose();
     //-------------------
   }
   
