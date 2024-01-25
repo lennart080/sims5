@@ -62,7 +62,7 @@ public class MyPanelSimulation extends JPanel {         //graphic classe der sim
         g2D.drawRect(x-20, y-20, 40, 40);
         g2D.drawImage(bufImgEntity, x-20, y-20, null);
         } catch (Exception e){
-          System.out.println(e);
+          System.out.println("simPanel: " + e);
         }
       }
     }

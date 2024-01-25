@@ -47,7 +47,6 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private void myAdd(JPanel panel) {                                       //sichere methode zum hinzufügen eines panels vom bildschirm
     if (!this.getContentPane().isAncestorOf(panel)) {
       this.add(panel);
-     // panel.addMouseListener((MouseListener) this);
     }
   }
 

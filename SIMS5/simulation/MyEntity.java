@@ -10,7 +10,7 @@ public class MyEntity {
   private double[] statistics;
   private double[] defaultStats;
   private double[] updateList = {0.06, 0.6, 6.0, 2.5}; //rost plus, rost loss, energy loss, health loss --per sec
-  private double walkActivasion = 0.3;
+  private double walkActivasion = 0.5;
   private int entitySize;
   private int simSize;
   private List<int[]> position = new ArrayList<>();

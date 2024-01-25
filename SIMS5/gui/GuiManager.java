@@ -91,7 +91,7 @@ public class GuiManager {
     simManager.setEntitysPerRound(100);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(20);
+    simManager.setDayLengthRealTimeInSec(5);
     simManager.setDayLengthVariation(1000);
     int[] n = {3, 2};
     simManager.setHiddenLayers(n);

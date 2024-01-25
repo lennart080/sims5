@@ -21,6 +21,9 @@ public class SimManager {
   private int randomSelected = 2;
   private int diffNetworkSelected = 0;
   private int entitySize;
+  private double[] weightDying = {0.1, 0.001, 500}; // 0 = start probability; 1 = value after...; 2 = when1; 
+  private double[] weightAjustment = {0.2, 0.01, 1000}; // 0 = start probability; 1 = value after...; 2 = when1; 
+  private double[] weightAjustmentValue = {1, 0.01, 1000}; // 0 = start probability; 1 = value after...; 2 = when1; 
 
   //run time
   private int round;            
@@ -45,7 +48,6 @@ public class SimManager {
   public void startSimulation() {
     Thread simulationThread = new Thread(() -> {
       inicialiseSim();
-      nextRound();
       startSim();
     });
     simulationThread.start();
@@ -121,77 +123,75 @@ public class SimManager {
       neuronLayers[j] = hiddenLayers[j-1];
     }
     neuronLayers[neuronLayers.length-1] = 10;
+    //first round
+    for (int i = 0; i < entitysPerRound; i++) {
+      //position
+      int[] position = newPosition(i);
+      //neurons and weights
+      List<List<Double>> neurons; 
+      List<List<List<Double[]>>> weights;
+      //helper
+      //new network
+      neurons = new ArrayList<>(); 
+      weights = new ArrayList<>();
+      int[][] finised = new int[neuronLayers.length][];  
+      for (int j = 0; j < neuronLayers.length; j++) {
+        finised[j] = new int[neuronLayers[j]];
+      }
+      for (int j = 0; j < neuronLayers.length; j++) {
+        neurons.add(new ArrayList<>());
+        weights.add(new ArrayList<>());
+        for (int l = 0; l < neuronLayers[j]; l++) {
+          neurons.get(j).add(0.0); 
+          if (j != 0) {
+            weights.get(j).add(new ArrayList<>());
+            int x2 = normaliseValue(newRandom(), 1, j-1);
+            int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
+            Double[] x = {(double)x2, (double)y2, newRandom()*2};
+            weights.get(j).get(l).add(x);
+            finised[x2][y2]+= 1;
+          }
+        }
+      }
+      for (int j = 0; j < neurons.size()-1; j++) {
+        for (int l = 0; l < neurons.get(j).size(); l++) {
+          if (finised[j][l] == 0) {
+            int x2 = j + 1 + normaliseValue(newRandom(), 1, neuronLayers.length-2-j);
+            int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
+            Double[] x = {(double)j, (double)l, newRandom()*2};
+            weights.get(x2).get(y2).add(x);
+            finised[j][l]+= 1;
+          }
+        }
+      }
+      //new entity
+      entitys.add(new MyEntity(this, weights, neurons, position, guiManager.getStartStatistics(), entitySize, simulationSize));
+    }
   }
 
   private void nextRound() {  //new
-    if (round == 0) {
-      for (int i = 0; i < entitysPerRound; i++) {
-        //position
-        int[] position = newPosition(i);
-        //neurons and weights
-        List<List<Double>> neurons; 
-        List<List<List<Double[]>>> weights;
-        //helper
-        //new network
-        neurons = new ArrayList<>(); 
-        weights = new ArrayList<>();
-        int[][] finised = new int[neuronLayers.length][];  
-        for (int j = 0; j < neuronLayers.length; j++) {
-          finised[j] = new int[neuronLayers[j]];
-        }
-        for (int j = 0; j < neuronLayers.length; j++) {
-          neurons.add(new ArrayList<>());
-          weights.add(new ArrayList<>());
-          for (int l = 0; l < neuronLayers[j]; l++) {
-            neurons.get(j).add(0.0); 
-            if (j != 0) {
-              weights.get(j).add(new ArrayList<>());
-              int x2 = normaliseValue(newRandom(), 1, j-1);
-              int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
-              Double[] x = {(double)x2, (double)y2, newRandom()*2};
-              weights.get(j).get(l).add(x);
-              finised[x2][y2]+= 1;
-            }
-          }
-        }
-        for (int j = 0; j < neurons.size()-1; j++) {
-          for (int l = 0; l < neurons.get(j).size(); l++) {
-            if (finised[j][l] == 0) {
-              int x2 = j + 1 + normaliseValue(newRandom(), 1, neuronLayers.length-2-j);
-              int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
-              Double[] x = {(double)j, (double)l, newRandom()*2};
-              weights.get(x2).get(y2).add(x);
-              finised[j][l]+= 1;
-            }
-          }
-        }
-        //new entity
-        entitys.add(new MyEntity(this, weights, neurons, position, guiManager.getStartStatistics(), entitySize, simulationSize));
-      }
-    } else {
       int pos = 0;
-      for (int i = 0; i < ((entitysPerRound/5)-randomSelected-diffNetworkSelected); i++) {
-        for (int j = 0; j < 5; j++) {
-          pos++;
-          List<List<Double>> neurons; 
-          List<List<List<Double[]>>> weights;
-          neurons = new ArrayList<>(ageSortedEntities.get(ageSortedEntities.size()-1).getNeurons());
-          weights = new ArrayList<>(ageSortedEntities.get(ageSortedEntities.size()-1).getWeights());
-          ageSortedEntities.remove(ageSortedEntities.size()-1);
-          mutatedAndAdd(neurons, weights, pos);
-        }
+    for (int i = 0; i < ((entitysPerRound / 5) - randomSelected - diffNetworkSelected); i++) {
+      for (int j = 0; j < 5; j++) {
+        pos++;
+        List<List<Double>> neurons;
+        List<List<List<Double[]>>> weights;
+        neurons = new ArrayList<>(ageSortedEntities.get(ageSortedEntities.size() - 1).getNeurons());
+        weights = new ArrayList<>(ageSortedEntities.get(ageSortedEntities.size() - 1).getWeights());
+        ageSortedEntities.remove(ageSortedEntities.size() - 1);
+        mutatedAndAdd(neurons, weights, pos);
       }
-      for (int i = 0; i < randomSelected; i++) {
-        for (int j = 0; j < 5; j++) {
-          pos++;
-          List<List<Double>> neurons; 
-          List<List<List<Double[]>>> weights;
-          int randomPos = normaliseValue(newRandom(), 1, ageSortedEntities.size()-1);
-          neurons = new ArrayList<>(ageSortedEntities.get(randomPos).getNeurons());
-          weights = new ArrayList<>(ageSortedEntities.get(randomPos).getWeights());
-          ageSortedEntities.remove(ageSortedEntities.size()-1);
-          mutatedAndAdd(neurons, weights, pos);
-        }
+    }
+    for (int i = 0; i < randomSelected; i++) {
+      for (int j = 0; j < 5; j++) {
+        pos++;
+        List<List<Double>> neurons;
+        List<List<List<Double[]>>> weights;
+        int randomPos = normaliseValue(newRandom(), 1, ageSortedEntities.size() - 1);
+        neurons = new ArrayList<>(ageSortedEntities.get(randomPos).getNeurons());
+        weights = new ArrayList<>(ageSortedEntities.get(randomPos).getWeights());
+        ageSortedEntities.remove(ageSortedEntities.size() - 1);
+        mutatedAndAdd(neurons, weights, pos);
       }
     }
     ageSortedEntities.clear();
@@ -206,15 +206,15 @@ public class SimManager {
     for (int k = 1; k < neuronLayers.length; k++) {
       for (int j2 = 0; j2 < neuronLayers[k]; j2++) {
         for (int i = 0; i < weights.get(k).get(j2).size(); i++) {
-          if (newRandom() > 0.95) {  //delete weight
+          if (newRandom() < getCDBAV(0)) {  //delete weight
             weights.get(k).get(j2).remove(i);
             ListReturner x = networkFixer(neurons, weights);
             neurons = x.getNeurons();
             weights = x.getWeights();
           } else {
-            if (newRandom() > 0.8) {  //random weight ajustment
+            if (newRandom() < getCDBAV(1)) {  //random weight ajustment
               Double[] x = weights.get(k).get(j2).get(i);
-              x[2]+= (newRandom() * (0.9*Math.pow(Math.E, (-0.01*round))));
+              x[2]+= (newRandom() * getCDBAV(2));
               weights.get(k).get(j2).set(i, x);
             }
           }
@@ -320,6 +320,25 @@ public class SimManager {
 
     public List<List<List<Double[]>>> getWeights() {
         return weights;
+    }
+  }
+
+  private double getCDBAV(int ajustment) {  //get Current Declining Ajustment value
+    double decay;
+    switch (ajustment) {
+      case 0: // dying weight probability 
+        decay = Math.log(weightDying[1]/weightDying[0])/weightDying[2];
+        return weightDying[0]*Math.pow(Math.E, (decay*round)); 
+      
+      case 1: // weight ajustment probability 
+        decay = Math.log(weightAjustment[1]/weightAjustment[0])/weightAjustment[2];
+        return weightAjustment[0]*Math.pow(Math.E, (decay*round));
+
+      case 2: // weight value ajustment prbability
+        decay = Math.log(weightAjustmentValue[1]/weightAjustmentValue[0])/weightAjustmentValue[2];
+        return weightAjustmentValue[0]*Math.pow(Math.E, (decay*round));
+      default:
+        return 0;
     }
   }
 
