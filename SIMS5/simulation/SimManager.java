@@ -131,12 +131,13 @@ public class SimManager {
         //neurons and weights
         List<List<Double>> neurons; 
         List<List<List<Double[]>>> weights;
+        //helper
         //new network
         neurons = new ArrayList<>(); 
         weights = new ArrayList<>();
-        boolean[][] finised = new boolean[neuronLayers.length][];  
+        int[][] finised = new int[neuronLayers.length][];  
         for (int j = 0; j < neuronLayers.length; j++) {
-          finised[j] = new boolean[neuronLayers[j]];
+          finised[j] = new int[neuronLayers[j]];
         }
         for (int j = 0; j < neuronLayers.length; j++) {
           neurons.add(new ArrayList<>());
@@ -149,17 +150,18 @@ public class SimManager {
               int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
               Double[] x = {(double)x2, (double)y2, newRandom()*2};
               weights.get(j).get(l).add(x);
-              finised[x2][y2] = true;
+              finised[x2][y2]+= 1;
             }
           }
         }
         for (int j = 0; j < neurons.size()-1; j++) {
           for (int l = 0; l < neurons.get(j).size(); l++) {
-            if (!finised[j][l]) {
+            if (finised[j][l] == 0) {
               int x2 = j + 1 + normaliseValue(newRandom(), 1, neuronLayers.length-2-j);
               int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
               Double[] x = {(double)j, (double)l, newRandom()*2};
               weights.get(x2).get(y2).add(x);
+              finised[j][l]+= 1;
             }
           }
         }
@@ -203,16 +205,58 @@ public class SimManager {
     int[] position = newPosition(pos);
     for (int k = 1; k < neuronLayers.length; k++) {
       for (int j2 = 0; j2 < neuronLayers[k]; j2++) {
-        if (newRandom() > 0.8) {  //random weights
-          int third = normaliseValue(newRandom(), 1, weights.get(k).get(j2).size());
-          Double[] x = weights.get(k).get(j2).get(third);
-          x[2]+= (newRandom() * (0.9*Math.pow(Math.E, (-0.01*round))));
-          weights.get(k).get(j2).set(third, x);
+        for (int i = 0; i < weights.get(k).get(j2).size(); i++) {
+          if (newRandom() > 0.95) {  //delete weight
+            weights.get(k).get(j2).remove(i);
+            ListReturner x = networkFixer(neurons, weights);
+            neurons = x.getNeurons();
+            weights = x.getWeights();
+          } else {
+            if (newRandom() > 0.8) {  //random weight ajustment
+              Double[] x = weights.get(k).get(j2).get(i);
+              x[2]+= (newRandom() * (0.9*Math.pow(Math.E, (-0.01*round))));
+              weights.get(k).get(j2).set(i, x);
+            }
+          }
         }
       }
     }
     //new entity
     entitys.add(new MyEntity(this, weights, neurons, position, guiManager.getStartStatistics(), entitySize, simulationSize));
+  }
+
+  private ListReturner networkFixer(List<List<Double>> pNeurons, List<List<List<Double[]>>> pWeights) {
+    int[][] conections = new int[pNeurons.size()][];
+    for (int i = 0; i < conections.length; i++) {
+      conections[i] = new int[pNeurons.get(i).size()];
+    }
+    for (int i = 1; i < pWeights.size(); i++) {
+      for (int j = 0; j < pWeights.get(i).size(); j++) {
+        if (pWeights.get(i).get(j).size() == 0) {
+          int x2 = normaliseValue(newRandom(), 1, i-1);
+          int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
+          Double[] x = {(double)x2, (double)y2, newRandom()*2};
+          pWeights.get(i).get(j).add(x);
+          conections[x2][y2]+= 1;
+        } else { 
+          for (int j2 = 0; j2 < pWeights.get(i).get(j).size(); j2++) {
+            conections[(int)(double)pWeights.get(i).get(j).get(j2)[0]][(int)(double)pWeights.get(i).get(j).get(j2)[1]]+= 1;
+          }
+        }
+      }
+    }
+    for (int i = 0; i < pNeurons.size()-1; i++) {
+      for (int j = 0; j < pNeurons.get(i).size(); j++) {
+        if (conections[i][j] == 0) {
+          int x2 = i + 1 + normaliseValue(newRandom(), 1, neuronLayers.length-2-i);
+          int y2 = normaliseValue(newRandom(), 1, neuronLayers[x2]);
+          Double[] x = {(double)i, (double)j, newRandom()*2};
+          pWeights.get(x2).get(y2).add(x);
+          conections[i][j]+= 1;
+        }
+      }
+    }
+    return new ListReturner(pNeurons, pWeights);
   }
 
   private int[] newPosition(int x) {  //new
@@ -259,6 +303,24 @@ public class SimManager {
     double newRange = (double) (newMax);
     double scaledValue = (value * newRange) / originalRange;
     return (int) Math.min(Math.max(scaledValue, 0), newMax);
+  }
+
+  public class ListReturner {
+    private List<List<Double>> neurons;
+    private List<List<List<Double[]>>> weights;
+
+    public ListReturner(List<List<Double>> neurons, List<List<List<Double[]>>> weights) {
+      this.neurons = neurons;
+      this.weights = weights;
+    }
+
+    public List<List<Double>> getNeurons() {
+        return neurons;
+    }
+
+    public List<List<List<Double[]>>> getWeights() {
+        return weights;
+    }
   }
 
   //------------------------------------
