@@ -26,7 +26,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     guiManager = gm;
     entityDataPanel = edp;
     inputPanel = ip;
-
+    inputPanel.setFrame(this);
     this.setTitle("SIMS5");
     this.setExtendedState(JFrame.MAXIMIZED_BOTH);
     this.setUndecorated(true);
@@ -70,7 +70,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
     }
   }
   
-  private void guiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
+  public void guiModes(int mode) {                           //methode für verschidene gui zustände(auf und zu klappen der menüs und fenster)
     guiMode = mode;
     myRemove(simulationPanel);
     myRemove(dataPanel);
@@ -143,7 +143,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
       if (guiMode == 5) {
         if (e.getKeyCode() == KeyEvent.VK_R) {
           guiModes(4);
-          guiManager.startSimulation();
+          
         }
       } else {
         switch (e.getKeyCode()) {

@@ -31,7 +31,7 @@ public class GuiManager {
       dataPanel = new MyPanelData();
       graphPanel = new MyPanelGraphs();
       entityDataPanel = new MyPanelEntityData();
-      inputPanel = new MyPanelInput();
+      inputPanel = new MyPanelInput(this);
       screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, entityDataPanel, inputPanel);
     });
     //-------------------------------------
@@ -80,7 +80,6 @@ public class GuiManager {
 
   public void startSimulation() {
     //Set GuiManager
-    setSeed(54378);
     setSollFps(20);
     //Set SimManager
     simManager.setNoiseStrength(0.02);
@@ -88,6 +87,7 @@ public class GuiManager {
     simManager.setLightIntensity(1.0);
     simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
+    System.out.println(startSeed);
     simManager.setEntitysPerRound(100);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
@@ -131,7 +131,7 @@ public class GuiManager {
     if (pSeed >= 1) {
       startSeed = pSeed;
     } else {
-      startSeed = 1;
+      startSeed = 54378;
     } 
   }
 
