@@ -9,7 +9,7 @@ public class MyEntity {
   //get set
   private double[] statistics;
   private double[] defaultStats;
-  private double[] updateList = {0.06, 0.6, 6.0, 2.5}; //rost plus, rost loss, energy loss, health loss --per sec
+  private double[] updateList = {0.01, 1.0, 1.0, 0.1}; //rost plus, rost loss, energy loss, health loss --per sec
   private double walkActivasion = 0.5;
   private int entitySize;
   private int simSize;
@@ -192,7 +192,7 @@ public class MyEntity {
     statistics[0] = roundToDecPlaces(statistics[0]-(((updateList[2]/60)*(day+1))+statistics[7]), 3); // energie verlust
     if (statistics[0] <= 0.0) { // wenn keine energie
       statistics[0] = 0.0; // bekommt min energie
-      statistics[6] = roundToDecPlaces(statistics[6]-(updateList[3]/60), 2); // leben verlust
+      statistics[6] = roundToDecPlaces(statistics[6]-(updateList[3]/60), 3); // leben verlust
       if (statistics[6] <= 0.0) { // wenn keine enerige
         manager.deleteRobo(this); // stirbt
         endStats[0] = manager.getUpdates();

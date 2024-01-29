@@ -107,7 +107,7 @@ public class SimManager {
 
   //---round handler and round generator---
 
-  private void inicialiseSim() { //new
+  private void inicialiseSim() { 
     //spawning grid
     xGridCount = (int)Math.round(Math.sqrt(entitysPerRound));
     yGridCount = (int)((double)entitysPerRound/(double)Math.round(Math.sqrt(entitysPerRound)));
@@ -130,7 +130,6 @@ public class SimManager {
       //neurons and weights
       List<List<Double>> neurons; 
       List<List<List<Double[]>>> weights;
-      //helper
       //new network
       neurons = new ArrayList<>(); 
       weights = new ArrayList<>();
@@ -169,7 +168,7 @@ public class SimManager {
     }
   }
 
-  private void nextRound() {  //new
+  private void nextRound() {  
       int pos = 0;
     for (int i = 0; i < ((entitysPerRound / 5) - randomSelected - diffNetworkSelected); i++) {
       for (int j = 0; j < 5; j++) {
@@ -259,7 +258,7 @@ public class SimManager {
     return new ListReturner(pNeurons, pWeights);
   }
 
-  private int[] newPosition(int x) {  //new
+  private int[] newPosition(int x) {  
     int xGridPos = x % xGridCount;
     int yGridpos = x / xGridCount;
     int[] position = {xGridPos*xGridSize, yGridpos*yGridSize};
@@ -268,7 +267,7 @@ public class SimManager {
     return position;
   }
 
-  public void deleteRobo(MyEntity robo) {  //new
+  public void deleteRobo(MyEntity robo) {  
     if (entitys.size() > 0) {
       for (int i = 0; i < entitys.size(); i++) {
         if (entitys.get(i) == robo) {

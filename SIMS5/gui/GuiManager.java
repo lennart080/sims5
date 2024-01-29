@@ -80,7 +80,7 @@ public class GuiManager {
 
   public void startSimulation() {
     //Set GuiManager
-    setSeed(54678);
+    setSeed(54378);
     setSollFps(20);
     //Set SimManager
     simManager.setNoiseStrength(0.02);
@@ -91,7 +91,7 @@ public class GuiManager {
     simManager.setEntitysPerRound(100);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(5);
+    simManager.setDayLengthRealTimeInSec(20);
     simManager.setDayLengthVariation(1000);
     int[] n = {3, 2};
     simManager.setHiddenLayers(n);
