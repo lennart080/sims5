@@ -17,7 +17,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
   private int screenWidth = (int)screenSize.getWidth();
   private int screenHeight = (int)screenSize.getHeight();
-  private int guiMode;
+  private int guiMode = 5;
   
   public MyFrame(GuiManager gm, MyPanelSimulation sp, MyPanelData dp, MyPanelGraphs gp, MyPanelEntityData edp, MyPanelInput ip) {
     simulationPanel = sp;
@@ -140,26 +140,26 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
   private class MyKeyListener extends KeyAdapter {               //keyListener zur regestrirung der benutzer inputs per tastatur
     @Override
     public void keyPressed(KeyEvent e) {
-      if (guiMode == 5) {
-        if (e.getKeyCode() == KeyEvent.VK_R) {
-          guiModes(4);
-          
+      if (guiMode != 5) {
+        switch (e.getKeyCode()) {
+          case KeyEvent.VK_A  :                         //test taste
+            guiModes(1);
+            break;
+          case KeyEvent.VK_S  :              //test taste
+            guiModes(2);
+            break;
+          case KeyEvent.VK_W  :                   //test taste
+            guiModes(3);
+            break;
+          case KeyEvent.VK_D  :                     //test taste
+            guiModes(4);
+            break;
+          default: 
+          break;
         }
       } else {
-        switch (e.getKeyCode()) {
-        case KeyEvent.VK_A  :                         //test taste
-          guiModes(1);
-          break;
-        case KeyEvent.VK_S  :              //test taste
-          guiModes(2);
-          break;
-        case KeyEvent.VK_W  :                   //test taste
-          guiModes(3);
-          break;
-        case KeyEvent.VK_D  :                     //test taste
-          guiModes(4);
-          break;
-        default: 
+        if (e.getKeyCode() == KeyEvent.VK_R) {
+          guiManager.startSimulation();
         }
       }
       /* 

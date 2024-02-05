@@ -84,15 +84,14 @@ public class GuiManager {
     //Set SimManager
     simManager.setNoiseStrength(0.02);
     simManager.setLightTime(40);
-    simManager.setLightIntensity(1.0);
+    simManager.setLightIntensity(0.8);
     simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
-    System.out.println(startSeed);
     simManager.setEntitysPerRound(100);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(20);
-    simManager.setDayLengthVariation(1000);
+    simManager.setDayLengthRealTimeInSec(5);
+    simManager.setDayLengthVariation(600);
     int[] n = {3, 2};
     simManager.setHiddenLayers(n);
     //Set GraphPanel
@@ -107,19 +106,20 @@ public class GuiManager {
     Thread guiThread = new Thread(() -> {
       runGui();
     });
+    screen.guiModes(4);
     guiThread.start();
   }
 
   private void initialiseGraphpanel() {
     double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
-      for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
-        double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
-        for (int j = 0; j < oneDayLight.length; j++) {
-          startLight[j+(3600*i)] = oneDayLight[j];
-        }
+    for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
+      double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
+      for (int j = 0; j < oneDayLight.length; j++) {
+        startLight[j+(3600*i)] = oneDayLight[j];
       }
-    graphPanel.start(startLight);
+    }
     graphPanel.setGraphSizeY((int)simManager.getMaxLight());
+    graphPanel.start(startLight);
   }
 
   //---------------set----------------
@@ -131,7 +131,7 @@ public class GuiManager {
     if (pSeed >= 1) {
       startSeed = pSeed;
     } else {
-      startSeed = 54378;
+      startSeed = 54318;
     } 
   }
 

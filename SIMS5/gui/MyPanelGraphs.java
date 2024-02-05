@@ -17,8 +17,9 @@ public class MyPanelGraphs extends JPanel {
   private int daysOnSlide;
   private double updatesPerPixel;
   private int time;
+  private int screenWidth = (int)Toolkit.getDefaultToolkit().getScreenSize().getWidth();
   private int biWidth = 1800;
-  private int biHeight;
+  private int biHeight = 200;
   private int startPosGraph;
   private int startPosBufferdGraph;
   private double[] startLight;
@@ -55,9 +56,9 @@ public class MyPanelGraphs extends JPanel {
   }
 
   public void start(double[] pStartLight) {
-    startPosBufferdGraph = this.getWidth()-((this.getWidth()-biWidth)/2);
-    startPosGraph = (this.getWidth()-biWidth)/2;
-    biHeight = this.getHeight()-randGröße*2;
+    startPosBufferdGraph = screenWidth-((screenWidth-biWidth)/2);
+    startPosGraph = (screenWidth-biWidth)/2;
+    biHeight-= randGröße*2;
     coordinateSystem = new BufferedImage(biWidth, biHeight, BufferedImage.TYPE_INT_ARGB);
     Graphics2D g2D = coordinateSystem.createGraphics();
     g2D.setColor(Color.GRAY);
