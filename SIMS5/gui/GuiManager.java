@@ -17,12 +17,14 @@ public class GuiManager {
   private int startSeed;
   private int sollFps;
   private double[] startStatistics = new double[9];
+  private int entitysPerRound;
 
   //run time
   private long timeSave = System.currentTimeMillis()/1000;
   private int fpsCounter = 0;
   private int fps = 0;
   private int isGraphAlreadyBuffed = 0;
+  private int shownEntity = 0;
 
   public GuiManager() {
     //----erstellen der graphic elemente----
@@ -81,16 +83,17 @@ public class GuiManager {
   public void startSimulation() {
     //Set GuiManager
     setSollFps(20);
+    setEntitysPerRound(100);
     //Set SimManager
     simManager.setNoiseStrength(0.02);
     simManager.setLightTime(40);
     simManager.setLightIntensity(0.8);
     simManager.setNoiseSize(0.03);
     simManager.setSeed(startSeed);
-    simManager.setEntitysPerRound(100);
+    simManager.setEntitysPerRound(entitysPerRound);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(5);
+    simManager.setDayLengthRealTimeInSec(1);
     simManager.setDayLengthVariation(600);
     int[] n = {3, 2};
     simManager.setHiddenLayers(n);
@@ -99,7 +102,7 @@ public class GuiManager {
     graphPanel.setRandgröße(25);
     //Set SimPanel
     simulationPanel.setSimulationSize(getSimulationSize());
-    simulationPanel.setEntitysPerRound(100);
+    simulationPanel.setEntitysPerRound(entitysPerRound);
     //start
     initialiseGraphpanel();
     simManager.startSimulation();
@@ -140,9 +143,17 @@ public class GuiManager {
       sollFps = pFps;    
     }
   }
+
+  public void setEntitysPerRound(int value) {
+    if (value > 0) {
+      entitysPerRound = value;    
+    }
+  }
+
   //----------------------------------
 
   //---------------get----------------
+
   public int getSollFps() {
     return sollFps;
   }
@@ -178,12 +189,31 @@ public class GuiManager {
       graphUpdate();
       if (simManager.getEntitys().size() != 0) {
         simulationPanel.myUpdate(simManager.getEntitys());  
-        entityDataPanel.myUpdate(simManager.getEntitys().get(0));
+        updateShownEntity();
+        entityDataPanel.myUpdate(simManager.getEntitys().get(shownEntity));
       } else {
         simulationPanel.myUpdate(null);
       }
       fpsUpdate();
       screen.repaintScreen();
+    }
+  }
+
+  public void entityShownShift(boolean right) {
+    if (right) {
+      if (shownEntity < entitysPerRound) {
+        shownEntity++;
+      }
+    } else {
+      if (shownEntity > 0) {
+        shownEntity--;
+      }
+    }
+  }
+
+  private void updateShownEntity() {
+    if (shownEntity > simManager.getEntitys().size()-1) {
+      shownEntity = simManager.getEntitys().size()-1;
     }
   }
 

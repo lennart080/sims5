@@ -22,7 +22,6 @@ public class MyEntity {
 
   //run time
   private int[] endStats = new int[1];
-  private boolean alive = true;
   private int serialNumber;
   public static int lastSerialNumber;
   private List<Boolean> positionSwitch = new ArrayList<>();
@@ -195,7 +194,6 @@ public class MyEntity {
       if (statistics[6] <= 0.0) { // wenn keine enerige
         manager.deleteRobo(this); // stirbt
         endStats[0] = manager.getUpdates();
-        alive = false;
       }
     } 
   }

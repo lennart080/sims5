@@ -154,6 +154,12 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           case KeyEvent.VK_D  :                     //test taste
             guiModes(4);
             break;
+          case KeyEvent.VK_RIGHT  :                     //test taste
+            guiManager.entityShownShift(true);
+            break;
+          case KeyEvent.VK_LEFT  :                     //test taste
+            guiManager.entityShownShift(false);
+            break;
           default: 
           break;
         }
@@ -162,7 +168,7 @@ public class MyFrame extends JFrame {                 //graphic manager (zustän
           guiManager.startSimulation();
         }
       }
-      /* 
+      /*
       if(47 < e.getKeyCode() && e.getKeyCode() < 58) {
         int zahl = (int)(e.getKeyCode()-38);    
       }

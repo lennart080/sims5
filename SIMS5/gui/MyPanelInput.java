@@ -1,23 +1,23 @@
 package SIMS5.gui;
 import java.awt.Color;
-import java.awt.Dimension;
+//import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Toolkit;
+//import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import javax.swing.JPanel;
 
 public class MyPanelInput extends JPanel {
-  private MyFrame screen;
-  private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-  private int screenWidth = (int)screenSize.getWidth();
-  private int screenHeight = (int)screenSize.getHeight();
-  private GuiManager guiManager;
+ // private MyFrame screen;
+ // private Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+ // private int screenWidth = (int)screenSize.getWidth();
+ // private int screenHeight = (int)screenSize.getHeight();
+ // private GuiManager guiManager;
   private int[] lastClick = new int[2];
 
   public MyPanelInput(GuiManager pGuiManager) {
-    guiManager = pGuiManager;
+    //guiManager = pGuiManager;
     this.setBackground(Color.WHITE);
     setUpCompponents();
     repaint(); 
@@ -52,6 +52,6 @@ public class MyPanelInput extends JPanel {
   }
 
   public void setFrame(MyFrame pScreen) {
-    screen = pScreen;
+    //screen = pScreen;
   }
 }
