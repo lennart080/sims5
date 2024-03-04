@@ -95,7 +95,7 @@ public class GuiManager {
     simManager.setEntitySize(40);
     simManager.setDayLengthRealTimeInSec(1);
     simManager.setDayLengthVariation(600);
-    int[] n = {3, 2};
+    int[] n = {7, 4, 9};
     simManager.setHiddenLayers(n);
     //Set GraphPanel
     graphPanel.setDaysOnSlide(3);

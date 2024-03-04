@@ -11,11 +11,11 @@ public class LightData {
   private double noiseSize;
   private double dayLengthVariation;
 
-  public void newNoise(int pSeed) {  //noise objekt wird erstellt
+  public void newNoise(int pSeed) {
     noise = new PerlinNoise(pSeed);
   }
 
-  public double getLightIntensityAtTime(int pTime) {              //berechnung der licht intensivität zu einer bestimmten zeit
+  private double calcLight(int pTime) {  //berechnung der licht intensivität zu einer bestimmten zeit
     double time = pTime;
     double dayVariation = noise.getPerlinNoise(time-(time % 3600)+Math.round(lightTime/2)/(0.2*noise.getTableSize()))*dayLengthVariation;
     if ((lightTime+dayVariation) > 3600) {
@@ -31,6 +31,18 @@ public class LightData {
       return ((gx*noiseFade*2)+fx)*lightIntensity;
     } 
     return 0.0;
+  }
+
+  public double[] calcLightOfDay(double pDay) {
+    double[] lightOfDay = new double[3600];
+    for (int i = 0; i < lightOfDay.length; i++) {
+      if (i+(int)(pDay*3600) < 0) {
+        lightOfDay[i] = getLightIntensityAtTime(0);
+      } else {
+        lightOfDay[i] = getLightIntensityAtTime(i+(int)(pDay*3600));
+      }
+    }
+    return lightOfDay;
   }
 
   //--------------set---------------
@@ -59,7 +71,7 @@ public class LightData {
     }
   }
   
-  public void setLightIntensity(double intensity) {            // wie stark das licht scheint
+  public void setLightIntensity(double intensity) {  // wie stark das licht scheint
     if (intensity > 0) {
       if (intensity < 10) {
         lightIntensity = intensity;        
@@ -83,16 +95,68 @@ public class LightData {
     }
   }
 
-  public void setDayLengthVariation(double variation) {
-    dayLengthVariation = variation;
+  public void setDayLengthVariation(double variation) {  //tages längen unterschied
+    if (variation < 0) {
+      dayLengthVariation = variation;
+    } else {
+      dayLengthVariation = 0;
+    }
   }
 
   //-----------------------------
   
   //------------get--------------
 
+  public class DataSettings {
+    private double lightTimeSave;
+    private double lightIntensitySave;
+    private double noiseStrengthSave;
+    private double noiseSizeSave;
+    private double dayLengthVariationSave;
+
+    public DataSettings() {
+      lightTimeSave = lightTime; 
+      lightIntensitySave = lightIntensity;
+      noiseStrengthSave = noiseStrength;
+      noiseSizeSave = noiseSize;
+      dayLengthVariationSave = dayLengthVariation;
+    }
+
+    public double getLightIntensity() {
+      return lightIntensity;
+    }
+  
+    public double getLightTime() {
+      return lightTime;
+    }
+  
+    public double getNoiseStrength() {
+      return noiseStrength;
+    }
+  
+    public double getNoiseSize() {
+      return noiseSize;
+    }
+  
+    public double getDayLengthVariation() {
+      return dayLengthVariation;
+    } 
+  }
+
+  public DataSettings getDataSettings() {
+    return new DataSettings();
+  }
+
   public double getMaxLight() {
     return (noiseStrength+2)*lightIntensity;
+  }
+
+  public double getLightIntensityAtTime(int pTime) {              
+    return calcLight(pTime);
+  }
+
+  public double[] getLightOfDay(int pDay) {
+    return calcLightOfDay(pDay);
   }
 
   //----------------------------------
@@ -148,6 +212,8 @@ public class LightData {
       return (grad * x);
       
     }
+
+    //--------------------------
 
     //-----------get------------
 

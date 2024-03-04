@@ -6,6 +6,7 @@ import java.util.List;
 
 import SIMS5.calculator.Calculator;
 import SIMS5.gui.GuiManager;
+import SIMS5.simulation.LightData.DataSettings;
 
 public class SimManager {
   //objekts
@@ -555,21 +556,27 @@ public class SimManager {
   }
 
   public double getLightIntensityAtTime() {
-    if (simData != null) {
       return simData.getLightIntensityAtTime(updates);   
-    }
-    return 0.0;
   }
 
   public double[] getLightOfDay(double pDay) {
-    double[] lightOfDay = new double[3600];
-    for (int i = 0; i < lightOfDay.length; i++) {
-      if (i+(int)(pDay*3600) < 0) {
-        lightOfDay[i] = simData.getLightIntensityAtTime(0);
-      } else {
-        lightOfDay[i] = simData.getLightIntensityAtTime(i+(int)(pDay*3600));
-      }
-    }
-    return lightOfDay;
+    return simData.getLightOfDay(day);
+  }
+
+  //------------------------------
+
+  //------data gui conection------
+
+
+  public DataSettings getDataLightSettings() {
+    return simData.getDataSettings();
+  }
+
+  public DataEntitys getDataEntitys() {
+    return new DataEntitys();
+  }
+
+  public DataGeneral getDataGeneral() {
+    return new DataGeneral();
   }
 }
