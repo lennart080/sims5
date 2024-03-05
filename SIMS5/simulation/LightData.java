@@ -96,8 +96,12 @@ public class LightData {
   }
 
   public void setDayLengthVariation(double variation) {  //tages längen unterschied
-    if (variation < 0) {
-      dayLengthVariation = variation;
+    if (variation > 0) {
+      if (variation < 500) {
+        dayLengthVariation = variation;
+      } else {
+        dayLengthVariation = 500;
+      }
     } else {
       dayLengthVariation = 0;
     }
@@ -123,23 +127,23 @@ public class LightData {
     }
 
     public double getLightIntensity() {
-      return lightIntensity;
+      return lightIntensitySave;
     }
   
     public double getLightTime() {
-      return lightTime;
+      return lightTimeSave;
     }
   
     public double getNoiseStrength() {
-      return noiseStrength;
+      return noiseStrengthSave;
     }
   
     public double getNoiseSize() {
-      return noiseSize;
+      return noiseSizeSave;
     }
   
     public double getDayLengthVariation() {
-      return dayLengthVariation;
+      return dayLengthVariationSave;
     } 
   }
 

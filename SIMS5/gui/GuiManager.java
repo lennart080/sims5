@@ -2,6 +2,8 @@ package SIMS5.gui;
 
 import javax.swing.SwingUtilities;
 
+import SIMS5.data.ProfileReader;
+import SIMS5.data.ProfileWriter;
 import SIMS5.simulation.SimManager;
 public class GuiManager {
   //objekts
@@ -18,6 +20,7 @@ public class GuiManager {
   private int sollFps;
   private double[] startStatistics = new double[9];
   private int entitysPerRound;
+  private String profileName;
 
   //run time
   private long timeSave = System.currentTimeMillis()/1000;
@@ -26,7 +29,14 @@ public class GuiManager {
   private int isGraphAlreadyBuffed = 0;
   private int shownEntity = 0;
 
-  public GuiManager() {
+  public static void main(String[] args) {
+    SimManager simManager = new SimManager();
+    GuiManager guiM = new GuiManager(simManager);
+    simManager.setGuiManager(guiM);
+  }
+
+  public GuiManager(SimManager simManager) {
+    this.simManager = simManager;
     //----erstellen der graphic elemente----
     SwingUtilities.invokeLater(() -> {;                     
       simulationPanel = new MyPanelSimulation();
@@ -81,10 +91,97 @@ public class GuiManager {
   }
 
   public void startSimulation() {
-    //Set GuiManager
-    setSollFps(20);
-    setEntitysPerRound(100);
-    //Set SimManager
+    setProfileName("fillOut");
+  
+    // create profile
+    ProfileWriter.checkOrdner();
+    ProfileWriter.createNewProfile(profileName, true);
+
+    // start values for every entity
+    ProfileWriter.writeInProfile(profileName, "entityStartEnergie", 100.0); // should never be zero
+    ProfileWriter.writeInProfile(profileName, "entityStartSchrott", 5.0); 
+    ProfileWriter.writeInProfile(profileName, "entityStartAttack", 0.0); // should always be lower than StartHealth
+    ProfileWriter.writeInProfile(profileName, "entityStartEnergieCapacity", 100.0); // should never be under StartEnergie value
+    ProfileWriter.writeInProfile(profileName, "entityStartSpeed", 1.0); // should never be zero if StartSchrott is zero
+    ProfileWriter.writeInProfile(profileName, "entityStartDefense", 0.0); // should never be higher than StartAttack
+    ProfileWriter.writeInProfile(profileName, "entityStartHealth", 5.0); // should never be zero
+    ProfileWriter.writeInProfile(profileName, "entityStartRust", 0.0); //should always be zero
+    ProfileWriter.writeInProfile(profileName, "entityStartSolar", 0.0); // should never be zero if StartSchrott is zero
+
+    // calculation values for every entity in runtime
+    ProfileWriter.writeInProfile(profileName, "entityWalkActivation", 0.5); // (0.01 - 0.99)
+    ProfileWriter.writeInProfile(profileName, "entityEnergylossAjustmentPerDay", 0.2); // how mutch more energieLoss is applied per day
+    // per time (60 updates)
+    ProfileWriter.writeInProfile(profileName, "entityRustPlus", 0.01); //only if standing still
+    ProfileWriter.writeInProfile(profileName, "entityRustLoss", 1.0); //only when walking
+    ProfileWriter.writeInProfile(profileName, "entityEnergyLoss", 1.0); // always
+    ProfileWriter.writeInProfile(profileName, "entityHealthLoss", 0.1); // only if energy is 0 
+
+    // light settings 
+    ProfileWriter.writeInProfile(profileName, "noiseStrength", 0.02); // wie starke schwankungen das Noise haben soll (0 - 0.1)
+    ProfileWriter.writeInProfile(profileName, "lightTime", 40.0); // wie lange die sonne pro tag scheint (0 - 60)
+    ProfileWriter.writeInProfile(profileName, "lightIntensity", 0.6); // wie stark das licht scheint (0 - 10)
+    ProfileWriter.writeInProfile(profileName, "noiseSize", 0.03); //je kleiner deszo schneller werden die schwingungen des Noise (0.0 - 0.5)
+    ProfileWriter.writeInProfile(profileName, "dayLengthVariation", 300); //tages längen unterschied (0 - 500) 
+
+    //other
+    ProfileWriter.writeInProfile(profileName, "seed", 54318); // must be positive
+    ProfileWriter.writeInProfile(profileName, "entitysPerRound", 100); // should never be zero 
+    ProfileWriter.writeInProfile(profileName, "simulationSize", getSimulationSize()); // kommt immer aus dieser funtion 
+    ProfileWriter.writeInProfile(profileName, "entitySize", 40); // should never be under 2 | sloud be the same as graphics size
+    ProfileWriter.writeInProfile(profileName, "oneDayInSeconds", 5); // simulation speed (1 - 3600) 
+
+    //gui
+    ProfileWriter.writeInProfile(profileName, "fps", 20);
+    ProfileWriter.writeInProfile(profileName, "DaysShownInGraph", 3);
+    
+    // network settings
+    // n[row] = number in that row
+    double[] n = {3, 2}; 
+    ProfileWriter.writeInProfile(profileName, "networkStartHiddenLayers", n);
+
+    ProfileWriter.writeInProfile(profileName, "doSpawnedNeuronshaveABias", false); 
+
+    // v[0] = start probability | v[1] = end probability | v[2] = end probability round  
+    // v[0] should never be above 1 | v[1] should always be lower than v[0] 
+    double[] v = new double[3];
+    v[0] = 0.1; v[1] = 0.001; v[2] = 500; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightDying", v); //per weight 
+    v[0] = 0.2; v[1] = 0.001; v[2] = 400; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewWeight", v); //per neuron
+    v[0] = 0.0; v[1] = 0.001; v[2] = 1000; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightAjustment", v); //per weight
+    v[0] = 1.0; v[1] = 0.01; v[2] = 1000; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightAjustmentValue", v); //per weight
+    v[0] = .7; v[1] = 0.01; v[2] = 500; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityBiasAjustment", v); //per neuron
+    v[0] = 1.0; v[1] = 0.01; v[2] = 1000; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityBiasAjustmentValue", v); //per neuron
+    v[0] = 0.1; v[1] = 0.005; v[2] = 100; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewNeuronRow", v); //per newNeuron
+    v[0] = 0.2; v[1] = 0.01; v[2] = 150; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewNeuron", v); //per network
+    v[0] = 0.15; v[1] = 0.01; v[2] = 150; 
+    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNeuronDying", v); //per network
+
+    // all under should always atleast be one less or lower than entitysPerRound 
+    ProfileWriter.writeInProfile(profileName, "entitySelectionValueRandom", 2); 
+    ProfileWriter.writeInProfile(profileName, "entitySelectionValueMostDifferent", 0); 
+    ProfileWriter.writeInProfile(profileName, "entitySelectionValueNew", 3); 
+
+    //load profile
+    ProfileReader.loadProfile(profileName);  //must be done bevore reading of profile (only once)
+    
+    //set GuiManager
+    setSollFps((int)ProfileReader.getDoubleSettings("fps"));
+    //Set GraphPanel
+    graphPanel.setDaysOnSlide((int)ProfileReader.getDoubleSettings("DaysShownInGraph"));
+    graphPanel.setRandgröße(25); //fix (only needed for the current gui graph)
+    //Set SimPanel
+    simulationPanel.setSimulationSize((int)ProfileReader.getDoubleSettings("simulationSize"));
+    simulationPanel.setEntitysPerRound((int)ProfileReader.getDoubleSettings("entitysPerRound"));
+
+    simManager.setStartStatistics(startStatistics);
     simManager.setNoiseStrength(0.02);
     simManager.setLightTime(40);
     simManager.setLightIntensity(0.8);
@@ -93,16 +190,11 @@ public class GuiManager {
     simManager.setEntitysPerRound(entitysPerRound);
     simManager.setSimulationSize(getSimulationSize());
     simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(1);
+    simManager.setDayLengthRealTimeInSec(5);
     simManager.setDayLengthVariation(600);
-    int[] n = {7, 4, 9};
-    simManager.setHiddenLayers(n);
-    //Set GraphPanel
-    graphPanel.setDaysOnSlide(3);
-    graphPanel.setRandgröße(25);
-    //Set SimPanel
-    simulationPanel.setSimulationSize(getSimulationSize());
-    simulationPanel.setEntitysPerRound(entitysPerRound);
+    int[] x = {3, 2};
+    simManager.setHiddenLayers(x);
+    
     //start
     initialiseGraphpanel();
     simManager.startSimulation();
@@ -126,9 +218,6 @@ public class GuiManager {
   }
 
   //---------------set----------------
-  public void setSimManager(SimManager pSimManager) {
-    simManager = pSimManager;
-  }
 
   public void setSeed(int pSeed) {  
     if (pSeed >= 1) {
@@ -136,6 +225,10 @@ public class GuiManager {
     } else {
       startSeed = 54318;
     } 
+  }
+
+  public void setProfileName(String name) {
+    profileName = name;
   }
 
   public void setSollFps(int pFps) {
@@ -154,23 +247,11 @@ public class GuiManager {
 
   //---------------get----------------
 
-  public int getSollFps() {
-    return sollFps;
-  }
-
   public int getSimulationSize() {
     if (screen != null) {
       return screen.getSimulationSize();      
     } 
     return -1;
-  }
-
-  public double[] getStartStatistics() {
-    return startStatistics;
-  }
-
-  public int getSeed() {
-    return startSeed;
   }
   //----------------------------------
 

@@ -14,6 +14,7 @@ public class SimManager {
   private LightData simData;
 
   //get set
+  private int startSeed;
   private long extendetSeed;
   private int entitysPerRound;
   private int simulationSize;
@@ -24,6 +25,7 @@ public class SimManager {
   private int newNetworks = 3;
   private int entitySize;
   private boolean spawnedNeuronsHaveBias = false;
+  private double[] startStatistics;
  
   // 0 = start probability // 1 = value after... // 2 = when1 
   private double[][] prbabilityValues = {{0.1, 0.001, 500}, //weightDying           //per weight 
@@ -139,7 +141,7 @@ public class SimManager {
       int[] position = newPosition(i);
       //new entity
       NeuronReturner nr = newNetwork();
-      entitys.add(new MyEntity(this, nr.getWeights(), nr.getNeurons(), position, guiManager.getStartStatistics(), entitySize, simulationSize));
+      entitys.add(new MyEntity(this, nr.getWeights(), nr.getNeurons(), position, startStatistics, entitySize, simulationSize));
     }
   }
 
@@ -331,7 +333,7 @@ public class SimManager {
 
   private void addEntity(double[][][] pNeurons, List<double[]> pWeights, int pos) {
     int[] position = newPosition(pos);
-    entitys.add(new MyEntity(this, pWeights, pNeurons, position, guiManager.getStartStatistics(), entitySize, simulationSize));
+    entitys.add(new MyEntity(this, pWeights, pNeurons, position, startStatistics, entitySize, simulationSize));
 
     System.out.println("network " + entitys.get(entitys.size()-1).getSerialNumber());
     for (int k = 0; k < pNeurons.length; k++) {
@@ -454,6 +456,11 @@ public class SimManager {
 
   //---------------set------------------
 
+  public void setStartStatistics(double[] stats) {
+    startStatistics = new double[9];
+    startStatistics = Arrays.copyOf(stats, 9);
+  }
+
   public void setSimulationSize(int pSimSize) {
     simulationSize = pSimSize;
   }
@@ -509,10 +516,12 @@ public class SimManager {
   public void setSeed(int pSeed) {  
     if (pSeed >= 1) {
       simData.newNoise(pSeed);
+      startSeed = pSeed;
       extendetSeed = pSeed;
     } else {
       simData.newNoise(1);
       extendetSeed = 1;
+      startSeed = 1;
     } 
   }
   //------------------------------------
@@ -551,30 +560,46 @@ public class SimManager {
     return updates;
   }
 
-  public int getDayLengthRealTimeInSec() {
-    return dayLengthRealTimeInSec;
-  }
-
   public double getLightIntensityAtTime() {
       return simData.getLightIntensityAtTime(updates);   
   }
 
-  public double[] getLightOfDay(double pDay) {
-    return simData.getLightOfDay(day);
+  public class DataGeneral {
+    private int round;            
+    private int updates;        
+    private int time;           
+    private int day;    
+    private int startSeed;
+    private int entitysPerRound;
+    private int simulationSize;
+    private int entitySize;
+    private int dayLengthRealTimeInSec;  
+    private boolean spawnedNeuronsHaveBias;
+    private double[] startStatistics;
+    private double[][] prbabilityValues;
+
+    public DataGeneral() {
+      
+    }
   }
+
 
   //------------------------------
 
   //------data gui conection------
 
 
-  public DataSettings getDataLightSettings() {
+  public DataSettings getLightSettings() {
     return simData.getDataSettings();
   }
 
-  public DataEntitys getDataEntitys() {
-    return new DataEntitys();
+  public double[] getLightOfDay(double pDay) {
+    return simData.getLightOfDay(day);
   }
+
+  //public DataEntitys getDataEntitys() {
+  //  return new DataEntitys();
+  //}
 
   public DataGeneral getDataGeneral() {
     return new DataGeneral();
