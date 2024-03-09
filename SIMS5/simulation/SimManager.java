@@ -5,12 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 
 import SIMS5.calculator.Calculator;
-import SIMS5.gui.GuiManager;
+import SIMS5.data.ProfileReader;
 import SIMS5.simulation.LightData.DataSettings;
 
 public class SimManager {
   //objekts
-  private GuiManager guiManager;
   private LightData simData;
 
   //get set
@@ -20,23 +19,13 @@ public class SimManager {
   private int simulationSize;
   private int dayLengthRealTimeInSec;  
   private int[] hiddenLayers;
-  private int randomSelected = 2;
-  private int diffNetworkSelected = 0;
-  private int newNetworks = 3;
+  private int randomSelected;
+  private int diffNetworkSelected;
+  private int newNetworks;
   private int entitySize;
-  private boolean spawnedNeuronsHaveBias = false;
-  private double[] startStatistics;
- 
-  // 0 = start probability // 1 = value after... // 2 = when1 
-  private double[][] prbabilityValues = {{0.1, 0.001, 500}, //weightDying           //per weight 
-                                         {0.2, 0.001 ,400}, //newWeight             //per neuron
-                                         {0.0, 0.00, 1000}, //weightAjustment       //per weight 
-                                         {1.0, 0.01, 1000}, //weightAjustmentValue  //per weight 
-                                         {0.7, 0.01, 500},  //biasAjustment         //per neuron
-                                         {1.0, 0.01, 1000}, //biasAjustmentValue    //per neuron
-                                         {0.1, 0.005, 100}, //newNeuronRow          //per newNeuron
-                                         {0.2, 0.01, 150},  //newNeuron             //per network
-                                         {0.15, 0.01, 150}};//neuronDying           //per network
+  private boolean spawnedNeuronsHaveBias;
+  private double[] startStatistics = new double[9];
+  private double[][] prbabilityValues;
 
   //run time
   private int round;            
@@ -60,6 +49,32 @@ public class SimManager {
 
   public void startSimulation() {
     Thread simulationThread = new Thread(() -> {
+      startStatistics[0] = ProfileReader.getDoubleSettings("entityStartEnergie");
+      startStatistics[1] = ProfileReader.getDoubleSettings("entityStartSchrott");
+      startStatistics[2] = ProfileReader.getDoubleSettings("entityStartAttack");
+      startStatistics[3] = ProfileReader.getDoubleSettings("entityStartEnergieCapacity");
+      startStatistics[4] = ProfileReader.getDoubleSettings("entityStartSpeed");
+      startStatistics[5] = ProfileReader.getDoubleSettings("entityStartDefense");
+      startStatistics[6] = ProfileReader.getDoubleSettings("entityStartHealth");
+      startStatistics[7] = ProfileReader.getDoubleSettings("entityStartRust");
+      startStatistics[8] = ProfileReader.getDoubleSettings("entityStartSolar");
+      setNoiseStrength(ProfileReader.getDoubleSettings("noiseStrength"));
+      setLightTime((int)ProfileReader.getDoubleSettings("lightTime"));
+      setLightIntensity(ProfileReader.getDoubleSettings("lightIntensity"));
+      setNoiseSize(ProfileReader.getDoubleSettings("noiseSize"));
+      setSeed((int)ProfileReader.getDoubleSettings("seed"));
+      setEntitysPerRound((int)ProfileReader.getDoubleSettings("entitysPerRound"));
+      setSimulationSize((int)ProfileReader.getDoubleSettings("simulationSize"));
+      setEntitySize((int)ProfileReader.getDoubleSettings("entitySize"));
+      setDayLengthRealTimeInSec((int)ProfileReader.getDoubleSettings("oneDayInSeconds"));
+      System.out.println(dayLengthRealTimeInSec);
+      setDayLengthVariation(ProfileReader.getDoubleSettings("dayLengthVariation"));
+      double[] d = ProfileReader.getArraySettings("networkStartHiddenLayers");
+      int[] h = new int[d.length];
+      for (int i = 0; i < h.length; i++) {
+        h[i] = (int)d[i];
+      }
+      setHiddenLayers(h);
       inicialiseSim();
       startSim();
     });
@@ -72,7 +87,7 @@ public class SimManager {
 
   public void startSim() {     
     while (true) {
-      long startTime = System.nanoTime();
+      long startTime = System.currentTimeMillis();
 
       this.simulateData();
       updates++;
@@ -89,17 +104,12 @@ public class SimManager {
         }
       }
 
-      long remainingTime = (long)((((double)dayLengthRealTimeInSec*1000000000.0)/60.0)/60.0);
-      if ((System.nanoTime() - startTime) > 1000000) {
-        remainingTime-= (System.nanoTime() - startTime);
-        if (remainingTime <= 0) {
-          remainingTime = 1;
+      if (((long)(((double)dayLengthRealTimeInSec/3600.0)*1000) - (System.currentTimeMillis() - startTime)) > 0) {
+        try {
+          Thread.sleep((long)(((double)dayLengthRealTimeInSec/3600.0)*1000) - (System.currentTimeMillis() - startTime));       
+        } catch (Exception e) {
+          e.printStackTrace();
         }
-      }
-      try {
-        Thread.sleep(remainingTime / 1000000);       
-      } catch (Exception e) {
-        e.printStackTrace();
       }
     }
   }
@@ -507,10 +517,6 @@ public class SimManager {
 
   public void setHiddenLayers(int[] pNeuronLayers) {
     hiddenLayers = Arrays.copyOf(pNeuronLayers, pNeuronLayers.length);
-  }
-
-  public void setGuiManager(GuiManager gm) {
-    guiManager = gm;
   }
 
   public void setSeed(int pSeed) {  

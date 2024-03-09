@@ -11,15 +11,23 @@ public class ProfileReader {
     private static List<String[]> profile = new ArrayList<>();
     private static List<String[]> defaultProfile = new ArrayList<>();
 
-    public static void loadProfile(String name) {
+    public static void loadProfile(String profileName) {
       profile.clear();
-      profile = readFile(profilePath, name);
+      profile = readFile(profilePath, profileName);
     }
 
     public static void loadDefaultProfile() {
         defaultProfile.clear();
-        defaultProfile = readFile(defaultPath, "defaultProfile.p");
+        defaultProfile = readFile(defaultPath, "defaultProfile");
     }
+
+    public static List<String[]> getprofile(String profileName) {
+      return readFile(profilePath, profileName);
+    }
+
+    public static List<String[]> getDefaultprofile() {
+        return readFile(defaultPath, "defaultProfile");
+      }
 
     private static List<String[]> readFile(String path, String name) {
         List<String[]> fileStrings = new ArrayList<>();
@@ -29,9 +37,7 @@ public class ProfileReader {
             String line;
             while ((line = reader.readLine()) != null) { 
               String[] values = line.replaceAll(":$", "").split(":");
-              if (values.length == 2 || values.length == 1) {
-                fileStrings.add(values);
-              }
+              fileStrings.add(values);
             }
             reader.close();
           } catch(Exception e) {
@@ -41,22 +47,18 @@ public class ProfileReader {
     }
 
     public static double getDoubleSettings(String setting) {
-        double value;
         for (int i = 0; i < profile.size(); i++) {
-            if (profile.get(i)[0].equals(setting)) {
-                value = Double.parseDouble(profile.get(i)[1]);
-                return value;
+            if (profile.get(i)[0].equals(setting) && profile.get(i)[1].equals("1")) {
+                return Double.parseDouble(profile.get(i)[2]);
             }
         }
         return -1.0;
     }
 
     public static double getDefaultDoubleSettings(String setting) {
-        double value;
         for (int i = 0; i < defaultProfile.size(); i++) {
-            if (defaultProfile.get(i)[0].equals(setting)) {
-                value = Double.parseDouble(defaultProfile.get(i)[1]);
-                return value;
+            if (defaultProfile.get(i)[0].equals(setting) && profile.get(i)[1].equals("1")) {
+                return Double.parseDouble(defaultProfile.get(i)[2]);
             }
         }
         return -1.0;
@@ -66,8 +68,8 @@ public class ProfileReader {
     public static boolean getBooleanSettings(String setting) {
         boolean value;
         for (int i = 0; i < profile.size(); i++) {
-            if (profile.get(i)[0].equals(setting)) {
-                value = Boolean.parseBoolean(profile.get(i)[1]);
+            if (profile.get(i)[0].equals(setting) && profile.get(i)[1].equals("1")) {
+                value = Boolean.parseBoolean(profile.get(i)[2]);
                 return value;
             }
         }
@@ -78,8 +80,8 @@ public class ProfileReader {
     public static boolean getDefaultProfileBooleanSettings(String setting) {
         boolean value;
         for (int i = 0; i < defaultProfile.size(); i++) {
-            if (defaultProfile.get(i)[0].equals(setting)) {
-                value = Boolean.parseBoolean(defaultProfile.get(i)[1]);
+            if (defaultProfile.get(i)[0].equals(setting) && profile.get(i)[1].equals("1")) {
+                value = Boolean.parseBoolean(defaultProfile.get(i)[2]);
                 return value;
             }
         }
@@ -89,11 +91,9 @@ public class ProfileReader {
     public static double[] getArraySettings(String setting) {
         List<Double> value = new ArrayList<>();
         for (int i = 0; i < profile.size(); i++) {
-            if (profile.get(i)[0].equals("#" + setting)) {
-                int pos = 1;
-                while (profile.get(i+pos)[0].equals(""+(pos-1))) {
-                    value.add(Double.parseDouble(profile.get(i+pos)[1]));
-                    pos++;
+            if (profile.get(i)[0].equals(setting)) {
+                for (int j = 2; j < Integer.parseInt(profile.get(i)[1])+2; j++) {
+                    value.add(Double.parseDouble(profile.get(i)[j]));
                 }
                 double[] x = new double[value.size()];
                 for (int j = 0; j < value.size(); j++) {
@@ -109,11 +109,9 @@ public class ProfileReader {
     public static double[] getDefaultProfileArraySettings(String setting) {
         List<Double> value = new ArrayList<>();
         for (int i = 0; i < defaultProfile.size(); i++) {
-            if (defaultProfile.get(i)[0].equals("#" + setting)) {
-                int pos = 1;
-                while (defaultProfile.get(i+pos)[0].equals(""+(pos-1))) {
-                    value.add(Double.parseDouble(defaultProfile.get(i+pos)[1]));
-                    pos++;
+            if (defaultProfile.get(i)[0].equals(setting)) {
+                for (int j = 2; j < Integer.parseInt(defaultProfile.get(i)[1])+2; j++) {
+                    value.add(Double.parseDouble(defaultProfile.get(i)[j]));
                 }
                 double[] x = new double[value.size()];
                 for (int j = 0; j < value.size(); j++) {

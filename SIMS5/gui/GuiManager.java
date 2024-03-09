@@ -29,10 +29,11 @@ public class GuiManager {
   private int isGraphAlreadyBuffed = 0;
   private int shownEntity = 0;
 
+  //---------------start----------------muss ausgeführt werden
   public static void main(String[] args) {
     SimManager simManager = new SimManager();
-    GuiManager guiM = new GuiManager(simManager);
-    simManager.setGuiManager(guiM);
+  //------------------------------------
+    new GuiManager(simManager);
   }
 
   public GuiManager(SimManager simManager) {
@@ -47,42 +48,18 @@ public class GuiManager {
       screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, entityDataPanel, inputPanel);
     });
     //-------------------------------------
-
-    //--------default data gets set--------
-    //energie                       energie des robos welche für vortbewegung und attaken und alles weitere benötigt wird
-    startStatistics[0] = 100.0;
-    //schrott (int)                 währung mit welcher teile und kinder "hergestellt" werden können
-    startStatistics[1] = 5.0;
-    //attack                        schaden welcher pro atacke zugerichtet wird
-    startStatistics[2] = 0.0;
-    //energie speicher              max energie die der robo haben kann
-    startStatistics[3] = 100.0;
-    //speed                         ...pixel pro sec werden max zurückgelegt     
-    startStatistics[4] = 1.0;
-    //defense                       wird von der gegnerischen attake abgezogen
-    startStatistics[5] = 0.0; 
-    //health                        anzahl der leben welche von ataken veringert werden kann und sinkt wenn energie 0 ist. bei 0 leben stirbt er
-    startStatistics[6] = 5.0;       
-    //rust                          rost bildet sich wenn der robo länger auf der stelle steht, je mehr rost deszo mehr energie verbrauch 
-    startStatistics[7] = 0.0; 
-    //solar                         solar panele welche energie gewinnen
-    startStatistics[8] = 1.0; 
-    //------------------------------------
   }
 
   public void runGui() {
+    initialiseGraphpanel();
     while (true) {
-      long startTime, endTime, elapsedTime;
-      startTime = System.nanoTime();
+      long startTime = System.currentTimeMillis(); 
 
       this.updateGui();
 
-      endTime = System.nanoTime();
-      elapsedTime = (endTime - startTime);
-      long remainingTime = (1000000/sollFps) - elapsedTime;
-      if (remainingTime > 0) {
+      if (((1000/sollFps) - (System.currentTimeMillis() - startTime)) > 0) {
         try {
-          Thread.sleep(remainingTime / 1000, (int) (remainingTime % 1000));       
+          Thread.sleep((1000/sollFps) - (System.currentTimeMillis() - startTime));       
         } catch (Exception e) {
           e.printStackTrace();
         }
@@ -91,113 +68,42 @@ public class GuiManager {
   }
 
   public void startSimulation() {
+    setSollFps(20);
+
+    //-----------dataLoading-----------muss ausgeführt werden
+
+    //benutzer gibt eien namen ein
     setProfileName("fillOut");
-  
-    // create profile
+
+    //systemCheck
     ProfileWriter.checkOrdner();
+  
+    //-> neues profil erstellen welches bereits die default daten hatt und laden
     ProfileWriter.createNewProfile(profileName, true);
+    ProfileReader.loadProfile(profileName);
 
-    // start values for every entity
-    ProfileWriter.writeInProfile(profileName, "entityStartEnergie", 100.0); // should never be zero
-    ProfileWriter.writeInProfile(profileName, "entityStartSchrott", 5.0); 
-    ProfileWriter.writeInProfile(profileName, "entityStartAttack", 0.0); // should always be lower than StartHealth
-    ProfileWriter.writeInProfile(profileName, "entityStartEnergieCapacity", 100.0); // should never be under StartEnergie value
-    ProfileWriter.writeInProfile(profileName, "entityStartSpeed", 1.0); // should never be zero if StartSchrott is zero
-    ProfileWriter.writeInProfile(profileName, "entityStartDefense", 0.0); // should never be higher than StartAttack
-    ProfileWriter.writeInProfile(profileName, "entityStartHealth", 5.0); // should never be zero
-    ProfileWriter.writeInProfile(profileName, "entityStartRust", 0.0); //should always be zero
-    ProfileWriter.writeInProfile(profileName, "entityStartSolar", 0.0); // should never be zero if StartSchrott is zero
+    //oder
 
-    // calculation values for every entity in runtime
-    ProfileWriter.writeInProfile(profileName, "entityWalkActivation", 0.5); // (0.01 - 0.99)
-    ProfileWriter.writeInProfile(profileName, "entityEnergylossAjustmentPerDay", 0.2); // how mutch more energieLoss is applied per day
-    // per time (60 updates)
-    ProfileWriter.writeInProfile(profileName, "entityRustPlus", 0.01); //only if standing still
-    ProfileWriter.writeInProfile(profileName, "entityRustLoss", 1.0); //only when walking
-    ProfileWriter.writeInProfile(profileName, "entityEnergyLoss", 1.0); // always
-    ProfileWriter.writeInProfile(profileName, "entityHealthLoss", 0.1); // only if energy is 0 
+    //-> nur bereits vorhandenes profil laden 
+    //ProfileReader.loadProfile(profileName);
 
-    // light settings 
-    ProfileWriter.writeInProfile(profileName, "noiseStrength", 0.02); // wie starke schwankungen das Noise haben soll (0 - 0.1)
-    ProfileWriter.writeInProfile(profileName, "lightTime", 40.0); // wie lange die sonne pro tag scheint (0 - 60)
-    ProfileWriter.writeInProfile(profileName, "lightIntensity", 0.6); // wie stark das licht scheint (0 - 10)
-    ProfileWriter.writeInProfile(profileName, "noiseSize", 0.03); //je kleiner deszo schneller werden die schwingungen des Noise (0.0 - 0.5)
-    ProfileWriter.writeInProfile(profileName, "dayLengthVariation", 300); //tages längen unterschied (0 - 500) 
+    // benutzer kann nun einstellungen der neuen/alten datei verändern 
+    ProfileWriter.writeInProfile(profileName, "oneDayInSeconds", 5.0);
 
-    //other
-    ProfileWriter.writeInProfile(profileName, "seed", 54318); // must be positive
-    ProfileWriter.writeInProfile(profileName, "entitysPerRound", 100); // should never be zero 
-    ProfileWriter.writeInProfile(profileName, "simulationSize", getSimulationSize()); // kommt immer aus dieser funtion 
-    ProfileWriter.writeInProfile(profileName, "entitySize", 40); // should never be under 2 | sloud be the same as graphics size
-    ProfileWriter.writeInProfile(profileName, "oneDayInSeconds", 5); // simulation speed (1 - 3600) 
+    //zum ende müssen die daten wieder neu geladen werden um aktuell zu sein wenn der benuzer etwas verändert hatt
+    ProfileReader.loadProfile(profileName);
 
-    //gui
-    ProfileWriter.writeInProfile(profileName, "fps", 20);
-    ProfileWriter.writeInProfile(profileName, "DaysShownInGraph", 3);
+    //-----------------------------
     
-    // network settings
-    // n[row] = number in that row
-    double[] n = {3, 2}; 
-    ProfileWriter.writeInProfile(profileName, "networkStartHiddenLayers", n);
-
-    ProfileWriter.writeInProfile(profileName, "doSpawnedNeuronshaveABias", false); 
-
-    // v[0] = start probability | v[1] = end probability | v[2] = end probability round  
-    // v[0] should never be above 1 | v[1] should always be lower than v[0] 
-    double[] v = new double[3];
-    v[0] = 0.1; v[1] = 0.001; v[2] = 500; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightDying", v); //per weight 
-    v[0] = 0.2; v[1] = 0.001; v[2] = 400; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewWeight", v); //per neuron
-    v[0] = 0.0; v[1] = 0.001; v[2] = 1000; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightAjustment", v); //per weight
-    v[0] = 1.0; v[1] = 0.01; v[2] = 1000; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityWeightAjustmentValue", v); //per weight
-    v[0] = .7; v[1] = 0.01; v[2] = 500; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityBiasAjustment", v); //per neuron
-    v[0] = 1.0; v[1] = 0.01; v[2] = 1000; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityBiasAjustmentValue", v); //per neuron
-    v[0] = 0.1; v[1] = 0.005; v[2] = 100; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewNeuronRow", v); //per newNeuron
-    v[0] = 0.2; v[1] = 0.01; v[2] = 150; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNewNeuron", v); //per network
-    v[0] = 0.15; v[1] = 0.01; v[2] = 150; 
-    ProfileWriter.writeInProfile(profileName, "mutationProbabilityNeuronDying", v); //per network
-
-    // all under should always atleast be one less or lower than entitysPerRound 
-    ProfileWriter.writeInProfile(profileName, "entitySelectionValueRandom", 2); 
-    ProfileWriter.writeInProfile(profileName, "entitySelectionValueMostDifferent", 0); 
-    ProfileWriter.writeInProfile(profileName, "entitySelectionValueNew", 3); 
-
-    //load profile
-    ProfileReader.loadProfile(profileName);  //must be done bevore reading of profile (only once)
-    
-    //set GuiManager
-    setSollFps((int)ProfileReader.getDoubleSettings("fps"));
-    //Set GraphPanel
-    graphPanel.setDaysOnSlide((int)ProfileReader.getDoubleSettings("DaysShownInGraph"));
+    graphPanel.setDaysOnSlide(3);
     graphPanel.setRandgröße(25); //fix (only needed for the current gui graph)
-    //Set SimPanel
     simulationPanel.setSimulationSize((int)ProfileReader.getDoubleSettings("simulationSize"));
     simulationPanel.setEntitysPerRound((int)ProfileReader.getDoubleSettings("entitysPerRound"));
 
-    simManager.setStartStatistics(startStatistics);
-    simManager.setNoiseStrength(0.02);
-    simManager.setLightTime(40);
-    simManager.setLightIntensity(0.8);
-    simManager.setNoiseSize(0.03);
-    simManager.setSeed(startSeed);
-    simManager.setEntitysPerRound(entitysPerRound);
-    simManager.setSimulationSize(getSimulationSize());
-    simManager.setEntitySize(40);
-    simManager.setDayLengthRealTimeInSec(5);
-    simManager.setDayLengthVariation(600);
-    int[] x = {3, 2};
-    simManager.setHiddenLayers(x);
-    
-    //start
-    initialiseGraphpanel();
+    //-------------simulationStart--------------muss ausgeführt werden
     simManager.startSimulation();
+    //------------------------------------------
+
     Thread guiThread = new Thread(() -> {
       runGui();
     });
