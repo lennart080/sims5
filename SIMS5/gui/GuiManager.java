@@ -2,12 +2,13 @@ package SIMS5.gui;
 
 import javax.swing.SwingUtilities;
 
-import SIMS5.data.ProfileReader;
-import SIMS5.data.ProfileWriter;
-import SIMS5.simulation.SimManager;
+import SIMS5.data.FileHandling.FileClass;
+import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.sim.Manager;
+
 public class GuiManager {
   //objekts
-  private SimManager simManager;
+  private Manager simManager;
   private MyFrame screen;
   private MyPanelSimulation simulationPanel;
   private MyPanelData dataPanel;
@@ -16,11 +17,8 @@ public class GuiManager {
   private MyPanelInput inputPanel;
 
   //get set
-  private int startSeed;
   private int sollFps;
-  private double[] startStatistics = new double[9];
   private int entitysPerRound;
-  private String profileName;
 
   //run time
   private long timeSave = System.currentTimeMillis()/1000;
@@ -31,12 +29,12 @@ public class GuiManager {
 
   //---------------start----------------muss ausgeführt werden
   public static void main(String[] args) {
-    SimManager simManager = new SimManager();
+    Manager simManager = new Manager();
   //------------------------------------
     new GuiManager(simManager);
   }
 
-  public GuiManager(SimManager simManager) {
+  public GuiManager(Manager simManager) {
     this.simManager = simManager;
     //----erstellen der graphic elemente----
     SwingUtilities.invokeLater(() -> {;                     
@@ -68,44 +66,40 @@ public class GuiManager {
   }
 
   public void startSimulation() {
-    setSollFps(20);
 
-    //-----------dataLoading-----------muss ausgeführt werden
+    //-----------profiling-----------
 
-    //benutzer gibt eien namen ein
-    setProfileName("fillOut");
+    //benutzer gibt simulations namen ein
+    String profileName = "beispielSim";
 
-    //systemCheck
-    ProfileWriter.checkOrdner();
-  
-    //-> neues profil erstellen welches bereits die default daten hatt und laden
-    ProfileWriter.createNewProfile(profileName, true);
-    ProfileReader.loadProfile(profileName);
+    //neues Profile Objekt erstellen 
+    //wenn das profile bereits exestirt wird es automatisch in das objekt geladen
+    //wenn es noch nicht exestirt also neu ist wird es automatisch erstellt mit default daten beschriben und in das objekt geladen
+    Profile profile = new Profile(profileName);
 
-    //oder
+    //benutzer kann nun einstellungen das profiles verändern 
+    profile.set("oneDayInSeconds", 2.0); //diese veränderung wird automatisch geladen und gespeichert 
 
-    //-> nur bereits vorhandenes profil laden 
-    //ProfileReader.loadProfile(profileName);
+    //beispiel zum auslesen von daten des profiles
+    int beispiel = profile.getIntager("oneDayInSeconds");
 
-    // benutzer kann nun einstellungen der neuen/alten datei verändern 
-    ProfileWriter.writeInProfile(profileName, "oneDayInSeconds", 5.0);
-
-    //zum ende müssen die daten wieder neu geladen werden um aktuell zu sein wenn der benuzer etwas verändert hatt
-    ProfileReader.loadProfile(profileName);
+    //alle atribute sind mit variable typ in der datei "SIMS5/data/profiles/profilePropertys/atributesDoku.txt" aufgelistet 
 
     //-----------------------------
     
     graphPanel.setDaysOnSlide(3);
+    setSollFps(20);
+
     graphPanel.setRandgröße(25); //fix (only needed for the current gui graph)
-    simulationPanel.setSimulationSize((int)ProfileReader.getDoubleSettings("simulationSize"));
-    simulationPanel.setEntitysPerRound((int)ProfileReader.getDoubleSettings("entitysPerRound"));
+    simulationPanel.setSimulationSize(profile.getIntager("simulationSize"));
+    simulationPanel.setEntitysPerRound(profile.getIntager("entitysPerRound"));
 
     //-------------simulationStart--------------muss ausgeführt werden
-    simManager.startSimulation();
+    simManager.startSimulation(profileName);
     //------------------------------------------
 
     Thread guiThread = new Thread(() -> {
-      runGui();
+      //runGui();
     });
     screen.guiModes(4);
     guiThread.start();
@@ -124,18 +118,6 @@ public class GuiManager {
   }
 
   //---------------set----------------
-
-  public void setSeed(int pSeed) {  
-    if (pSeed >= 1) {
-      startSeed = pSeed;
-    } else {
-      startSeed = 54318;
-    } 
-  }
-
-  public void setProfileName(String name) {
-    profileName = name;
-  }
 
   public void setSollFps(int pFps) {
     if (pFps > 0) {
@@ -172,7 +154,7 @@ public class GuiManager {
 
   private void updateGui() {  
     if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
-      dataPanel.myUpdate(fps, simManager.getEntitysPerRound(), simManager.getEntitys().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestEntity());
+      dataPanel.myUpdate(fps, (int)ProfileReader.getDoubleSettings("entitysPerRound"), simManager.getEntitys().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestEntity());
       graphUpdate();
       if (simManager.getEntitys().size() != 0) {
         simulationPanel.myUpdate(simManager.getEntitys());  

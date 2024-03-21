@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import SIMS5.calculator.Calculator;
-import SIMS5.data.ProfileReader;
-import SIMS5.simulation.LightData.DataSettings;
+import SIMS5.data.FileHandling.profileFiles.ProfileReader;
+import SIMS5.gui.Calculator;
+import SIMS5.sim.enviroment.LightData;
 
 public class SimManager {
   //objekts
   private LightData simData;
 
   //get set
-  private int startSeed;
   private long extendetSeed;
   private int entitysPerRound;
   private int simulationSize;
@@ -26,6 +25,9 @@ public class SimManager {
   private boolean spawnedNeuronsHaveBias;
   private double[] startStatistics = new double[9];
   private double[][] prbabilityValues;
+  private double[] updateList = new double[4];
+  private double energylossAjustment;
+  private double walkActivation;
 
   //run time
   private int round;            
@@ -58,6 +60,12 @@ public class SimManager {
       startStatistics[6] = ProfileReader.getDoubleSettings("entityStartHealth");
       startStatistics[7] = ProfileReader.getDoubleSettings("entityStartRust");
       startStatistics[8] = ProfileReader.getDoubleSettings("entityStartSolar");
+      updateList[0] = ProfileReader.getDoubleSettings("entityRustPlus");
+      updateList[1] = ProfileReader.getDoubleSettings("entityRustLoss");
+      updateList[2] = ProfileReader.getDoubleSettings("entityEnergyLoss");
+      updateList[3] = ProfileReader.getDoubleSettings("entityHealthLoss");
+      energylossAjustment = ProfileReader.getDoubleSettings("entityEnergylossAjustmentPerDay");
+      walkActivation = ProfileReader.getDoubleSettings("entityWalkActivation");
       setNoiseStrength(ProfileReader.getDoubleSettings("noiseStrength"));
       setLightTime((int)ProfileReader.getDoubleSettings("lightTime"));
       setLightIntensity(ProfileReader.getDoubleSettings("lightIntensity"));
@@ -67,7 +75,6 @@ public class SimManager {
       setSimulationSize((int)ProfileReader.getDoubleSettings("simulationSize"));
       setEntitySize((int)ProfileReader.getDoubleSettings("entitySize"));
       setDayLengthRealTimeInSec((int)ProfileReader.getDoubleSettings("oneDayInSeconds"));
-      System.out.println(dayLengthRealTimeInSec);
       setDayLengthVariation(ProfileReader.getDoubleSettings("dayLengthVariation"));
       double[] d = ProfileReader.getArraySettings("networkStartHiddenLayers");
       int[] h = new int[d.length];
@@ -85,7 +92,7 @@ public class SimManager {
 
   //-------simulation and timing--------
 
-  public void startSim() {     
+  private void startSim() {     
     while (true) {
       long startTime = System.currentTimeMillis();
 
@@ -131,8 +138,8 @@ public class SimManager {
 
   private void inicialiseSim() { 
     //spawning grid
-    xGridCount = (int)Math.round(Math.sqrt(entitysPerRound));
-    yGridCount = (int)((double)entitysPerRound/(double)Math.round(Math.sqrt(entitysPerRound)));
+    
+    
     if (xGridCount*yGridCount < entitysPerRound) {
       xGridCount++; 
     }
@@ -151,88 +158,8 @@ public class SimManager {
       int[] position = newPosition(i);
       //new entity
       NeuronReturner nr = newNetwork();
-      entitys.add(new MyEntity(this, nr.getWeights(), nr.getNeurons(), position, startStatistics, entitySize, simulationSize));
+      entitys.add(new MyEntity(this, nr.getWeights(), nr.getNeurons(), position, startStatistics, updateList, energylossAjustment, walkActivation));
     }
-  }
-
-  private NeuronReturner newNetwork() {
-    double[][][] neurons = new double[neuronLayers.length][][]; 
-    List<double[]> weights = new ArrayList<>();
-    int nId = 0;
-    for (int j = 0; j < neurons.length; j++) {
-      neurons[j] = new double[neuronLayers[j]][3];
-      for (int j2 = 0; j2 < neurons[j].length; j2++) {
-        neurons[j][j2][2] = nId;
-        if (j != neurons.length-1 && j != 0) {
-          neurons[j][j2][1] = roundToDecPlaces((newRandom()-0.5)*2, 4);
-        } else {
-          neurons[j][j2][1] = 0;
-        }
-        nId++;
-      }
-    }
-    weights = weightFixer(neurons, weights);
-    return new NeuronReturner(neurons, weights);
-  } 
-
-  private List<double[]> weightFixer(double[][][] pNeurons, List<double[]> pWeights) {
-    for (int i = 0; i < pWeights.size(); i++) {
-      boolean id1 = false;
-      boolean id2 = false;
-      for (int j = 0; j < pNeurons.length; j++) {
-        for (int j2 = 0; j2 < pNeurons[j].length; j2++) {
-          if (pNeurons[j][j2][2] == pWeights.get(i)[0]) {
-            id1 = true;
-          }
-          if (pNeurons[j][j2][2] == pWeights.get(i)[1]) {
-            id2 = true;
-          }
-        }
-      }
-      if (id1 != true || id2 != true) {
-        pWeights.remove(i);
-      }
-    }
-    for (int j = 0; j < pNeurons.length; j++) {
-      for (int j2 = 0; j2 < pNeurons[j].length; j2++) {
-        boolean hasOutWeight = false;
-        boolean hasInWeight = false;
-        for (int i = 0; i < pWeights.size(); i++) {
-          if (pNeurons[j][j2][2] == pWeights.get(i)[0]) {
-            hasInWeight = true;
-          }     
-          if (pNeurons[j][j2][2] == pWeights.get(i)[1]) {
-            hasOutWeight = true;
-          }
-        }
-        if (hasInWeight == false && j != pNeurons.length-1) {
-          int x = j + 1 + normaliseValue(newRandom(), 1, pNeurons.length-2-j);
-          int y = normaliseValue(newRandom(), 1, pNeurons[x].length);
-          double nId2 = pNeurons[x][y][2]; 
-          double[] weight = {pNeurons[j][j2][2], nId2, newRandom()*2};
-          pWeights.add(weight);
-        }
-        if (hasOutWeight == false && j != 0) {
-          int x = normaliseValue(newRandom(), 1, j-1);
-          int y = normaliseValue(newRandom(), 1, pNeurons[x].length);
-          double nId2 = pNeurons[x][y][2]; 
-          double[] weight = {nId2, pNeurons[j][j2][2], newRandom()*2};
-          pWeights.add(weight);
-        }
-      }
-    }
-    return pWeights;
-  }
-
-  private double[][][] neuronFixer(double[][][] pNeurons) {
-    for (int i = 0; i < pNeurons.length; i++) {
-      if (pNeurons[i].length == 0) {
-        List<List<double[]>> listNeurons = convertInToList(pNeurons);
-        listNeurons.remove(i);
-        pNeurons = covertInToArray(listNeurons);
-      }
-    }
-    return pNeurons;
   }
 
   private void nextRound() {  
@@ -278,22 +205,22 @@ public class SimManager {
 
   private NeuronReturner mutate(double[][][] pNeurons, List<double[]> pWeights) {
     for (int i = 0; i < pWeights.size(); i++) {
-      if (newRandom() < getCDBAV(2)) {  //random weight ajustment
-        double[] ajustedWeight = {pWeights.get(i)[0], pWeights.get(i)[1], pWeights.get(i)[2] + (((newRandom()-0.5)*2)*getCDBAV(3))};
+      if (newRandom() < getCDAV(2)) {  //random weight ajustment
+        double[] ajustedWeight = {pWeights.get(i)[0], pWeights.get(i)[1], pWeights.get(i)[2] + (((newRandom()-0.5)*2)*getCDAV(3))};
         pWeights.set(i, ajustedWeight);
       }
-      if (newRandom() < getCDBAV(0)) {  //delete weight
+      if (newRandom() < getCDAV(0)) {  //delete weight
         pWeights.remove(i);
         pWeights = weightFixer(pNeurons, pWeights);
       } 
     }
     for (int i = 0; i < pNeurons.length; i++) {
       for (int j = 0; j < pNeurons[i].length; j++) {
-        if (newRandom() < getCDBAV(4) && i != 0 && i != pNeurons.length-1) {  //random bias ajustment 
-          pNeurons[i][j][1] += ((newRandom()-0.5)*2)*getCDBAV(5);  
+        if (newRandom() < getCDAV(4) && i != 0 && i != pNeurons.length-1) {  //random bias ajustment 
+          pNeurons[i][j][1] += ((newRandom()-0.5)*2)*getCDAV(5);  
           pNeurons[i][j][1] = roundToDecPlaces(pNeurons[i][j][1], 4);
         }
-        if (newRandom() < getCDBAV(1) && i != pNeurons.length-1) {  //random new weight
+        if (newRandom() < getCDAV(1) && i != pNeurons.length-1) {  //random new weight
           int x = i + 1 + normaliseValue(newRandom(), 1, pNeurons.length-2-i);
           int y = normaliseValue(newRandom(), 1, pNeurons[x].length);
           double nId2 = pNeurons[x][y][2]; 
@@ -302,8 +229,8 @@ public class SimManager {
         }
       }
     }
-    if (newRandom() < getCDBAV(7)) { //new neuron    
-      if (newRandom() < getCDBAV(6)) { //new neuron row
+    if (newRandom() < getCDAV(7)) { //new neuron    
+      if (newRandom() < getCDAV(6)) { //new neuron row
         
       } else {
         if (pNeurons.length > 2) {
@@ -324,7 +251,7 @@ public class SimManager {
         }
       }
     }
-    if (newRandom() < getCDBAV(8)) { //delete neuron
+    if (newRandom() < getCDAV(8)) { //delete neuron
       int row;
       if (pNeurons.length == 3) {
         row = 1;
@@ -343,7 +270,7 @@ public class SimManager {
 
   private void addEntity(double[][][] pNeurons, List<double[]> pWeights, int pos) {
     int[] position = newPosition(pos);
-    entitys.add(new MyEntity(this, pWeights, pNeurons, position, startStatistics, entitySize, simulationSize));
+    entitys.add(new MyEntity(this, pWeights, pNeurons, position, startStatistics, updateList, energylossAjustment, walkActivation));
 
     System.out.println("network " + entitys.get(entitys.size()-1).getSerialNumber());
     for (int k = 0; k < pNeurons.length; k++) {
@@ -359,14 +286,7 @@ public class SimManager {
     System.out.println("");
   }
 
-  private int[] newPosition(int x) {  
-    int xGridPos = x % xGridCount;
-    int yGridpos = x / xGridCount;
-    int[] position = {xGridPos*xGridSize, yGridpos*yGridSize};
-    position[0]+= (entitySize/2) + Calculator.normaliseValue(newRandom(), 1, xGridSize-entitySize);
-    position[1]+= (entitySize/2) + Calculator.normaliseValue(newRandom(), 1, yGridSize-entitySize);
-    return position;
-  }
+  
 
   public void deleteRobo(MyEntity robo) {  
     if (entitys.size() > 0) {
@@ -383,72 +303,6 @@ public class SimManager {
 
   //------------- helper----------------
 
-  private double newRandom() {   
-    long a = 1103515245; // multiplier
-    long c = 12345; // increment
-    long m = (long) Math.pow(2, 31); // modulus
-    do {
-      extendetSeed = (a * extendetSeed + c) % m;     
-    } while (((double) extendetSeed / m) < 0 && ((double) extendetSeed / m) > 1);     
-    return (double) extendetSeed / m;  
-  }
-
-  public static double roundToDecPlaces(double value, int decPlaces) {
-    return Math.round(value * (Math.pow(10, decPlaces))) / (Math.pow(10, decPlaces));
-  }
-
-  public static int normaliseValue(double value, int oldMax, int newMax) {     
-    int originalMax = oldMax;
-    double originalRange = (double) (originalMax);
-    double newRange = (double) (newMax);
-    double scaledValue = (value * newRange) / originalRange;
-    return (int) Math.min(Math.max(scaledValue, 0), newMax);
-  }
-
-  public class NeuronReturner {
-    private double[][][] neurons;
-    private List<double[]> weights;
-
-    public NeuronReturner(double[][][] pNeurons, List<double[]> pWeights) {
-      this.neurons = Arrays.copyOf(pNeurons, pNeurons.length);
-      this.weights = new ArrayList<>(pWeights);
-    }
-
-    public double[][][] getNeurons() {
-        return neurons;
-    }
-
-    public List<double[]> getWeights() {
-        return weights;
-    }
-  }
-
-  private double getCDBAV(int ajustment) {  //get Current Declining Ajustment value
-    double decay = Math.log(prbabilityValues[ajustment][1]/prbabilityValues[0][0])/prbabilityValues[0][2];
-    return prbabilityValues[0][0]*Math.pow(Math.E, (decay*round));
-  }
-
-  private double[][][] covertInToArray(List<List<double[]>> pNeurons) {
-    double[][][] arrayNeurons = new double[pNeurons.size()][][];
-    for (int i = 0; i < arrayNeurons.length; i++) {
-      arrayNeurons[i] = new double[pNeurons.get(i).size()][];
-      for (int j = 0; j < arrayNeurons[i].length; j++) {
-        arrayNeurons[i][j] = pNeurons.get(i).get(j);
-      }
-    }
-    return arrayNeurons;
-  }
-
-  private List<List<double[]>> convertInToList(double[][][] pNeurons) {
-    List<List<double[]>> listNeurons = new ArrayList<>(pNeurons.length);
-    for (int i = 0; i < pNeurons.length; i++) {
-      listNeurons.add(new ArrayList<>(pNeurons[i].length));
-      for (int j = 0; j < pNeurons[i].length; j++) {
-        listNeurons.get(i).add(pNeurons[i][j]);
-      }
-    }
-    return listNeurons;
-  }
 
   private int getFreeNId(double[][][] pNeurons) {
     int freeNId = 0;
@@ -522,34 +376,47 @@ public class SimManager {
   public void setSeed(int pSeed) {  
     if (pSeed >= 1) {
       simData.newNoise(pSeed);
-      startSeed = pSeed;
       extendetSeed = pSeed;
     } else {
       simData.newNoise(1);
       extendetSeed = 1;
-      startSeed = 1;
     } 
   }
   //------------------------------------
 
   //---------------get------------------
 
-  public int getLongestEntity() {
+  public int getLongestEntity() {  //nur für debug
     return longestEntity;
   }
 
-  public double getMaxLight() {
+  public double getMaxLight() {  //only for current gui
     return simData.getMaxLight();
-  }
-
-  public int getEntitysPerRound() {
-    return entitysPerRound;
   }
 
   public List<MyEntity> getEntitys() {
     return entitys;
   }
 
+  //------------------------------
+
+  //--------gui conection---------
+
+  //--light--
+  public double[] getLightOfDay(double pDay) {
+    return simData.getLightOfDay(day);
+  }
+
+  public double getLightIntensityAtTime() {
+    return simData.getLightIntensityAtTime(updates);   
+  }
+
+  public double getLightIntensityAtTime(int pUpdates) {
+    return simData.getLightIntensityAtTime(pUpdates);   
+  }
+  //--------
+
+  //---sim---
   public int getRound() {
     return round;
   }
@@ -565,49 +432,6 @@ public class SimManager {
   public int getUpdates() {
     return updates;
   }
-
-  public double getLightIntensityAtTime() {
-      return simData.getLightIntensityAtTime(updates);   
-  }
-
-  public class DataGeneral {
-    private int round;            
-    private int updates;        
-    private int time;           
-    private int day;    
-    private int startSeed;
-    private int entitysPerRound;
-    private int simulationSize;
-    private int entitySize;
-    private int dayLengthRealTimeInSec;  
-    private boolean spawnedNeuronsHaveBias;
-    private double[] startStatistics;
-    private double[][] prbabilityValues;
-
-    public DataGeneral() {
-      
-    }
-  }
-
-
-  //------------------------------
-
-  //------data gui conection------
-
-
-  public DataSettings getLightSettings() {
-    return simData.getDataSettings();
-  }
-
-  public double[] getLightOfDay(double pDay) {
-    return simData.getLightOfDay(day);
-  }
-
-  //public DataEntitys getDataEntitys() {
-  //  return new DataEntitys();
-  //}
-
-  public DataGeneral getDataGeneral() {
-    return new DataGeneral();
-  }
+  //---------
+  
 }

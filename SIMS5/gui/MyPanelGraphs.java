@@ -1,8 +1,6 @@
 package SIMS5.gui;
 import javax.swing.*;
 
-import SIMS5.calculator.Calculator;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;

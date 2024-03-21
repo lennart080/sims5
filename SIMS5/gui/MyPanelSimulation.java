@@ -1,5 +1,4 @@
 package SIMS5.gui;
-import SIMS5.calculator.Calculator;
 import SIMS5.simulation.MyEntity;
 
 import javax.imageio.ImageIO;
