@@ -14,6 +14,7 @@ public class GuiManager extends Application {
     // Objekte:
     private Manager simManager = new Manager();
     Profile profile;
+    private int blabal = 0;
 
     @Override
     public void start(Stage stage) {
