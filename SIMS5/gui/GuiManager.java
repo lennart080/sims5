@@ -1,204 +1,78 @@
 package SIMS5.gui;
 
-import javax.swing.SwingUtilities;
-
-import SIMS5.data.FileHandling.FileClass;
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.gui.Screen.StartScreen;
 import SIMS5.sim.Manager;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
-public class GuiManager {
-  //objekts
-  private Manager simManager;
-  private MyFrame screen;
-  private MyPanelSimulation simulationPanel;
-  private MyPanelData dataPanel;
-  private MyPanelGraphs graphPanel;
-  private MyPanelEntityData entityDataPanel;
-  private MyPanelInput inputPanel;
 
-  //get set
-  private int sollFps;
-  private int entitysPerRound;
+public class GuiManager extends Application {
 
-  //run time
-  private long timeSave = System.currentTimeMillis()/1000;
-  private int fpsCounter = 0;
-  private int fps = 0;
-  private int isGraphAlreadyBuffed = 0;
-  private int shownEntity = 0;
+    // Objekte:
+    private Manager simManager = new Manager();
+    Profile profile;
 
-  //---------------start----------------muss ausgeführt werden
-  public static void main(String[] args) {
-    Manager simManager = new Manager();
-  //------------------------------------
-    new GuiManager(simManager);
-  }
+    @Override
+    public void start(Stage stage) {
+        //Start Simulation
 
-  public GuiManager(Manager simManager) {
-    this.simManager = simManager;
-    //----erstellen der graphic elemente----
-    SwingUtilities.invokeLater(() -> {;                     
-      simulationPanel = new MyPanelSimulation();
-      dataPanel = new MyPanelData();
-      graphPanel = new MyPanelGraphs();
-      entityDataPanel = new MyPanelEntityData();
-      inputPanel = new MyPanelInput(this);
-      screen = new MyFrame(this, simulationPanel, dataPanel, graphPanel, entityDataPanel, inputPanel);
-    });
-    //-------------------------------------
-  }
+        String profilname = "default";
+        profile = new Profile(profilname);
+        simManager.startSimulation(profilname);
 
-  public void runGui() {
-    initialiseGraphpanel();
-    while (true) {
-      long startTime = System.currentTimeMillis(); 
+        //Start Gui
 
-      this.updateGui();
+        Pane emtiyPane = new Pane();
+        Scene scene = new Scene(emtiyPane,0,0);
+        stage.setScene(scene);
+        new StartScreen(stage,this);
 
-      if (((1000/sollFps) - (System.currentTimeMillis() - startTime)) > 0) {
-        try {
-          Thread.sleep((1000/sollFps) - (System.currentTimeMillis() - startTime));       
-        } catch (Exception e) {
-          e.printStackTrace();
-        }
-      }
+        // Tests
+
+        Profile profiletest1 = new Profile("TP1");
+        Profile profiletest2 = new Profile("TP2");
+        Profile profiletest3 = new Profile("TP3");
+        Profile profiletest4 = new Profile("TP4");
+        profiletest1.set("entityStartEnergie",1);
+        profiletest2.set("entityStartEnergie",1);
+        profiletest3.set("entityStartEnergie",1);
+        profiletest4.set("entityStartEnergie",1);
+
+        profile = profiletest4;
     }
-  }
 
-  public void startSimulation() {
-
-    //-----------profiling-----------
-
-    //benutzer gibt simulations namen ein
-    String profileName = "beispielSim";
-
-    //neues Profile Objekt erstellen 
-    //wenn das profile bereits exestirt wird es automatisch in das objekt geladen
-    //wenn es noch nicht exestirt also neu ist wird es automatisch erstellt mit default daten beschriben und in das objekt geladen
-    Profile profile = new Profile(profileName);
-
-    //benutzer kann nun einstellungen das profiles verändern 
-    profile.set("oneDayInSeconds", 2.0); //diese veränderung wird automatisch geladen und gespeichert 
-
-    //beispiel zum auslesen von daten des profiles
-    int beispiel = profile.getIntager("oneDayInSeconds");
-
-    //alle atribute sind mit variable typ in der datei "SIMS5/data/profiles/profilePropertys/atributesDoku.txt" aufgelistet 
-
-    //-----------------------------
-    
-    graphPanel.setDaysOnSlide(3);
-    setSollFps(20);
-
-    graphPanel.setRandgröße(25); //fix (only needed for the current gui graph)
-    simulationPanel.setSimulationSize(profile.getIntager("simulationSize"));
-    simulationPanel.setEntitysPerRound(profile.getIntager("entitysPerRound"));
-
-    //-------------simulationStart--------------muss ausgeführt werden
-    simManager.startSimulation(profileName);
-    //------------------------------------------
-
-    Thread guiThread = new Thread(() -> {
-      //runGui();
-    });
-    screen.guiModes(4);
-    guiThread.start();
-  }
-
-  private void initialiseGraphpanel() {
-    double[] startLight = new double[3600*graphPanel.getDaysOnSlide()];
-    for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
-      double[] oneDayLight = simManager.getLightOfDay(i-((double)graphPanel.getDaysOnSlide()-((double)graphPanel.getDaysOnSlide()/2)));
-      for (int j = 0; j < oneDayLight.length; j++) {
-        startLight[j+(3600*i)] = oneDayLight[j];
-      }
+    public void createProfile(String profilname){
+        Profile profile = new Profile(profilname);
+        this.profile = profile;
     }
-    graphPanel.setGraphSizeY((int)simManager.getMaxLight());
-    graphPanel.start(startLight);
-  }
 
-  //---------------set----------------
+    public void createProfile(String profilname,String password){
+        Profile profile = new Profile(profilname);
+        this.profile = profile;
 
-  public void setSollFps(int pFps) {
-    if (pFps > 0) {
-      sollFps = pFps;    
+        //Password nicht fertig, das Profil wird ohne ein PW erstellt
     }
-  }
 
-  public void setEntitysPerRound(int value) {
-    if (value > 0) {
-      entitysPerRound = value;    
+    public Profile getProfile() {
+        return profile;
     }
-  }
 
-  //----------------------------------
-
-  //---------------get----------------
-
-  public int getSimulationSize() {
-    if (screen != null) {
-      return screen.getSimulationSize();      
-    } 
-    return -1;
-  }
-  //----------------------------------
-
-  private void fpsUpdate() {                                              //calkuliren der angezegten bilder pro secunde
-    if ((timeSave+1) <= (System.currentTimeMillis()/1000)) {
-      timeSave = System.currentTimeMillis()/1000;
-      fps = fpsCounter;
-      fpsCounter = 0;
-    }
-    fpsCounter++;
-  }
-
-  private void updateGui() {  
-    if (simulationPanel != null && dataPanel != null && graphPanel != null && screen != null && inputPanel != null) {         
-      dataPanel.myUpdate(fps, (int)ProfileReader.getDoubleSettings("entitysPerRound"), simManager.getEntitys().size(), simManager.getUpdates(), simManager.getTime(), simManager.getDay(), simManager.getRound(), simManager.getLongestEntity());
-      graphUpdate();
-      if (simManager.getEntitys().size() != 0) {
-        simulationPanel.myUpdate(simManager.getEntitys());  
-        updateShownEntity();
-        entityDataPanel.myUpdate(simManager.getEntitys().get(shownEntity));
-      } else {
-        simulationPanel.myUpdate(null);
-      }
-      fpsUpdate();
-      screen.repaintScreen();
-    }
-  }
-
-  public void entityShownShift(boolean right) {
-    if (right) {
-      if (shownEntity < entitysPerRound) {
-        shownEntity++;
-      }
-    } else {
-      if (shownEntity > 0) {
-        shownEntity--;
-      }
-    }
-  }
-
-  private void updateShownEntity() {
-    if (shownEntity > simManager.getEntitys().size()-1) {
-      shownEntity = simManager.getEntitys().size()-1;
-    }
-  }
-
-  private void graphUpdate() {
-    if (isGraphAlreadyBuffed == (int)((simManager.getUpdates()/(graphPanel.getDaysOnSlide()*3600)))) {
-      double[] light = new double[3600*graphPanel.getDaysOnSlide()];
-      for (int i = 0; i < graphPanel.getDaysOnSlide(); i++) {
-        double[] oneDayLight = simManager.getLightOfDay((isGraphAlreadyBuffed*graphPanel.getDaysOnSlide())+i+((double)graphPanel.getDaysOnSlide()/2));
-        for (int j = 0; j < oneDayLight.length; j++) {
-          light[j+(3600*i)] = oneDayLight[j];
-        }
-      }
-      graphPanel.myUpdate(light);
-
-      isGraphAlreadyBuffed++;
-    }   
-    graphPanel.setTime(simManager.getUpdates());
-  }
+    public static void main(String[] args) {launch();}
 }
+
+/*
+public class GuiManager {
+
+    private Manager simManager = new Manager();
+
+    public static void main(String[] args){
+        String profilname = "";
+        Profile profile = new Profile(profilname);
+        simManager.startSimulation(profilname);
+    }
+}
+
+ */

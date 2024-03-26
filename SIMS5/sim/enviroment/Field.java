@@ -1,7 +1,7 @@
 package SIMS5.sim.enviroment;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
-import SIMS5.gui.Calculator;
+import SIMS5.calculator.Calculator;
 import SIMS5.sim.util.MathUtil;
 
 public class Field extends MathUtil {
