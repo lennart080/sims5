@@ -1,0 +1,217 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="New">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/calculator/Calculator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/MyFileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/MyFileWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/Networks.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/saveFiles/Save.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/saveFiles/SecureSave.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/ProfileReader.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/ProfileWriter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/atributesDoku.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/defaultProfile.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/settingRestrictions.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/beispielSim.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/default/defaultProfile.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/fillOut.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/profilePropertys/atributesDoku.txt" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/profilePropertys/settingRestrictions.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Grafik/Entity.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Grafik/Entity2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/NewProfileScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SelectProfileScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/StartScreen.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Body.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/RobotBody.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/Field.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/Mind.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/NeuralNetwork.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/Mutator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/NetworkCreator.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/NetworkFixer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/util/MathUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/util/NeuronReturner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/sims5_1/sims/HelloController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/com/sims5_1/sims/hello-view.fxml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;denisg05&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="selectedUrlAndAccountId">
+      <UrlAndAccount>
+        <option name="accountId" value="15e70eeb-0410-40c9-9bb2-e8c8172e3660" />
+        <option name="url" value="https://github.com/lennart080/sims5.git" />
+      </UrlAndAccount>
+    </option>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
+  <component name="ProjectId" id="2db5AiKY7L5NqvRfe6bNSa4F4eL" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/giesb/OneDrive/Dokumente/GitHub/sims5&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\giesb\OneDrive\Dokumente\GitHub\sims5" />
+      <recent name="C:\Users\giesb\OneDrive\Dokumente\GitHub\sims5\SIMS5" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="sims5" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="sims5" />
+      <option name="filePath" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="" />
+      <created>1710263795185</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1710263795185</updated>
+      <workItem from="1710263796229" duration="152000" />
+      <workItem from="1710859980780" duration="2920000" />
+      <workItem from="1710965412196" duration="1963000" />
+      <workItem from="1710967615777" duration="2715000" />
+      <workItem from="1710972928176" duration="166000" />
+      <workItem from="1711054837444" duration="2572000" />
+      <workItem from="1711119583746" duration="6000" />
+      <workItem from="1711138933575" duration="688000" />
+      <workItem from="1711487129725" duration="404000" />
+      <workItem from="1711487814330" duration="1210000" />
+      <workItem from="1711489029818" duration="724000" />
+      <workItem from="1711993260074" duration="175000" />
+      <workItem from="1712152071450" duration="51000" />
+    </task>
+    <task id="LOCAL-00001" summary="New">
+      <option name="closed" value="true" />
+      <created>1711488388505</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1711488388505</updated>
+    </task>
+    <task id="LOCAL-00002" summary="New">
+      <option name="closed" value="true" />
+      <created>1711488460861</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1711488460861</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="New" />
+    <option name="LAST_COMMIT_MESSAGE" value="New" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/SIMS5/gui/MyPanelData.java</url>
+          <line>42</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
