@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
-import SIMS5.gui.Calculator;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.util.MathUtil;
 
@@ -27,8 +26,8 @@ public class Field extends MathUtil {
         int xGridPos = x % gridCount;
         int yGridpos = x / gridCount;
         int[] position = {xGridPos*gridSize, yGridpos*gridSize};
-        position[0]+= (entitySize/2) + Calculator.normaliseValue(newRandom(), 1, gridSize-entitySize);
-        position[1]+= (entitySize/2) + Calculator.normaliseValue(newRandom(), 1, gridSize-entitySize);
+        position[0]+= (entitySize/2) + MathUtil.normaliseValue(newRandom(), 1, gridSize-entitySize);
+        position[1]+= (entitySize/2) + MathUtil.normaliseValue(newRandom(), 1, gridSize-entitySize);
         return position;
     } 
 
