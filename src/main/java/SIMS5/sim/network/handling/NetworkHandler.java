@@ -4,19 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.sim.modes.RoundHandler;
 import SIMS5.sim.util.MathUtil;
 import SIMS5.sim.util.NeuronReturner;
 
-public class NetworkCreator extends MathUtil {
+public class NetworkHandler extends MathUtil {
 
-    private Mutator mutator;
     private NetworkFixer fixer;
-
     private int[] neuronLayers;
-    private int inputNeurons = 12;
-    private int outputNeurons = 10;
+    private int inputNeurons = 8;
+    private int outputNeurons = 11;
 
-    public NetworkCreator(Profile profile) {
+    public NetworkHandler(Profile profile, RoundHandler roundHandler) {
         double[] temp = profile.getArray("networkStartHiddenLayers");
         neuronLayers = new int[temp.length+2];  
         neuronLayers[0] = inputNeurons;
@@ -24,7 +23,6 @@ public class NetworkCreator extends MathUtil {
             neuronLayers[i+1] = (int) temp[i]; 
         }
         neuronLayers[neuronLayers.length-1] = outputNeurons;
-        mutator = new Mutator(profile);
         fixer = new NetworkFixer();
     }
 

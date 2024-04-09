@@ -15,7 +15,7 @@ public class LightData {
 
   public LightData(Profile profile) {
     noise = new PerlinNoise(profile.getIntager("seed"));
-    lightTime = profile.getIntager("lightTime");
+    lightTime = profile.getIntager("lightTime")*60;
     lightIntensity = profile.getDouble("lightIntensity");
     noiseStrength = profile.getDouble("noiseStrength");
     noiseSize = profile.getDouble("noiseSize");

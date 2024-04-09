@@ -22,7 +22,7 @@ seed:1:54318.0
 simulationSize:1:1000.0
 entitysPerRound:1:100.0
 entitySize:1:40.0
-oneDayInSeconds:1:2.0
+oneDayInSeconds:1:1.0
 networkStartHiddenLayers:2:3.0:2.0
 doSpawnedNeuronshaveABias:1:false
 mutationProbabilityWeightDying:3:0.1:0.001:500.0
@@ -37,4 +37,7 @@ mutationProbabilityNeuronDying:3:0.15:0.01:150.0
 entitySelectionValueRandom:1:2.0
 entitySelectionValueMostDifferent:1:0.0
 entitySelectionValueNew:1:3.0
-simulationMode:1:0
+simulationMode:1:0.0
+entityPosSave:1:5.0
+attakActivision:1:0.6
+entityAttackEnergieLoss:1:6

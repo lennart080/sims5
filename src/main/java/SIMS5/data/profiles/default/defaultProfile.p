@@ -37,4 +37,7 @@ mutationProbabilityNeuronDying:3:0.15:0.01:150.0
 entitySelectionValueRandom:1:2.0
 entitySelectionValueMostDifferent:1:0.0
 entitySelectionValueNew:1:3.0
-simulationMode:1:0
+simulationMode:1:0.0
+entityPosSave:1:5.0
+attakActivision:1:0.6
+entityAttackEnergieLoss:1:6

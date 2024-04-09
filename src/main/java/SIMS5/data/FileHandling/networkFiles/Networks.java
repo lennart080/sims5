@@ -1,5 +1,7 @@
 package SIMS5.data.FileHandling.networkFiles;
 
+import java.util.List;
+
 import SIMS5.data.FileHandling.profileFiles.Profile;
 
 public class Networks {
@@ -18,5 +20,20 @@ public class Networks {
             NetworkWriter.createNewRound(name, round);
         }
         NetworkWriter.writeNeurons(name, round, network, neurons);
+    }
+
+    public double[][][] getNeurons(int round, int network) {
+        return NetworkReader.getNeurons(name, round, network);
+    }
+
+    public List<double[]> getWeights(int round, int network) {
+        return NetworkReader.getWeights(name, round, network);
+    }
+
+    public void writeNetworkWeights(int round, int network, List<double[]> weights) {
+        if (!NetworkReader.checkIfRoundExists(name, round)) {
+            NetworkWriter.createNewRound(name, round);
+        }
+        NetworkWriter.writeWeights(name, round, network, weights);
     }
 }

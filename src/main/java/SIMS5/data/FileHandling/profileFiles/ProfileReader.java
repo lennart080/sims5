@@ -6,7 +6,7 @@ import java.util.List;
 import SIMS5.data.FileHandling.FileClass;
 import SIMS5.data.FileHandling.MyFileReader;
 
-public final class ProfileReader extends MyFileReader implements ProfileData {
+public abstract class ProfileReader extends MyFileReader implements ProfileData {
 
     public static boolean checkIfProfileExists(String name) {
         return checkIfFileExists(userProfilePath, name, fileType);

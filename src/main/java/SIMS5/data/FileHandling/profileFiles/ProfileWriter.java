@@ -6,7 +6,7 @@ import java.util.List;
 import SIMS5.data.FileHandling.MyFileReader;
 import SIMS5.data.FileHandling.MyFileWriter;
 
-public final class ProfileWriter extends MyFileWriter implements ProfileData {
+public abstract class ProfileWriter extends MyFileWriter implements ProfileData {
     
     public static boolean createNewProfile(String name) {
         createFile(userProfilePath, name, fileType);

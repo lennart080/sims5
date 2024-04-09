@@ -3,8 +3,6 @@ package SIMS5.data.FileHandling.profileFiles;
 import java.util.ArrayList;
 import java.util.List;
 
-import SIMS5.data.FileHandling.saveFiles.Save;
-
 public class Profile {
 
     private String name;
@@ -16,10 +14,6 @@ public class Profile {
             ProfileWriter.createNewProfile(name);
         }
         reloadProfile();
-    }
-
-    public void save(Save save) {
-        set("save", save.getRound());
     }
 
     public String[] getAllProfiles() {
