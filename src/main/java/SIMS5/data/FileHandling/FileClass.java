@@ -4,7 +4,7 @@ import java.io.File;
 
 public abstract class FileClass {
 
-    protected static String dataVerzeichnis = System.getProperty("user.dir") + File.separator + "SIMS5" + File.separator + "data" + File.separator;
+    protected static String dataVerzeichnis = System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "SIMS5" + File.separator + "data" + File.separator;
 
     public static boolean checkIfFileExistsInOrdner(String path, String name, String fileType) {
         String[] files = getAllFiles(path);
