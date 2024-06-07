@@ -87,6 +87,7 @@ public class StartScreen{
         defaultsettings.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                manager.startSimulation();
                 new SimulationScreen(stage,manager);
             }
         });

@@ -17,12 +17,7 @@ public class GuiManager extends Application {
 
     @Override
     public void start(Stage stage) {
-        //Start Simulation
-
-        String profilname = "default";
-        profile = new Profile(profilname);
-        simManager.startSimulation(profilname);
-
+      
         //Start Gui
 
         Pane emtiyPane = new Pane();
@@ -60,19 +55,18 @@ public class GuiManager extends Application {
         return profile;
     }
 
+    //Start Simulation
+
+    public void startSimulation(){
+        String profilname = "default";
+        profile = new Profile(profilname);
+        simManager.startSimulation(profilname);
+    }
+
+    public void startSimulation(String profileName){
+        simManager.startSimulation(profileName);
+    }
+
     public static void main(String[] args) {launch();}
 }
 
-/*
-public class GuiManager {
-
-    private Manager simManager = new Manager();
-
-    public static void main(String[] args){
-        String profilname = "";
-        Profile profile = new Profile(profilname);
-        simManager.startSimulation(profilname);
-    }
-}
-
- */

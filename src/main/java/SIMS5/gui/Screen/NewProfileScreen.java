@@ -100,10 +100,12 @@ public class NewProfileScreen {
                 else {
                     if(passwordInput1.getText().isEmpty() & passwordInput2.getText().isEmpty()){
                         manager.createProfile(inputName.getText());
+                        manager.startSimulation(inputName.getText());
                         new SimulationScreen(stage,manager);
                     }
                     if(pw1.equals(pw2)){
                         manager.createProfile(inputName.getText(),pw1);
+                        manager.startSimulation(inputName.getText());
                         new SimulationScreen(stage,manager);
                     }
                     else{
