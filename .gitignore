@@ -36,3 +36,6 @@ build/
 
 ### Mac OS ###
 .DS_Store
+
+/src/java/SIMS5/data/networks
+/src/java/SIMS5/data/profiles
