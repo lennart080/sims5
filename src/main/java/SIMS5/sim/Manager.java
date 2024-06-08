@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.gui.GuiManager;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.Robot;
 import SIMS5.sim.enviroment.Field;
@@ -13,6 +14,7 @@ import SIMS5.sim.modes.RoundHandler;
 import SIMS5.sim.network.Mind;
 
 public class Manager {
+    private GuiManager guiManager;
     private RoundHandler roundHandler;
     private Profile profile;
     private LightData light;
@@ -22,6 +24,10 @@ public class Manager {
     private double[] updateList = new double[5];
     private double energieLossAjustment;
     private boolean simulationReady = false;
+
+    public Manager(GuiManager guiManager) {
+        this.guiManager = guiManager;
+    }
 
     public void startSimulation(String profileName) {
         Thread simulationThread = new Thread(() -> {
@@ -61,7 +67,7 @@ public class Manager {
     private void purAiMode() {
         double walkActivasion = profile.getDouble("entityWalkActivation");
         double attakActivision = profile.getDouble("attakActivision");
-        roundHandler = new PurAi(profile, light, field);
+        roundHandler = new PurAi(profile, light, field, this);
         entitysPerRound = profile.getIntager("entitysPerRound");
         int lastPosSize = profile.getIntager("entityPosSave");
         List<Robot> robots = new ArrayList<>(entitysPerRound);
@@ -80,35 +86,31 @@ public class Manager {
         }
     }
 
-    public LightData getLightData() {
-        return roundHandler.getLightData();
+    public void setSpeed(int speed) {
+        roundHandler.setSpeed(speed);
     }
 
-    public List<Body> getEntitys() {
-        return roundHandler.getBodys();
+    public void updateLightData(LightData lightData) {
+        guiManager.updateLightData(lightData);
     }
 
-    public List<Mind> getNetworks() {
-        return roundHandler.getMinds();
-    } 
-
-    public int getRound() {
-        return roundHandler.getRound();
+    public void updateEntitys(List<Body> bodies) {
+        guiManager.updateBodys(bodies);
     }
 
-    public int getDay() {
-        return roundHandler.getDay();
+    public void updateUpdates(int updates) {
+        guiManager.updateUpdates(updates);
     }
 
-    public int getTime() {
-        return roundHandler.getTime();
+    public void updateDay(int day) {
+        guiManager.updateDay(day);
     }
 
-    public int getUpdates() {
-        return roundHandler.getUpdates();
+    public void updateTime(int time) {
+        guiManager.updateTime(time);
     }
 
-    public boolean getSimulationReady() {
-        return simulationReady;
+    public void updateRound(int round) {
+        guiManager.updateRound(round);
     }
 }

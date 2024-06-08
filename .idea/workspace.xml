@@ -5,73 +5,43 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="New">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/mvnw.cmd" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/calculator/Calculator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/MyFileReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/MyFileWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/Networks.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/ProfileWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/saveFiles/Save.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/saveFiles/SecureSave.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/ProfileReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/ProfileWriter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/atributesDoku.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/defaultProfile.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/default/settingRestrictions.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/beispielSim.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/default/defaultProfile.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/fillOut.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/profilePropertys/atributesDoku.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/profilePropertys/settingRestrictions.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Grafik/Entity.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Grafik/Entity2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/NewProfileScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SelectProfileScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/StartScreen.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Body.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/RobotBody.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/Field.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/Mind.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/NeuralNetwork.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/Mutator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/NetworkCreator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/network/handling/NetworkFixer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/util/MathUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/util/NeuronReturner.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/sims5_1/sims/HelloController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/module-info.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/com/sims5_1/sims/hello-view.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP2.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP3.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP4.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/jasy.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Gui/MainGui.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -82,40 +52,45 @@
     &quot;assignee&quot;: &quot;denisg05&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">
-    <option name="selectedUrlAndAccountId">
-      <UrlAndAccount>
-        <option name="accountId" value="15e70eeb-0410-40c9-9bb2-e8c8172e3660" />
-        <option name="url" value="https://github.com/lennart080/sims5.git" />
-      </UrlAndAccount>
-    </option>
-  </component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/lennart080/sims5.git",
+    "accountId": "16cc1d84-4d8d-4cf0-bcad-227c05bc940c"
+  }
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
   <component name="ProjectId" id="2db5AiKY7L5NqvRfe6bNSa4F4eL" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/giesb/OneDrive/Dokumente/GitHub/sims5&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "Application.GuiManager.executor": "Run",
+    "Application.Unnamed.executor": "Run",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/Lennart/Downloads/openjfx-22.0.1_windows-x64_bin-sdk/javafx-sdk-22.0.1/lib",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\giesb\OneDrive\Dokumente\GitHub\sims5" />
@@ -123,26 +98,24 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="sims5" />
+    <configuration name="GuiManager" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="SIMS5.gui.GuiManager" />
+      <module name="Sims" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="SIMS5.gui.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="sims5" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-  </component>
-  <component name="SharedIndexes">
-    <attachedChunks>
-      <set>
-        <option value="jdk-21.0.1-openjdk-21.0.1-4caba194b151-23eed401" />
-      </set>
-    </attachedChunks>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.GuiManager" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -200,6 +173,7 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="New" />
     <option name="LAST_COMMIT_MESSAGE" value="New" />
   </component>

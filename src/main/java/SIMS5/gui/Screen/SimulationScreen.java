@@ -68,7 +68,7 @@ public class SimulationScreen {
         test4Eck.setX(200);
         test4Eck.setY(250);
         try {
-            test4Eck.setFill(new ImagePattern(loadImage()));
+            //test4Eck.setFill(new ImagePattern(loadImage()));
         } catch (Exception e) {
             throw new RuntimeException(e);
         }

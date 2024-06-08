@@ -5,6 +5,7 @@ import java.util.List;
 
 import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.Robot;
 import SIMS5.sim.entitiys.Robot.RobotBody;
@@ -25,8 +26,8 @@ public class PurAi extends RoundHandler {
     private int robotSize;
     private int lastPosSize;
 
-    public PurAi(Profile profile, LightData light, Field field) {
-        super(profile, light, field);
+    public PurAi(Profile profile, LightData light, Field field, Manager manager) {
+        super(profile, light, field, manager);
         networkCreator = new NetworkHandler(profile, this);
         mutator = new Mutator(profile, this);
         simSize = profile.getIntager("simulationSize");
@@ -85,6 +86,7 @@ public class PurAi extends RoundHandler {
         for (int i = 0; i < robots.size(); i++) {
             robots.get(i).simulate(light.getLightIntensityAtTime(updates));
         }
+
     }
 
     public void deleteRobo(Robot robot) {

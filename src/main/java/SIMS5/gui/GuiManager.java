@@ -2,17 +2,22 @@ package SIMS5.gui;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Screen.StartScreen;
+import SIMS5.sim.Gui.MainGui;
 import SIMS5.sim.Manager;
+import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.enviroment.LightData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+import java.util.List;
 
-public class GuiManager extends Application {
+
+public class GuiManager extends Application implements MainGui {
 
     // Objekte:
-    private Manager simManager = new Manager();
+    private Manager simManager = new Manager(this);
     Profile profile;
 
     @Override
@@ -65,6 +70,43 @@ public class GuiManager extends Application {
 
     public void startSimulation(String profileName){
         simManager.startSimulation(profileName);
+    }
+
+    //-------------------------------------
+
+    @Override
+    public void setSimulationSpeed(int speed) {
+        simManager.setSpeed(speed);
+    }
+
+    @Override
+    public void updateLightData(LightData lightData) {
+
+    }
+
+    @Override
+    public void updateBodys(List<Body> bodys) {
+
+    }
+
+    @Override
+    public void updateRound(int round) {
+
+    }
+
+    @Override
+    public void updateDay(int day) {
+
+    }
+
+    @Override
+    public void updateTime(int time) {
+
+    }
+
+    @Override
+    public void updateUpdates(int updates) {
+
     }
 
     public static void main(String[] args) {launch();}
