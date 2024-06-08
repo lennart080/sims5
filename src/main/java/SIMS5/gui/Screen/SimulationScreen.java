@@ -1,6 +1,7 @@
 package SIMS5.gui.Screen;
 
 import SIMS5.gui.GuiManager;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -11,7 +12,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
@@ -42,10 +42,10 @@ public class SimulationScreen {
     public SimulationScreen(Stage stage, GuiManager manager){
         this.manager = manager;
         this.stage = stage;
+        manager.setSimScreen(this);
 
         // BorderPane Configuration
 
-        //pane.getChildren().add(simPane);
         pane.setCenter(simPane);
         pane.setLeft(dataPane);
         pane.setTop(graphPane);
@@ -97,9 +97,20 @@ public class SimulationScreen {
     }
 
     private Image loadImage()  throws IOException {
-        FileInputStream inputStream = new FileInputStream("C:/Users/giesb/OneDrive/Dokumente/GitHub/Sims/src/main/java/SIMS5/gui/Grafik/Entity2.jpg");
+        FileInputStream inputStream = new FileInputStream("/gui/Grafik/Entity2.jpg");
         Image image = new Image(inputStream);
         return image;
+    }
+
+    public void updateRound(int round){
+        System.out.println(round);
+        data1.setText(String.valueOf(round));
+    }
+
+    public void updateDay(int day){
+        System.out.println(day);
+        Platform.runLater(() -> data2.setText(String.valueOf(day)));
+        manager.setSimulationSpeed(1);
     }
 
 }

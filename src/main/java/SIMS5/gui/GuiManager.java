@@ -1,6 +1,7 @@
 package SIMS5.gui;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.gui.Screen.SimulationScreen;
 import SIMS5.gui.Screen.StartScreen;
 import SIMS5.sim.Gui.MainGui;
 import SIMS5.sim.Manager;
@@ -19,10 +20,11 @@ public class GuiManager extends Application implements MainGui {
     // Objekte:
     private Manager simManager = new Manager(this);
     Profile profile;
+    SimulationScreen simScreen;
 
     @Override
     public void start(Stage stage) {
-      
+
         //Start Gui
 
         Pane emtiyPane = new Pane();
@@ -42,6 +44,10 @@ public class GuiManager extends Application implements MainGui {
         profiletest4.set("entityStartEnergie",1);
 
         profile = profiletest4;
+    }
+
+    public void setSimScreen(SimulationScreen simScreen){
+        this.simScreen = simScreen;
     }
 
     public void createProfile(String profilname){
@@ -91,12 +97,14 @@ public class GuiManager extends Application implements MainGui {
 
     @Override
     public void updateRound(int round) {
-
+        System.out.println(round);
+        simScreen.updateRound(round);
     }
 
     @Override
     public void updateDay(int day) {
-
+        System.out.println(day); 
+        simScreen.updateDay(day);
     }
 
     @Override
