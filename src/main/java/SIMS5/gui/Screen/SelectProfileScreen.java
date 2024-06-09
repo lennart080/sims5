@@ -25,8 +25,6 @@ public class SelectProfileScreen {
     private ScrollPane pane = new ScrollPane();
 
     //Componente:
-    private Label test = new Label("test");
-    private Button confirm = new Button("confirm");
     private VBox vbox = new VBox();
 
     public SelectProfileScreen(Stage stage, GuiManager manager) {
