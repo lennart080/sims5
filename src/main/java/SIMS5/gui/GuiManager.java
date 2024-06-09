@@ -34,16 +34,17 @@ public class GuiManager extends Application implements MainGui {
 
         // Tests
 
-        Profile profiletest1 = new Profile("TP1");
+        /*Profile profiletest1 = new Profile("TP1");
         Profile profiletest2 = new Profile("TP2");
         Profile profiletest3 = new Profile("TP3");
         Profile profiletest4 = new Profile("TP4");
         profiletest1.set("entityStartEnergie",1);
         profiletest2.set("entityStartEnergie",1);
         profiletest3.set("entityStartEnergie",1);
-        profiletest4.set("entityStartEnergie",1);
+        profiletest4.set("entityStartEnergie",1);*/
+        profile = new Profile("lennart");
 
-        profile = profiletest4;
+        //profile = profiletest4;
     }
 
     public void setSimScreen(SimulationScreen simScreen){

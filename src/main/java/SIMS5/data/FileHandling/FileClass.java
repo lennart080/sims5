@@ -72,7 +72,8 @@ public abstract class FileClass {
         File[] dateien = ordner.listFiles();
         String[] files = new String[dateien.length];
         for (int i = 0; i < dateien.length; i++) {
-            files[i] = dateien[i].getName();
+            String[] temp = dateien[i].getName().split("\\.");
+            files[i] = temp[0];
         }
         return files;
     }

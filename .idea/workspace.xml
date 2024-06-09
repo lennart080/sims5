@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="New">
+    <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="new schnittstelle">
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
@@ -15,21 +15,12 @@
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.w" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.n" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP2.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP3.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP4.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/jasy.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Gui/MainGui.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/beispielSim.p" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,12 +43,12 @@
     &quot;assignee&quot;: &quot;denisg05&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/lennart080/sims5.git",
-    "accountId": "16cc1d84-4d8d-4cf0-bcad-227c05bc940c"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/lennart080/sims5.git&quot;,
+    &quot;accountId&quot;: &quot;16cc1d84-4d8d-4cf0-bcad-227c05bc940c&quot;
   }
-}]]></component>
+}</component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 8
 }</component>
@@ -69,28 +60,28 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Application.GuiManager.executor": "Run",
-    "Application.Unnamed.executor": "Run",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/Lennart/Downloads/openjfx-22.0.1_windows-x64_bin-sdk/javafx-sdk-22.0.1/lib",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Libraries",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Application.GuiManager.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Unnamed.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/Lennart/Downloads/openjfx-22.0.1_windows-x64_bin-sdk/javafx-sdk-22.0.1/lib&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\giesb\OneDrive\Dokumente\GitHub\sims5" />
@@ -155,7 +146,15 @@
       <option name="project" value="LOCAL" />
       <updated>1711488460861</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="new schnittstelle">
+      <option name="closed" value="true" />
+      <created>1717837033963</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1717837033963</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,15 +174,30 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="New" />
-    <option name="LAST_COMMIT_MESSAGE" value="New" />
+    <MESSAGE value="new schnittstelle" />
+    <option name="LAST_COMMIT_MESSAGE" value="new schnittstelle" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
+        <line-breakpoint type="java-line">
           <url>file://$PROJECT_DIR$/SIMS5/gui/MyPanelData.java</url>
           <line>42</line>
           <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SelectProfileScreen.java</url>
+          <line>30</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-method">
+          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java</url>
+          <line>69</line>
+          <properties class="SIMS5.data.FileHandling.FileClass" method="getAllFiles">
+            <option name="EMULATED" value="true" />
+            <option name="WATCH_EXIT" value="false" />
+          </properties>
+          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

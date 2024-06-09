@@ -56,10 +56,6 @@ public class LightData {
   
   //------------get--------------
 
-  public double getMaxLight() {  //only for current gui
-    return (noiseStrength+2)*lightIntensity;
-  }
-
   public double getLightIntensityAtTime(int updates) {              
     return calcLight(updates);
   }
