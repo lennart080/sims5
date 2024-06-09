@@ -92,29 +92,32 @@ public class GuiManager extends Application implements MainGui {
 
     @Override
     public void updateBodys(List<Body> bodys) {
-
+        System.out.println("Manager, bodys was send");
+        simScreen.updateBodys(bodys);
     }
 
     @Override
     public void updateRound(int round) {
-        System.out.println(round);
+        System.out.println("Manager, round: " + round);
         simScreen.updateRound(round);
     }
 
     @Override
     public void updateDay(int day) {
-        System.out.println(day); 
+        System.out.println("Manager, day: " + day); 
         simScreen.updateDay(day);
     }
 
     @Override
     public void updateTime(int time) {
-
+        //System.out.println("Manager, time: " + time);
+        simScreen.updateTime(time);
     }
 
     @Override
     public void updateUpdates(int updates) {
-
+       // System.out.println("Manager, updates: " + updates);
+        simScreen.updateUpdates(updates);
     }
 
     public static void main(String[] args) {launch();}

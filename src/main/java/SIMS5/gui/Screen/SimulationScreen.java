@@ -2,6 +2,7 @@ package SIMS5.gui.Screen;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Grafik.ImageDirecory;
+import SIMS5.sim.entitiys.Body;
 import SIMS5.gui.GuiManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -15,7 +16,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -25,6 +25,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 
 import java.io.IOException;
+import java.util.List;
 
 public class SimulationScreen implements ImageDirecory {
 
@@ -37,27 +38,36 @@ public class SimulationScreen implements ImageDirecory {
     private Pane simPane = new Pane();
     private HBox graphPane = new HBox();
     private GridPane dataPane = new GridPane();
+    private Rectangle[][] rectangles;
+    private Rectangle2D bounds;
+    private int rectSize;
 
     //Componente:
 
-    private Rectangle test4Eck = new Rectangle();
-    private Label dataName1 = new Label("1111");
+    private Label dataName1 = new Label("Round :");
     private Label dataName2 = new Label("Day :");
-    private Label dataName3 = new Label("3333");
-    private Label grafLabel = new Label("4444");
+    private Label dataName3 = new Label("Time :");
+    private Label dataName4 = new Label("Updates :");
+    private Label grafLabel = new Label("graf");
 
-    private Label dataValue1 = new Label("AAAA");
+    private Label dataValue1 = new Label();
     private Label dataValue2 = new Label();
-    private Label dataValue3 = new Label("CCCC");
+    private Label dataValue3 = new Label();
+    private Label dataValue4 = new Label();
 
     public SimulationScreen(Stage stage, GuiManager manager){
+
+        //Init
+
         this.manager = manager;
         this.stage = stage;
         manager.setSimScreen(this);
         profile = manager.getProfile();
         Screen primaryScreen = Screen.getPrimary();
-        Rectangle2D bounds = primaryScreen.getVisualBounds();
-        int rectSize = ((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize");
+        bounds = primaryScreen.getVisualBounds();
+        rectSize = (((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize"))-(int)graphPane.getHeight();
+        rectangles = new Rectangle[manager.getProfile().getIntager("simulationSize")][manager.getProfile().getIntager("simulationSize")];
+
 
         // Componente:
 
@@ -80,27 +90,39 @@ public class SimulationScreen implements ImageDirecory {
         dataPane.add(dataName1,0,0);
         dataPane.add(dataName2, 0, 1);
         dataPane.add(dataName3, 0, 2);
+        dataPane.add(dataName4, 0, 3);
         dataPane.add(dataValue1,1,0);
         dataPane.add(dataValue2, 1, 1);
         dataPane.add(dataValue3, 1, 2);
+        dataPane.add(dataValue4, 1, 3);
 
         //graphPane
         graphPane.getChildren().add(grafLabel);
 
         // simPane Configuration
+
+        createNewField(rectangles);
+
+        for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
+            for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
+                simPane.getChildren().add(rectangles[i][j]);
+            }
+        }
+
+        /*
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
             for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
                 Rectangle rect = new Rectangle(rectSize, rectSize);
-                rect.setX(j * rectSize);
+                rect.setX((j * rectSize)+((int)bounds.getWidth())/3.5);
                 rect.setY(i * rectSize);
+                rect.setFill(Color.GREEN);
                 if (image != null) {
-                    rect.setFill(new ImagePattern(image));
+                   // rect.setFill(new ImagePattern(image));                                  
                 }
-                rect.setStroke(Color.BLACK);
-                rect.setStrokeWidth(0.5);
                 simPane.getChildren().add(rect);
             }
         }
+        */
     
         
 
@@ -129,16 +151,44 @@ public class SimulationScreen implements ImageDirecory {
         stage.setScene(scene);
     }
 
-
+    private void createNewField(Rectangle[][] rectangles){
+        for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
+            for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
+                Rectangle rect = new Rectangle(rectSize, rectSize);
+                rectangles[i][j] = rect;
+                rect.setX((j * rectSize)+((int)bounds.getWidth())/3.5);
+                rect.setY(i * rectSize);
+                rect.setFill(Color.GREEN);
+            }
+        }
+    }
+    
     private Image loadImage()  throws IOException {
         FileInputStream inputStream = new FileInputStream(ImageDirectory + "Entity2.jpg");
         Image image = new Image(inputStream);
         return image;
     }
 
+    private void setBodyPos(int x, int y){
+        Rectangle rect = new Rectangle(rectSize, rectSize);
+        for (int i = 0; i < x; i++) {
+            for (int j = 0; j < y; j++) {
+                rectangles[i][j] = rect;
+            }
+        }
+        try {
+            Image image = loadImage();
+            rect.setFill(new ImagePattern(image));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void updateRound(int round){
         System.out.println(round);
-        dataName1.setText(String.valueOf(round));
+        Platform.runLater(() -> {
+            dataValue1.setText(String.valueOf(round));
+        });
     }
 
     public void updateDay(int day){
@@ -146,6 +196,26 @@ public class SimulationScreen implements ImageDirecory {
         Platform.runLater(() -> {
             dataValue2.setText(String.valueOf(day));
             manager.setSimulationSpeed(1);
+            System.out.println(dataValue2.getText());
         });
     }
+
+    public void updateTime(int time){
+        //System.out.println(time);
+        Platform.runLater(() -> {
+            dataValue3.setText(String.valueOf(time));
+        });
+    }
+
+    public void updateUpdates(int updates){
+        //System.out.println(updates);
+        Platform.runLater(() -> {
+            dataValue4.setText(String.valueOf(updates));
+        });
+    }
+
+    public void updateBodys(List<Body> bodys){
+        
+    }
+
 }
