@@ -1,6 +1,7 @@
 package SIMS5.gui.Screen;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.gui.Grafik.ImageDirecory;
 import SIMS5.gui.GuiManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -24,7 +25,7 @@ import java.io.FileInputStream;
 
 import java.io.IOException;
 
-public class SimulationScreen {
+public class SimulationScreen implements ImageDirecory {
 
     // Objekte:
     private GuiManager manager;
@@ -120,7 +121,7 @@ public class SimulationScreen {
 
 
     private Image loadImage()  throws IOException {
-        FileInputStream inputStream = new FileInputStream("/gui/Grafik/Entity2.jpg");
+        FileInputStream inputStream = new FileInputStream(ImageDirectory + "Entity2.jpg");
         Image image = new Image(inputStream);
         return image;
     }
