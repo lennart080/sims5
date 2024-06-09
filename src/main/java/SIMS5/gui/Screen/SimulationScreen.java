@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -34,16 +35,20 @@ public class SimulationScreen implements ImageDirecory {
     private Profile profile;
     private BorderPane pane = new BorderPane();
     private Pane simPane = new Pane();
-    private VBox dataPane = new VBox();
     private HBox graphPane = new HBox();
+    private GridPane dataPane = new GridPane();
 
     //Componente:
 
     private Rectangle test4Eck = new Rectangle();
-    private Label data1 = new Label("1111");
-    private Label data2 = new Label("2222");
-    private Label data3 = new Label("3333");
-    private Label data4 = new Label("4444");
+    private Label dataName1 = new Label("1111");
+    private Label dataName2 = new Label("Day :");
+    private Label dataName3 = new Label("3333");
+    private Label grafLabel = new Label("4444");
+
+    private Label dataValue1 = new Label("AAAA");
+    private Label dataValue2 = new Label();
+    private Label dataValue3 = new Label("CCCC");
 
     public SimulationScreen(Stage stage, GuiManager manager){
         this.manager = manager;
@@ -52,7 +57,7 @@ public class SimulationScreen implements ImageDirecory {
         profile = manager.getProfile();
         Screen primaryScreen = Screen.getPrimary();
         Rectangle2D bounds = primaryScreen.getVisualBounds();
-        int rectSize = (int)bounds.getWidth();
+        int rectSize = ((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize");
 
         // Componente:
 
@@ -72,10 +77,15 @@ public class SimulationScreen implements ImageDirecory {
 
 
         //dataPane Configuration
-        dataPane.getChildren().addAll(data1, data2, data3);
+        dataPane.add(dataName1,0,0);
+        dataPane.add(dataName2, 0, 1);
+        dataPane.add(dataName3, 0, 2);
+        dataPane.add(dataValue1,1,0);
+        dataPane.add(dataValue2, 1, 1);
+        dataPane.add(dataValue3, 1, 2);
 
         //graphPane
-        graphPane.getChildren().add(data4);
+        graphPane.getChildren().add(grafLabel);
 
         // simPane Configuration
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
@@ -128,13 +138,14 @@ public class SimulationScreen implements ImageDirecory {
 
     public void updateRound(int round){
         System.out.println(round);
-        data1.setText(String.valueOf(round));
+        dataName1.setText(String.valueOf(round));
     }
 
     public void updateDay(int day){
         System.out.println(day);
-        Platform.runLater(() -> data2.setText(String.valueOf(day)));
-        manager.setSimulationSpeed(1);
+        Platform.runLater(() -> {
+            dataValue2.setText(String.valueOf(day));
+            manager.setSimulationSpeed(1);
+        });
     }
-
 }
