@@ -31,6 +31,8 @@ public class GuiManager extends Application implements MainGui {
         Scene scene = new Scene(emtiyPane,0,0);
         stage.setScene(scene);
         new StartScreen(stage,this);
+        String profilname = "default";
+        profile = new Profile(profilname);
 
         // Tests
 
@@ -42,8 +44,6 @@ public class GuiManager extends Application implements MainGui {
         profiletest2.set("entityStartEnergie",1);
         profiletest3.set("entityStartEnergie",1);
         profiletest4.set("entityStartEnergie",1);
-
-        profile = profiletest4;
     }
 
     public void setSimScreen(SimulationScreen simScreen){

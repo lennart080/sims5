@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -43,20 +44,24 @@ public class SimulationScreen {
     private Label data3 = new Label("3333");
     private Label data4 = new Label("4444");
 
-    //Feld
-    int[] field;
-    
-
-
     public SimulationScreen(Stage stage, GuiManager manager){
         this.manager = manager;
         this.stage = stage;
         manager.setSimScreen(this);
         profile = manager.getProfile();
-        field = new int[profile.getIntager("simulationSize")];
         Screen primaryScreen = Screen.getPrimary();
         Rectangle2D bounds = primaryScreen.getVisualBounds();
         int rectSize = (int)bounds.getWidth();
+
+        // Componente:
+
+        Image image = null;
+        try {
+            image = loadImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
 
         // BorderPane Configuration
 
@@ -72,14 +77,15 @@ public class SimulationScreen {
         graphPane.getChildren().add(data4);
 
         // simPane Configuration
-
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
             for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
                 Rectangle rect = new Rectangle(rectSize, rectSize);
                 rect.setX(j * rectSize);
                 rect.setY(i * rectSize);
-                rect.setFill(Color.LIGHTGRAY); // Setze die Farbe nach Bedarf
-                rect.setStroke(Color.BLACK); // Setze die Randfarbe nach Bedarf
+                if (image != null) {
+                    rect.setFill(new ImagePattern(image));
+                }
+                rect.setStroke(Color.BLACK);
                 rect.setStrokeWidth(0.5);
                 simPane.getChildren().add(rect);
             }
@@ -87,19 +93,7 @@ public class SimulationScreen {
     
         
 
-        // Componente:
-
-
-        // test
-        test4Eck.setWidth(400);
-        test4Eck.setHeight(400);
-        test4Eck.setX(200);
-        test4Eck.setY(250);
-        try {
-            //test4Eck.setFill(new ImagePattern(loadImage()));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        
 
         // Scene Configuration
 
@@ -123,6 +117,7 @@ public class SimulationScreen {
         stage.setTitle("SimulationScreen");
         stage.setScene(scene);
     }
+
 
     private Image loadImage()  throws IOException {
         FileInputStream inputStream = new FileInputStream("/gui/Grafik/Entity2.jpg");
