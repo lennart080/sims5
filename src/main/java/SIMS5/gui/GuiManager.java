@@ -14,13 +14,16 @@ import javafx.stage.Stage;
 
 import java.util.List;
 
-
 public class GuiManager extends Application implements MainGui {
 
     // Objekte:
     private Manager simManager = new Manager(this);
-    Profile profile;
-    SimulationScreen simScreen;
+    private Profile profile;
+    private SimulationScreen simScreen;
+
+    public void setSimScreen(SimulationScreen simScreen){
+        this.simScreen = simScreen;
+    }
 
     @Override
     public void start(Stage stage) {
@@ -46,9 +49,7 @@ public class GuiManager extends Application implements MainGui {
         profile = profiletest4;
     }
 
-    public void setSimScreen(SimulationScreen simScreen){
-        this.simScreen = simScreen;
-    }
+    
 
     public void createProfile(String profilname){
         Profile profile = new Profile(profilname);
@@ -87,7 +88,7 @@ public class GuiManager extends Application implements MainGui {
 
     @Override
     public void updateLightData(LightData lightData) {
-
+        simScreen.updateLightData(lightData);
     }
 
     @Override
@@ -105,7 +106,10 @@ public class GuiManager extends Application implements MainGui {
     @Override
     public void updateDay(int day) {
         System.out.println("Manager, day: " + day); 
-        simScreen.updateDay(day);
+        if (simScreen != null) {
+            simScreen.updateDay(day);
+            
+        } else {System.out.println("simScreen gibts nicht");}
     }
 
     @Override

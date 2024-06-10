@@ -3,6 +3,8 @@ package SIMS5.gui.Screen;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Grafik.ImageDirecory;
 import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.entitiys.Robot.RobotBody;
+import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -41,6 +43,8 @@ public class SimulationScreen implements ImageDirecory {
     private Rectangle[][] rectangles;
     private Rectangle2D bounds;
     private int rectSize;
+    private LightData lightData;
+    private List<Body> bodys;
 
     //Componente:
 
@@ -184,6 +188,10 @@ public class SimulationScreen implements ImageDirecory {
         }
     }
 
+    public void updateLightData(LightData lightData){
+        this.lightData = lightData;
+    }
+
     public void updateRound(int round){
         System.out.println(round);
         Platform.runLater(() -> {
@@ -194,9 +202,13 @@ public class SimulationScreen implements ImageDirecory {
     public void updateDay(int day){
         System.out.println(day);
         Platform.runLater(() -> {
+            try {
             dataValue2.setText(String.valueOf(day));
             manager.setSimulationSpeed(1);
             System.out.println(dataValue2.getText());
+        } catch (Exception e) {
+            System.err.println("Error updating day: " + e.getMessage());
+        }
         });
     }
 
@@ -215,7 +227,14 @@ public class SimulationScreen implements ImageDirecory {
     }
 
     public void updateBodys(List<Body> bodys){
-        
+        this.bodys = bodys;
+        updateBody();
     }
 
+    public void updateBody(){
+        for(int i = 0; i < bodys.size(); i++){
+            bodys.get(i);
+            
+        }
+    }
 }
