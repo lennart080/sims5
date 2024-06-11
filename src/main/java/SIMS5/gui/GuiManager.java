@@ -54,14 +54,7 @@ public class GuiManager extends Application implements MainGui {
     public void createProfile(String profilname){
         Profile profile = new Profile(profilname);
         this.profile = profile;
-    }
-
-    public void createProfile(String profilname,String password){
-        Profile profile = new Profile(profilname);
-        this.profile = profile;
-
-        //Password nicht fertig, das Profil wird ohne ein PW erstellt
-    }
+    }                             
 
     public Profile getProfile() {
         return profile;

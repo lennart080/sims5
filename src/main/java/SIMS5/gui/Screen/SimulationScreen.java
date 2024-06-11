@@ -146,13 +146,13 @@ public class SimulationScreen implements ImageDirecory {
 
         // Stage Configuration
 
+        stage.setScene(scene);
         stage.setMaxWidth(4000);
         stage.setMaxHeight(2000);
         stage.setMaximized(true);
         //stage.setFullScreen(true);
-        stage.setFullScreenExitHint("");
+        stage.setFullScreenExitHint(" ");
         stage.setTitle("SimulationScreen");
-        stage.setScene(scene);
     }
 
     private void createNewField(Rectangle[][] rectangles){

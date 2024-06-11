@@ -8,23 +8,15 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-
-// Ideen
-/*
-    passwordField.setPromptText("Your password"); //erstzen
-
-
- */
 
 
 public class NewProfileScreen {
@@ -33,19 +25,31 @@ public class NewProfileScreen {
     private GuiManager manager;
     private Stage stage;
     private Scene scene;
-    private VBox pane = new VBox();
+    private ScrollPane pane = new ScrollPane();
+    private VBox vBox = new VBox();
     private VBox boxName = new VBox();
-    private VBox boxPw1 = new VBox();
-    private VBox boxPw2 = new VBox();
 
     //Componente:
+
+    //Labels
+    private Label[] labels = new Label[100];
+
     private Label labelCreateProfile = new Label("Create Profile");
     private Label labelName = new Label("Name*");
-    private Label labelpw1 = new Label("Password");
-    private Label labelpw2 = new Label("Repeat Password");
+    private Label entityStartEnergie = new Label("EntityStartEnergie - The initial energy that a robot has");
+    private Label entityStartSchrott = new Label("EntityStartSchrott - The initial scrap that the robot has");
+    private Label entityStartAttack = new Label("EntityStartAttack - The initial attack the robot has");
+    private Label entityStartEnergieCapacity = new Label("EntityStartEnergieCapacity - The initial energy capacity the robot has");
+    private Label entityStartSpeed = new Label("EntityStartSpeed - The initial speed the robot has");
+    private Label entityStartDefense = new Label("EntityStartDefense - The initial defence the robot has");
+    private Label entityStartHealth = new Label("EntityStartHealth - The initial health the robot has");
+    private Label entityStartRust = new Label("EntityStartRust - The initial rust the robot has");
+    private Label entityStartSolar = new Label("EntityStartSolar - The initial solar the robot has");
+
+    //TextFields
     private TextField inputName = new TextField("");
-    private PasswordField passwordInput1 = new PasswordField();
-    private PasswordField passwordInput2 = new PasswordField();
+
+    //Buttons
     private Button buttonCreate = new Button("Create new Profile");
 
     public NewProfileScreen(Stage stage,GuiManager manager){
@@ -55,22 +59,14 @@ public class NewProfileScreen {
         // VBox Configuration
 
         // pane
-        pane.getChildren().addAll(labelCreateProfile,boxName,boxPw1,boxPw2,buttonCreate);
-        pane.setAlignment(Pos.CENTER);
+        pane.setContent(vBox);
         pane.setPadding(new Insets(30,30,30,30));
-        pane.setSpacing(40);
-
+        
         //boxName
-
         boxName.getChildren().addAll(labelName,inputName);
 
-        //boxPw1
+        //boxEntityStart
 
-        boxPw1.getChildren().addAll(labelpw1,passwordInput1);
-
-        //boxPw2
-
-        boxPw2.getChildren().addAll(labelpw2,passwordInput2);
 
         //Componente:
 
@@ -80,38 +76,19 @@ public class NewProfileScreen {
         //Label: labelName
         labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
 
-        //Label: labelpw1
-        labelpw1.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
-
-        //Label: labelpw2
-        labelpw2.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
-
         //Button: buttonCreate
         buttonCreate.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
         buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String pw1 = passwordInput1.getText();
-                String pw2 = passwordInput2.getText();
                 if (inputName.getText().isEmpty()) {
                     labelName.setTextFill(Color.RED);
                     labelName.setText("Name* - Please enter Name");
                 }
                 else {
-                    if(passwordInput1.getText().isEmpty() & passwordInput2.getText().isEmpty()){
-                        manager.createProfile(inputName.getText());
-                        manager.startSimulation(inputName.getText());
-                        new SimulationScreen(stage,manager);
-                    }
-                    if(pw1.equals(pw2)){
-                        manager.createProfile(inputName.getText(),pw1);
-                        manager.startSimulation(inputName.getText());
-                        new SimulationScreen(stage,manager);
-                    }
-                    else{
-                        labelpw2.setTextFill(Color.RED);
-                        labelpw2.setText("Repeat Password - Password does not match");
-                    }
+                    manager.createProfile(inputName.getText());
+                    manager.startSimulation(inputName.getText());
+                    new SimulationScreen(stage,manager); 
                 }
             }
         });
