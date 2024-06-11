@@ -28,6 +28,7 @@ public class NewProfileScreen {
     private ScrollPane pane = new ScrollPane();
     private VBox vBox = new VBox();
     private VBox boxName = new VBox();
+    private VBox boxEntityStart = new VBox();
 
     //Componente:
 
@@ -49,6 +50,7 @@ public class NewProfileScreen {
     //TextFields
     private TextField inputName = new TextField("");
 
+
     //Buttons
     private Button buttonCreate = new Button("Create new Profile");
 
@@ -60,13 +62,14 @@ public class NewProfileScreen {
 
         // pane
         pane.setContent(vBox);
+        vBox.getChildren().addAll(boxName,boxEntityStart);
         pane.setPadding(new Insets(30,30,30,30));
         
         //boxName
         boxName.getChildren().addAll(labelName,inputName);
 
         //boxEntityStart
-
+        boxEntityStart.getChildren().addAll(entityStartEnergie, entityStartSchrott, entityStartAttack, entityStartEnergieCapacity, entityStartSpeed, entityStartDefense, entityStartHealth, entityStartRust, entityStartSolar);
 
         //Componente:
 
@@ -110,6 +113,18 @@ public class NewProfileScreen {
 
         stage.setTitle("NewProfileScreen");
         stage.setScene(scene);
+    }
+
+
+    // Ist für die Zukunft um Code zu sparen
+    // Die Labels sollen im Array sein und von der settingRestrictions ausgelesen werden
+    private void createNewLabels(){
+
+    }
+
+    // Die TextFields sollen im Array sein und von der settingRestrictions ausgelesen werden
+    private void createTextFields(){
+
     }
 
 }

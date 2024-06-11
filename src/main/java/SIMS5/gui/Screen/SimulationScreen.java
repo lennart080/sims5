@@ -33,7 +33,7 @@ public class SimulationScreen implements ImageDirecory {
 
     // Objekte:
     private GuiManager manager;
-    private Stage stage;
+    private Stage stage;    
     private Scene scene;
     private Profile profile;
     private BorderPane pane = new BorderPane();
