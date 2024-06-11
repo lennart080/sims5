@@ -44,7 +44,7 @@ public class SimulationScreen implements ImageDirecory {
     private Rectangle2D bounds;
     private int rectSize;
     private LightData lightData;
-    private List<Body> bodys;
+    private List<RobotBody> bodies;
 
     //Componente:
 
@@ -200,12 +200,12 @@ public class SimulationScreen implements ImageDirecory {
     }
 
     public void updateDay(int day){
-        System.out.println(day);
+        //System.out.println(day);
         Platform.runLater(() -> {
             try {
             dataValue2.setText(String.valueOf(day));
-            manager.setSimulationSpeed(1);
-            System.out.println(dataValue2.getText());
+            //manager.setSimulationSpeed(1);
+            System.out.println("Inhalt von dataValue2: " + dataValue2.getText());
         } catch (Exception e) {
             System.err.println("Error updating day: " + e.getMessage());
         }
@@ -226,15 +226,23 @@ public class SimulationScreen implements ImageDirecory {
         });
     }
 
-    public void updateBodys(List<Body> bodys){
-        this.bodys = bodys;
-        updateBody();
+    public void updateBodys(List<Body> bodies){
+        for(int i = 0; i < bodies.size(); i++){
+            Body tempBody = bodies.get(i);
+            if(tempBody instanceof RobotBody){
+                this.bodies.add(i, (RobotBody)tempBody); 
+            }
+            
+        }  
+        updateAllBodyPos();
     }
 
-    public void updateBody(){
-        for(int i = 0; i < bodys.size(); i++){
-            bodys.get(i);
-            
+
+    public void updateAllBodyPos(){
+        for(int i = 0; i < bodies.size(); i++){
+            RobotBody tempRobotBody = bodies.get(i);
+            setBodyPos(tempRobotBody.getPosX(), tempRobotBody.getPosY());
+            System.out.println("PosX: " + tempRobotBody.getPosX() + "PosY: " +tempRobotBody.getPosY());
         }
     }
 }

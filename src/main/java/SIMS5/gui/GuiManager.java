@@ -105,11 +105,11 @@ public class GuiManager extends Application implements MainGui {
 
     @Override
     public void updateDay(int day) {
-        System.out.println("Manager, day: " + day); 
+        //System.out.println("Manager, day: " + day); 
         if (simScreen != null) {
             simScreen.updateDay(day);
             
-        } else {System.out.println("simScreen gibts nicht");}
+        } //else {System.out.println("simScreen gibts nicht");}
     }
 
     @Override
