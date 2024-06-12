@@ -19,6 +19,7 @@ public abstract class MyEntity {
     protected double[] updateList;
     protected double energieLossAjustment;
     protected double[] input;
+    protected int day;
 
     public MyEntity(RoundHandler handler, double[] statistics, double[] updateList, double energieLossAjustment, Field field) {
         this.field = field;
@@ -63,4 +64,8 @@ public abstract class MyEntity {
     public abstract void simulate(double currentLight);
 
     public abstract void delete();
+
+    public void setDay(int day) {
+        this.day = day;
+    }
 }

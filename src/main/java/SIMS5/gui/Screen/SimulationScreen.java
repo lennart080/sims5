@@ -27,6 +27,7 @@ import javafx.stage.Stage;
 import java.io.FileInputStream;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class SimulationScreen implements ImageDirecory {
@@ -44,7 +45,7 @@ public class SimulationScreen implements ImageDirecory {
     private Rectangle2D bounds;
     private int rectSize;
     private LightData lightData;
-    private List<RobotBody> bodies;
+    private List<Body> bodies;
 
     //Componente:
 
@@ -71,6 +72,7 @@ public class SimulationScreen implements ImageDirecory {
         bounds = primaryScreen.getVisualBounds();
         rectSize = (((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize"))-(int)graphPane.getHeight();
         rectangles = new Rectangle[manager.getProfile().getIntager("simulationSize")][manager.getProfile().getIntager("simulationSize")];
+        bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
 
 
         // Componente:
@@ -107,8 +109,8 @@ public class SimulationScreen implements ImageDirecory {
 
         createNewField(rectangles);
 
-        for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
-            for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
+        for (int i = 0; i < profile.getIntager("simulationSize"); i++) {
+            for (int j = 0; j < profile.getIntager("simulationSize"); j++) {
                 simPane.getChildren().add(rectangles[i][j]);
             }
         }
@@ -227,22 +229,16 @@ public class SimulationScreen implements ImageDirecory {
     }
 
     public void updateBodys(List<Body> bodies){
-        for(int i = 0; i < bodies.size(); i++){
-            Body tempBody = bodies.get(i);
-            if(tempBody instanceof RobotBody){
-                this.bodies.add(i, (RobotBody)tempBody); 
-            }
-            
-        }  
+        this.bodies.clear();
+        this.bodies = new ArrayList<>(bodies);
         updateAllBodyPos();
     }
 
 
     public void updateAllBodyPos(){
-        for(int i = 0; i < bodies.size(); i++){
-            RobotBody tempRobotBody = bodies.get(i);
-            setBodyPos(tempRobotBody.getPosX(), tempRobotBody.getPosY());
-            System.out.println("PosX: " + tempRobotBody.getPosX() + "PosY: " +tempRobotBody.getPosY());
+        for (Body body : bodies) {
+            setBodyPos(body.getPosX(), body.getPosY());
+            System.out.println("PosX: " + body.getPosX() + "PosY: " + body.getPosY());
         }
     }
 }

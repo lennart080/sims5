@@ -89,6 +89,10 @@ public class Profile {
         return v;
     }
 
+    public List<String[]> getAllAtributs() {
+        return ProfileReader.getprofile(name);
+    }
+
     public String getName() {
         return name;
     }

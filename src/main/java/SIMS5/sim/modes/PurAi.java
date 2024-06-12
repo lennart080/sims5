@@ -7,6 +7,7 @@ import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.entitiys.MyEntity;
 import SIMS5.sim.entitiys.Robot.Robot;
 import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.Field;
@@ -21,7 +22,7 @@ public class PurAi extends RoundHandler {
 
     private NetworkHandler networkCreator;
     private Mutator mutator;
-    private List<Robot> robots = new ArrayList<>();
+    private List<MyEntity> robots = new ArrayList<>();
     private int simSize;
     private int robotSize;
     private int lastPosSize;
@@ -40,14 +41,14 @@ public class PurAi extends RoundHandler {
         for (int i = 0; i < entitys.size(); i++) {
             robots.add(entitys.get(i));
             int[] pos = field.newPosition(i);
-            robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, robots.get(i)));
+            robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robots.get(i)));
             field.addToField(robots.get(i).getBody());
             NeuronReturner nr = networkCreator.newNetwork();
             network.writeNetworkNeurons(0, i, nr.getNeurons());
             network.writeNetworkWeights(0, i, nr.getWeights());
             robots.get(i).setMind(new NeuralNetwork(nr.getWeights(), nr.getNeurons(), simSize));
         }
-        runRound();
+        runRound(robots);
     }
 
     public void startRound(List<Robot> entitys) {
@@ -55,38 +56,14 @@ public class PurAi extends RoundHandler {
         for (int i = 0; i < entitys.size(); i++) {
             robots.add(entitys.get(i));
             int[] pos = field.newPosition(i);
-            robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, robots.get(i)));
+            robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robots.get(i)));
             field.addToField(robots.get(i).getBody());
             NeuronReturner nr =  mutator.mutate(network.getWeights(round-1, i), network.getNeurons(round-1, i));
             network.writeNetworkNeurons(round, i, nr.getNeurons());
             network.writeNetworkWeights(round, i, nr.getWeights());
             robots.get(i).setMind(new NeuralNetwork(nr.getWeights(), nr.getNeurons(), simSize));
         }
-        runRound();
-    }
-
-    private void runRound() {
-        updates = 0;
-        time = 0;
-        day = 0;
-        while (robots.size() != 0) {
-            simulate();
-            int temp = day;
-            updatesAndSleepHandling();
-            if (day > temp) {
-                for (int i = 0; i < robots.size(); i++) {
-                    robots.get(i).setDay(day);
-                }
-            }
-        }
-        round++;
-    }
-
-    private void simulate() {
-        for (int i = 0; i < robots.size(); i++) {
-            robots.get(i).simulate(light.getLightIntensityAtTime(updates));
-        }
-
+        runRound(robots);
     }
 
     public void deleteRobo(Robot robot) {

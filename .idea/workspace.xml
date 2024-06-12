@@ -4,23 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="new schnittstelle">
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.w" afterDir="false" />
+    <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="image fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/TP1/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/TP1/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP2.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP3.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP4.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/beispielSim.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/enviroment/LightData.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -31,6 +33,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
@@ -154,7 +157,23 @@
       <option name="project" value="LOCAL" />
       <updated>1717837033963</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="profile fix">
+      <option name="closed" value="true" />
+      <created>1717949767959</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1717949767959</updated>
+    </task>
+    <task id="LOCAL-00005" summary="image fix">
+      <option name="closed" value="true" />
+      <created>1717950233040</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1717950233040</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -175,7 +194,9 @@
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="New" />
     <MESSAGE value="new schnittstelle" />
-    <option name="LAST_COMMIT_MESSAGE" value="new schnittstelle" />
+    <MESSAGE value="profile fix" />
+    <MESSAGE value="image fix" />
+    <option name="LAST_COMMIT_MESSAGE" value="image fix" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -189,15 +210,6 @@
           <url>file://$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SelectProfileScreen.java</url>
           <line>30</line>
           <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/FileClass.java</url>
-          <line>69</line>
-          <properties class="SIMS5.data.FileHandling.FileClass" method="getAllFiles">
-            <option name="EMULATED" value="true" />
-            <option name="WATCH_EXIT" value="false" />
-          </properties>
-          <option name="timeStamp" value="5" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

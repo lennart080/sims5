@@ -1,11 +1,13 @@
 package SIMS5.sim.modes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.entitiys.MyEntity;
 import SIMS5.sim.enviroment.Field;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.sim.network.Mind;
@@ -75,13 +77,38 @@ public abstract class RoundHandler {
         }
     }
 
+    protected void simulate(List<MyEntity> entity) {
+        for (int i = 0; i < entity.size(); i++) {
+            entity.get(i).simulate(light.getLightIntensityAtTime(updates));
+        }
+    }
+
+    protected void runRound(List<MyEntity> entity) {
+        List<Body> bodies = new ArrayList<>(entity.size());
+        for (MyEntity my : entity) {
+            bodies.add(my.getBody());
+        }
+        manager.updateEntitys(bodies);
+        updates = 0;
+        time = 0;
+        day = 0;
+        while (!entity.isEmpty()) {
+            simulate(entity);
+            int temp = day;
+            updatesAndSleepHandling();
+            if (day > temp) {
+                for (MyEntity myEntity : entity) {
+                    myEntity.setDay(day);
+                }
+            }
+        }
+        round++;
+        manager.updateRound(round);
+    }
+
     public abstract List<Mind> getMinds();
 
     public void setSpeed(int speed) {
         this.simSpeed = speed;
-    }
-
-    protected void updateBodys(List<Body> bodies) {
-        manager.updateEntitys(bodies);
     }
 }

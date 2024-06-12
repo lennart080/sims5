@@ -13,7 +13,6 @@ import SIMS5.sim.util.MathUtil;
 
 public class Robot extends MyEntity {
 
-    private int day;
     private double walkActivasion;
     private double attakActivision;
     private int lastMovment = 0;
@@ -133,10 +132,6 @@ public class Robot extends MyEntity {
                 }
             }
         }
-    }
-
-    public void setDay(int day) {
-        this.day = day;
     }
 
     private void wasMovingNewIndex(boolean moved) {
