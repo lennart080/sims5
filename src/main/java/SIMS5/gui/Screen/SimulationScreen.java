@@ -46,6 +46,7 @@ public class SimulationScreen implements ImageDirecory {
     private int rectSize;
     private LightData lightData;
     private List<Body> bodies;
+    private Image bodyImage;
 
     //Componente:
 
@@ -74,6 +75,11 @@ public class SimulationScreen implements ImageDirecory {
         rectangles = new Rectangle[manager.getProfile().getIntager("simulationSize")][manager.getProfile().getIntager("simulationSize")];
         bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
 
+        try {
+            bodyImage = loadImage();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         // Componente:
 
@@ -107,13 +113,15 @@ public class SimulationScreen implements ImageDirecory {
 
         // simPane Configuration
 
-        createNewField(rectangles);
+        //createNewField(rectangles);
 
+
+        /* 
         for (int i = 0; i < profile.getIntager("simulationSize"); i++) {
             for (int j = 0; j < profile.getIntager("simulationSize"); j++) {
                 simPane.getChildren().add(rectangles[i][j]);
             }
-        }
+        }*/
 
         /*
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
@@ -157,17 +165,23 @@ public class SimulationScreen implements ImageDirecory {
         stage.setTitle("SimulationScreen");
     }
 
-    private void createNewField(Rectangle[][] rectangles){
+    private void createNewField(Rectangle[][] rectangles) {
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
-            for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++) {
+            for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++){
                 Rectangle rect = new Rectangle(rectSize, rectSize);
-                rectangles[i][j] = rect;
                 rect.setX((j * rectSize)+((int)bounds.getWidth())/3.5);
                 rect.setY(i * rectSize);
                 rect.setFill(Color.GREEN);
+                rectangles[i][j] = rect;
+            }
+        }
+        for (int i = 0; i < profile.getIntager("simulationSize"); i++) {
+            for (int j = 0; j < profile.getIntager("simulationSize"); j++) {
+                simPane.getChildren().add(rectangles[i][j]);
             }
         }
     }
+    
     
     private Image loadImage()  throws IOException {
         FileInputStream inputStream = new FileInputStream(ImageDirectory + "Entity2.jpg");
@@ -176,17 +190,14 @@ public class SimulationScreen implements ImageDirecory {
     }
 
     private void setBodyPos(int x, int y){
-        Rectangle rect = new Rectangle(rectSize, rectSize);
-        for (int i = 0; i < x; i++) {
-            for (int j = 0; j < y; j++) {
-                rectangles[i][j] = rect;
-            }
-        }
+        createNewField(rectangles);
+        Rectangle rect = rectangles[x][y];
+        Image image = null;
         try {
-            Image image = loadImage();
-            rect.setFill(new ImagePattern(image));
+        image = loadImage();
+        rect.setFill(new ImagePattern(image));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Bild kommte nicht geladen werden");
         }
     }
 
@@ -197,7 +208,11 @@ public class SimulationScreen implements ImageDirecory {
     public void updateRound(int round){
         System.out.println(round);
         Platform.runLater(() -> {
+            try {
             dataValue1.setText(String.valueOf(round));
+            } catch (Exception e) {
+                System.err.println("Error updating round: " + e.getMessage());
+            }
         });
     }
 
@@ -206,8 +221,7 @@ public class SimulationScreen implements ImageDirecory {
         Platform.runLater(() -> {
             try {
             dataValue2.setText(String.valueOf(day));
-            //manager.setSimulationSpeed(1);
-            System.out.println("Inhalt von dataValue2: " + dataValue2.getText());
+            //System.out.println("Inhalt von dataValue2: " + dataValue2.getText());
         } catch (Exception e) {
             System.err.println("Error updating day: " + e.getMessage());
         }
@@ -238,7 +252,7 @@ public class SimulationScreen implements ImageDirecory {
     public void updateAllBodyPos(){
         for (Body body : bodies) {
             setBodyPos(body.getPosX(), body.getPosY());
-            System.out.println("PosX: " + body.getPosX() + "PosY: " + body.getPosY());
+            //System.out.println("PosX: " + body.getPosX() + "  " + "PosY: " + body.getPosY());
         }
     }
 }
