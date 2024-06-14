@@ -18,6 +18,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -71,8 +72,6 @@ public class SimulationScreen implements ImageDirecory {
         profile = manager.getProfile();
         Screen primaryScreen = Screen.getPrimary();
         bounds = primaryScreen.getVisualBounds();
-        rectSize = (((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize"))-(int)graphPane.getHeight();
-        rectangles = new Rectangle[manager.getProfile().getIntager("simulationSize")][manager.getProfile().getIntager("simulationSize")];
         bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
 
         try {
@@ -166,6 +165,10 @@ public class SimulationScreen implements ImageDirecory {
     }
 
     private void createNewField(Rectangle[][] rectangles) {
+        rectSize = (((int)bounds.getWidth())/manager.getProfile().getIntager("simulationSize"))-(int)graphPane.getHeight();
+        int rectangelsSize = manager.getProfile().getIntager("simulationSize");
+        rectangles = new Rectangle[rectangelsSize][rectangelsSize];
+        this.rectangles = rectangles;
         for (int i = 0; i < manager.getProfile().getIntager("simulationSize"); i++) {
             for (int j = 0; j < manager.getProfile().getIntager("simulationSize"); j++){
                 Rectangle rect = new Rectangle(rectSize, rectSize);
@@ -175,11 +178,14 @@ public class SimulationScreen implements ImageDirecory {
                 rectangles[i][j] = rect;
             }
         }
-        for (int i = 0; i < profile.getIntager("simulationSize"); i++) {
-            for (int j = 0; j < profile.getIntager("simulationSize"); j++) {
-                simPane.getChildren().add(rectangles[i][j]);
+        Rectangle tempRectangles[][] = rectangles;
+        Platform.runLater(() -> {
+            for (int i = 0; i < profile.getIntager("simulationSize"); i++) {
+                for (int j = 0; j < profile.getIntager("simulationSize"); j++) {
+                    simPane.getChildren().add(tempRectangles[i][j]);
+                }
             }
-        }
+        });
     }
     
     
