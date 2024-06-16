@@ -34,6 +34,7 @@ public class NewProfileScreen {
 
     //Labels
     private Label[] labels = new Label[100];
+    
 
     private Label labelCreateProfile = new Label("Create Profile");
     private Label labelName = new Label("Name*");

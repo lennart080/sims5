@@ -51,7 +51,7 @@ public class SimulationScreen implements ImageDirecory{
     private LightData lightData;
     private List<Body> bodies;
     private Rectangle2D bounds;
-    private int rectSize;
+    private boolean simPaneIsReady;
 
     //Componente:
     private Label dataRoundName = new Label("Round :");
@@ -105,20 +105,22 @@ public class SimulationScreen implements ImageDirecory{
         graphPane.getChildren().add(grafLabel);
 
         //tests
-
+    
         
 
         Rectangle rect2 = new Rectangle(100,100);
         graphPane.getChildren().add(rect2);
 
         //simPaneConfiguration
-        simPane.setAlignment(Pos.CENTER);
+        simPane.setAlignment(Pos.TOP_LEFT);
         
         simBack = new Rectangle(manager.getProfile().getIntager("simulationSize"),(manager.getProfile().getIntager("simulationSize")));    
         //simBack.setFill(new ImagePattern(backRoundImage));
         simBack.setFill(Color.WHITE);
         simBack.setStroke(Color.BLACK);
+        simBack.setTranslateX((int)bounds.getWidth()/4);
         simPane.getChildren().add(simBack); 
+        simPaneIsReady = true;
 
         //dataPane Configuration
         dataPane.add(dataRoundName,0,0);
@@ -160,26 +162,33 @@ public class SimulationScreen implements ImageDirecory{
 
     private void setBodyPos(int x, int y){
         Platform.runLater(() -> {
-            simPane.getChildren().clear();
-            simPane.getChildren().add(simBack); 
             ImageView imageView = new ImageView(bodyImage);
-            imageView.setTranslateX(x);
-            imageView.setTranslateY(y);
+            imageView.setTranslateX(x+((int)bounds.getWidth()/4));
+            imageView.setTranslateY(y)  ;
             simPane.getChildren().add(imageView);
         });
     }
 
-    
     private void updateBodiesPosLoop() {
             new Thread(() -> {
             while (true) {
                 int xPos;
                 int yPos;
-                for(int i = 0; i < bodies.size(); i++){
-                RobotBody rBody = (RobotBody)bodies.get(i);
-                xPos = rBody.getPosX();
-                yPos = rBody.getPosY();
-                setBodyPos(xPos, yPos);
+                Platform.runLater(() -> {
+                    simPane.getChildren().clear();
+                    simPane.getChildren().add(simBack); 
+                });
+                if(simPaneIsReady==true){
+                    simPaneIsReady = false;
+                    for(int i = 0; i < bodies.size(); i++){
+                        RobotBody rBody = (RobotBody)bodies.get(i);
+                        //if(rBody){      //Überprüfen ob der Roboter noch lebt
+                            xPos = rBody.getPosX();
+                            yPos = rBody.getPosY();
+                            setBodyPos(xPos, yPos);
+                        //}
+                    }
+                    simPaneIsReady = true;
                 }
                 try {
                     Thread.sleep(1000); 
@@ -243,3 +252,10 @@ public class SimulationScreen implements ImageDirecory{
     }
 
 }
+//simPane.getChildren().clear();
+
+/* 
+Platform.runLater(() -> {
+    simPane.getChildren().clear();
+});
+*/
