@@ -98,6 +98,8 @@ public class StartScreen{
         stage.setMaxWidth(900);
         stage.setMinHeight(440);
         stage.setMinWidth(660);
+        stage.setWidth(780);
+        stage.setHeight(520);
         stage.setTitle("StartScreen");
         stage.setScene(scene);
         stage.show();

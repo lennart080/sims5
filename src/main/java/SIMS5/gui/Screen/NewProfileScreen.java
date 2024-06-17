@@ -1,6 +1,7 @@
 package SIMS5.gui.Screen;
 
 import SIMS5.gui.GuiManager;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -34,6 +35,7 @@ public class NewProfileScreen {
 
     //Labels
     private Label[] labels = new Label[100];
+    private TextField[] textFields = new TextField[100];
     
 
     private Label labelCreateProfile = new Label("Create Profile");
@@ -63,7 +65,12 @@ public class NewProfileScreen {
 
         // pane
         pane.setContent(vBox);
-        vBox.getChildren().addAll(boxName,boxEntityStart);
+        //vBox.setSpacing(50);
+        createNewLabels();
+        createTextFields();
+        setComponent();
+        
+        //vBox.getChildren().addAll(boxName,boxEntityStart);
         pane.setPadding(new Insets(30,30,30,30));
         
         //boxName
@@ -112,20 +119,45 @@ public class NewProfileScreen {
 
         // Stage Configuration
 
-        stage.setTitle("NewProfileScreen");
         stage.setScene(scene);
+        stage.setHeight(800);
+        stage.setMinHeight(780);
+        stage.setWidth(900);
+        stage.setMinWidth(900);
+        stage.setTitle("NewProfileScreen");
+        
     }
 
 
     // Ist für die Zukunft um Code zu sparen
     // Die Labels sollen im Array sein und von der settingRestrictions ausgelesen werden
     private void createNewLabels(){
-
+        labels[0] = labelName;
+        labels[1] = entityStartEnergie;
+        labels[2] = entityStartSchrott;
+        labels[3] = entityStartAttack;
+        labels[4] = entityStartEnergieCapacity;
+        labels[5] = entityStartSpeed;
+        labels[6] = entityStartDefense;
+        labels[7] = entityStartHealth;
+        labels[8] = entityStartRust;
+        labels[9] = entityStartSolar;
     }
 
     // Die TextFields sollen im Array sein und von der settingRestrictions ausgelesen werden
     private void createTextFields(){
-
+        for(int i = 0; i < labels.length; i++){
+            textFields[i] = new TextField();
+        }
     }
 
+    private void setComponent(){
+        Platform.runLater(() -> {
+            for(int i = 0; i < labels.length; i++){
+                labels[i].setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+                vBox.getChildren().addAll(labels[i],textFields[i]);
+            }
+            vBox.getChildren().add(buttonCreate);
+        });
+    }
 }
