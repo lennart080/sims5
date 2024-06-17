@@ -70,22 +70,8 @@ public class NewProfileScreen {
         createTextFields();
         setComponent();
         
-        //vBox.getChildren().addAll(boxName,boxEntityStart);
         pane.setPadding(new Insets(30,30,30,30));
         
-        //boxName
-        boxName.getChildren().addAll(labelName,inputName);
-
-        //boxEntityStart
-        boxEntityStart.getChildren().addAll(entityStartEnergie, entityStartSchrott, entityStartAttack, entityStartEnergieCapacity, entityStartSpeed, entityStartDefense, entityStartHealth, entityStartRust, entityStartSolar);
-
-        //Componente:
-
-        //Label: labelCreateProfile
-        labelCreateProfile.setFont(Font.font("Stencil", FontWeight.MEDIUM,38));
-
-        //Label: labelName
-        labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
 
         //Button: buttonCreate
         buttonCreate.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
