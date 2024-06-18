@@ -1,7 +1,11 @@
 package SIMS5.gui.Screen;
 
+import java.util.ArrayList;
+
 import SIMS5.gui.GuiManager;
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,17 +13,102 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 
+public class NewProfileScreen {
 
+    // Objekte:
+    private GuiManager manager;
+    private Stage stage;
+    private Scene scene;
+    private VBox pane = new VBox();
+    private HBox hBoxName = new HBox();
+    private HBox hBoxSettings = new HBox();
+    private HBox hBoxSettings2 = new HBox();
+    private ObservableList<String> modes = FXCollections.observableArrayList();
+
+    //Componente:
+
+    private Label labelreateProfile = new Label("Create Profile");
+    private Label labelSettings = new Label("Settings");
+    private Label labelName = new Label("Name");
+    private Label labelMode = new Label("Modes:");
+    private TextField inputName = new TextField();
+
+    private Button buttonCreate = new Button();
+    private Button buttonSettingsEntity = new Button("Entity");
+    private Button buttonSettingsEnviroment = new Button("Enviroment");
+    private Button buttonSettingsKI = new Button("KI");
+    private Button buttonSettingsRest = new Button("Rest");
+ 
+    ListView<String> modePick = new ListView<String>(modes);
+
+    public NewProfileScreen(Stage stage,GuiManager manager){
+        this.manager = manager;
+        this.stage = stage;
+
+        //Componente:
+
+        //labels
+        labelreateProfile.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+        labelSettings.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
+        labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
+        labelMode.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
+
+        //buttons
+        buttonCreate.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+        buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                if (inputName.getText().isEmpty()) {
+                    labelName.setTextFill(Color.RED);
+                    labelName.setText("Name* - Please enter Name");
+                }
+                else {
+                    manager.createProfile(inputName.getText());
+                    manager.startSimulation(inputName.getText());
+                    new SimulationScreen(stage,manager); 
+                }
+            }
+        });
+
+        // Scene Configuration
+
+        scene = new Scene(pane,750,500);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(keyEvent.getCode() == KeyCode.ESCAPE){
+                    new StartScreen(stage,manager);
+                }
+            }
+        });
+
+        // Scene Configuration
+
+        scene = new Scene(pane,750,500);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if(keyEvent.getCode() == KeyCode.ESCAPE){
+                    new StartScreen(stage,manager);
+                }
+            }
+        });
+    }
+}
+
+/* 
 public class NewProfileScreen {
 
     // Objekte:
@@ -146,4 +235,4 @@ public class NewProfileScreen {
             vBox.getChildren().add(buttonCreate);
         });
     }
-}
+}*/
