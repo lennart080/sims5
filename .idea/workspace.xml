@@ -5,23 +5,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="image fix">
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/TP1/round0.n" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/TP1/round0.w" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP2.p" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP3.p" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP4.p" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Gui/Schnittstelle.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/ShowRoom.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_08_[Changes]/lennart.p" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_08_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_08__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_16_[Changes]/lennart.p" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_16_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_09_06_2024_18_16__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/Screen/SimulationScreen.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/MyEntity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/gui/GuiManager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Gui/MainGui.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,8 +30,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>

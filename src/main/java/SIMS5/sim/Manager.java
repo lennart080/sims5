@@ -5,15 +5,16 @@ import java.util.List;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.GuiManager;
+import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.Robot;
 import SIMS5.sim.enviroment.Field;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.sim.modes.PurAi;
 import SIMS5.sim.modes.RoundHandler;
-import SIMS5.sim.network.Mind;
+import SIMS5.sim.modes.ShowRoom;
 
-public class Manager {
+public class Manager extends Schnittstelle {
     private GuiManager guiManager;
     private RoundHandler roundHandler;
     private Profile profile;
@@ -23,7 +24,7 @@ public class Manager {
     private double[] robotStartStatistics = new double[9];
     private double[] updateList = new double[5];
     private double energieLossAjustment;
-    private boolean simulationReady = false;
+    private boolean endCurrentMode = false;
 
     public Manager(GuiManager guiManager) {
         this.guiManager = guiManager;
@@ -59,8 +60,13 @@ public class Manager {
     }
 
     private void selectMode() {
-        if (profile.getIntager("simulationMode") == 0) {
-            purAiMode();
+        switch (profile.getIntager("simulationMode")) {
+            case 0 :
+                purAiMode();
+                break;
+            case 1 :
+                showRoomMode();
+                break;
         }
     }
 
@@ -74,43 +80,53 @@ public class Manager {
         for (int i = 0; i < entitysPerRound; i++) {
             robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
         }
-        simulationReady = true;
         ((PurAi) roundHandler).startFirstRound(robots);
         robots.clear();
-        while (true) {
+        while (!endCurrentMode) {
             for (int i = 0; i < entitysPerRound; i++) {
                 robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
             }
             ((PurAi) roundHandler).startRound(robots);
             robots.clear();
         }
+        endCurrentMode = false;
     }
 
-    public void setSpeed(int speed) {
-        roundHandler.setSpeed(speed);
+    private void showRoomMode() {
+        double walkActivasion = profile.getDouble("entityWalkActivation");
+        double attakActivision = profile.getDouble("attakActivision");
+        roundHandler = new ShowRoom(profile, light, field, this);
+        int lastPosSize = profile.getIntager("entityPosSave");
+        List<Robot> robots = new ArrayList<>(1);
+        while (!endCurrentMode) {
+            robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
+            ((ShowRoom) roundHandler).startShowRoom(robots, 5, 7);
+            robots.clear();
+        }
+        endCurrentMode = false;
     }
 
-    public void updateLightData(LightData lightData) {
-        guiManager.updateLightData(lightData);
-    }
-
-    public void updateEntitys(List<Body> bodies) {
-        guiManager.updateBodys(bodies);
-    }
-
-    public void updateUpdates(int updates) {
-        guiManager.updateUpdates(updates);
-    }
-
-    public void updateDay(int day) {
-        guiManager.updateDay(day);
-    }
-
-    public void updateTime(int time) {
-        guiManager.updateTime(time);
+    public void setBodys(List<Body> bodys) {
+       setBodys(bodys);
     }
 
     public void updateRound(int round) {
-        guiManager.updateRound(round);
+        updateRound(round);
+    }
+
+    public void updateTime(int time) {
+        updateTime(time);
+    }
+
+    public void updateDay(int day) {
+        updateDay(day);
+    }
+
+    public void updateUpdates(int updates) {
+        updateUpdates(updates);
+    }
+
+    public void updateLightData(LightData light) {
+        updateLightData(light);
     }
 }

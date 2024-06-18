@@ -1,4 +1,4 @@
-entityStartEnergie:1:100.0
+entityStartEnergie:1:1.0
 entityStartSchrott:1:5.0
 entityStartAttack:1:0.0
 entityStartEnergieCapacity:1:100.0

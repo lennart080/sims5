@@ -3,18 +3,14 @@ package SIMS5.gui;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Screen.SimulationScreen;
 import SIMS5.gui.Screen.StartScreen;
-import SIMS5.sim.Gui.MainGui;
+import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.Manager;
-import SIMS5.sim.entitiys.Body;
-import SIMS5.sim.enviroment.LightData;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-import java.util.List;
-
-public class GuiManager extends Application implements MainGui {
+public class GuiManager extends Application {
 
     // Objekte:
     private Manager simManager = new Manager(this);
@@ -34,19 +30,6 @@ public class GuiManager extends Application implements MainGui {
         Scene scene = new Scene(emtiyPane,0,0);
         stage.setScene(scene);
         new StartScreen(stage,this);
-
-        // Tests
-
-        Profile profiletest1 = new Profile("TP1");
-        Profile profiletest2 = new Profile("TP2");
-        Profile profiletest3 = new Profile("TP3");
-        Profile profiletest4 = new Profile("TP4");
-        profiletest1.set("entityStartEnergie",1);
-        profiletest2.set("entityStartEnergie",1);
-        profiletest3.set("entityStartEnergie",1);
-        profiletest4.set("entityStartEnergie",1);
-
-        profile = profiletest4;
     }
 
     
@@ -63,18 +46,20 @@ public class GuiManager extends Application implements MainGui {
     //Start Simulation
 
     public void startSimulation(){
-        String profilname = "default";
-        profile = new Profile(profilname);
-        simManager.startSimulation(profilname);
+        profile = new Profile("default");
+        startSimulation("default");
     }
 
     public void startSimulation(String profileName){
         simManager.startSimulation(profileName);
+        ((Schnittstelle) simManager).setSimSpeed(60);
     }
 
     //-------------------------------------
 
-    @Override
+
+
+   /* @Override
     public void setSimulationSpeed(int speed) {
         simManager.setSpeed(speed);
     }
@@ -117,6 +102,13 @@ public class GuiManager extends Application implements MainGui {
         simScreen.updateUpdates(updates);
     }
 
+    @Override
+    public void endCurrentMode() {
+        simManager.endCurrentMode();
+    }
+
     public static void main(String[] args) {launch();}
+*/
 }
+
 

@@ -5,6 +5,7 @@ import java.util.List;
 
 import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.MyEntity;
@@ -88,7 +89,7 @@ public abstract class RoundHandler {
         for (MyEntity my : entity) {
             bodies.add(my.getBody());
         }
-        manager.updateEntitys(bodies);
+        manager.setBodys(bodies);
         updates = 0;
         time = 0;
         day = 0;
