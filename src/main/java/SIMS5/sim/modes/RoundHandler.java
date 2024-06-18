@@ -24,6 +24,7 @@ public abstract class RoundHandler {
     protected int time = 0;
     protected int updates = 0;
     private int simSpeed;
+    private boolean endMode = false;
 
 
     public RoundHandler(Profile profile, LightData lightdata, Field field, Manager manager) {
@@ -93,7 +94,7 @@ public abstract class RoundHandler {
         updates = 0;
         time = 0;
         day = 0;
-        while (!entity.isEmpty()) {
+        while (!entity.isEmpty() || !endMode) {
             simulate(entity);
             int temp = day;
             updatesAndSleepHandling();
@@ -103,6 +104,7 @@ public abstract class RoundHandler {
                 }
             }
         }
+        endMode = false;
         round++;
         manager.updateRound(round);
     }
@@ -111,5 +113,9 @@ public abstract class RoundHandler {
 
     public void setSpeed(int speed) {
         this.simSpeed = speed;
+    }
+
+    public void stop() {
+        endMode = true;
     }
 }

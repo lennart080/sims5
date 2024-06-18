@@ -5,7 +5,7 @@ import SIMS5.sim.enviroment.LightData;
 
 import java.util.List;
 
-public class Schnittstelle {
+public abstract class Schnittstelle {
     private LightData lightData;
     private List<Body> bodys;
     private int SimSpeed;
@@ -13,6 +13,7 @@ public class Schnittstelle {
     private int day;
     private int time;
     private int updates;
+    private int mode = 0;
 
     public int getDay() {
         return day;
@@ -30,23 +31,23 @@ public class Schnittstelle {
         return updates;
     }
 
-    protected void setDay(int day) {
+    protected void setMyDay(int day) {
         this.day = day;
     }
 
-    protected void setRound(int round) {
+    protected void setMyRound(int round) {
         this.round = round;
     }
 
-    protected void setTime(int time) {
+    protected void setMyTime(int time) {
         this.time = time;
     }
 
-    protected void setUpdates(int updates) {
+    protected void setMyUpdates(int updates) {
         this.updates = updates;
     }
 
-    protected void setLightData(LightData lightData) {
+    protected void setMyLightData(LightData lightData) {
         this.lightData = lightData;
     }
 
@@ -70,7 +71,15 @@ public class Schnittstelle {
         return bodys;
     }
 
-    protected void setBodys(List<Body> bodys) {
+    protected void setMyBodys(List<Body> bodys) {
         this.bodys = bodys;
+    }
+
+    public void setMode(int mode) {
+        this.mode = mode;
+    }
+
+    public int getMode() {
+        return mode;
     }
 }

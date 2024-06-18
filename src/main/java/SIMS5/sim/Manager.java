@@ -60,7 +60,7 @@ public class Manager extends Schnittstelle {
     }
 
     private void selectMode() {
-        switch (profile.getIntager("simulationMode")) {
+        switch (getMode()) {
             case 0 :
                 purAiMode();
                 break;
@@ -107,26 +107,31 @@ public class Manager extends Schnittstelle {
     }
 
     public void setBodys(List<Body> bodys) {
-       setBodys(bodys);
+       setMyBodys(bodys);
     }
 
     public void updateRound(int round) {
-        updateRound(round);
+        setMyRound(round);
     }
 
     public void updateTime(int time) {
-        updateTime(time);
+        setMyTime(time);
     }
 
     public void updateDay(int day) {
-        updateDay(day);
+        setMyDay(day);
     }
 
     public void updateUpdates(int updates) {
-        updateUpdates(updates);
+        setMyUpdates(updates);
     }
 
     public void updateLightData(LightData light) {
-        updateLightData(light);
+        setMyLightData(light);
+    }
+
+    public void endCurrentMode() {
+        roundHandler.stop();
+        endCurrentMode = true;
     }
 }

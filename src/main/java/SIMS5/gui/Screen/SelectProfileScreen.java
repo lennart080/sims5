@@ -1,5 +1,6 @@
 package SIMS5.gui.Screen;
 
+import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.GuiManager;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -30,7 +31,7 @@ public class SelectProfileScreen {
     public SelectProfileScreen(Stage stage, GuiManager manager) {
         this.manager = manager;
         this.stage = stage;
-        String[] profiles = manager.getProfile().getAllProfiles();
+        String[] profiles = new Profile("Default").getAllProfiles();
 
         for (String profile : profiles){
 
