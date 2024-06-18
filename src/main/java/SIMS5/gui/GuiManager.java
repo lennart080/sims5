@@ -56,60 +56,6 @@ public class GuiManager extends Application {
     }
 
     public static void main(String[] args) {launch();}
-
-    //-------------------------------------
-
-
-
-   /* @Override
-    public void setSimulationSpeed(int speed) {
-        simManager.setSpeed(speed);
-    }
-
-    @Override
-    public void updateLightData(LightData lightData) {
-        simScreen.updateLightData(lightData);
-    }
-
-    @Override
-    public void updateBodys(List<Body> bodys) {
-        System.out.println("Manager, bodys was send");
-        simScreen.updateBodys(bodys);
-    }
-
-    @Override
-    public void updateRound(int round) {
-        System.out.println("Manager, round: " + round);
-        simScreen.updateRound(round);
-    }
-
-    @Override
-    public void updateDay(int day) {
-        //System.out.println("Manager, day: " + day); 
-        if (simScreen != null) {
-            simScreen.updateDay(day);
-            
-        } else {System.out.println("simScreen gibts nicht");}
-    }
-
-    @Override
-    public void updateTime(int time) {
-        //System.out.println("Manager, time: " + time);
-        simScreen.updateTime(time);
-    }
-
-    @Override
-    public void updateUpdates(int updates) {
-       // System.out.println("Manager, updates: " + updates);
-        simScreen.updateUpdates(updates);
-    }
-
-    @Override
-    public void endCurrentMode() {
-        simManager.endCurrentMode();
-    }
-
-    public static void main(String[] args) {launch();}
 }
 
 
