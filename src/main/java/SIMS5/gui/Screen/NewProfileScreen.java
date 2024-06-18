@@ -34,8 +34,8 @@ public class NewProfileScreen {
     private VBox pane = new VBox();
     private HBox hBoxName = new HBox();
     private HBox hBoxSettings = new HBox();
-    private HBox hBoxSettings2 = new HBox();
-    private ObservableList<String> modes = FXCollections.observableArrayList();
+    private ArrayList<String> modes = new ArrayList<>();
+    
 
     //Componente:
 
@@ -45,19 +45,42 @@ public class NewProfileScreen {
     private Label labelMode = new Label("Modes:");
     private TextField inputName = new TextField();
 
-    private Button buttonCreate = new Button();
+    private Button buttonCreate = new Button("Create Profile");
     private Button buttonSettingsEntity = new Button("Entity");
     private Button buttonSettingsEnviroment = new Button("Enviroment");
     private Button buttonSettingsKI = new Button("KI");
     private Button buttonSettingsRest = new Button("Rest");
  
-    ListView<String> modePick = new ListView<String>(modes);
+    ListView<String> modePick = new ListView<String>();
 
     public NewProfileScreen(Stage stage,GuiManager manager){
         this.manager = manager;
         this.stage = stage;
+        modes.add("PurAI");
+
+        //pane 
+        pane.setAlignment(Pos.CENTER);
+        pane.getChildren().addAll(labelreateProfile,hBoxName,buttonCreate,labelSettings,hBoxSettings);
+        pane.setPadding(new Insets(30,30,30,30));
+
+        //hBoxName
+        hBoxName.setAlignment(Pos.CENTER);
+        hBoxName.setSpacing(30);
+        hBoxName.getChildren().addAll(labelName,inputName,labelMode,modePick);
+
+        //hBoxSettings
+        hBoxSettings.setAlignment(Pos.CENTER);
+        hBoxSettings.setSpacing(30);
+        hBoxSettings.getChildren().addAll(buttonSettingsEntity,buttonSettingsEnviroment,buttonSettingsKI,buttonSettingsRest);
 
         //Componente:
+
+        //modePick
+        for(int i = 0; i < modes.size(); i++){
+            modePick.getItems().add(modes.get(i));
+            
+        }
+        
 
         //labels
         labelreateProfile.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
@@ -66,6 +89,9 @@ public class NewProfileScreen {
         labelMode.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
 
         //buttons
+        buttonCreate.setMinHeight(30);
+        buttonCreate.setMaxWidth(300);
+        buttonCreate.setMinWidth(300);
         buttonCreate.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
         buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -82,15 +108,47 @@ public class NewProfileScreen {
             }
         });
 
-        // Scene Configuration
-
-        scene = new Scene(pane,750,500);
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+        buttonSettingsEntity.setMinHeight(30);
+        buttonSettingsEntity.setMaxWidth(150);
+        buttonSettingsEntity.setMinWidth(150);
+        buttonSettingsEntity.setFont(Font.font("Stencil", FontWeight.MEDIUM,18));
+        buttonSettingsEntity.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(KeyEvent keyEvent) {
-                if(keyEvent.getCode() == KeyCode.ESCAPE){
-                    new StartScreen(stage,manager);
-                }
+            public void handle(ActionEvent event) {
+                
+            }
+        });
+
+        buttonSettingsEnviroment.setMinHeight(30);
+        buttonSettingsEnviroment.setMaxWidth(150);
+        buttonSettingsEnviroment.setMinWidth(150);
+        buttonSettingsEnviroment.setFont(Font.font("Stencil", FontWeight.MEDIUM,18));
+        buttonSettingsEnviroment.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });
+
+        buttonSettingsKI.setMinHeight(30);
+        buttonSettingsKI.setMaxWidth(150);
+        buttonSettingsKI.setMinWidth(150);
+        buttonSettingsKI.setFont(Font.font("Stencil", FontWeight.MEDIUM,18));
+        buttonSettingsKI.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+            }
+        });
+
+        buttonSettingsRest.setMinHeight(30);
+        buttonSettingsRest.setMaxWidth(150);
+        buttonSettingsRest.setMinWidth(150);
+        buttonSettingsRest.setFont(Font.font("Stencil", FontWeight.MEDIUM,18));
+        buttonSettingsRest.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
             }
         });
 
@@ -105,6 +163,15 @@ public class NewProfileScreen {
                 }
             }
         });
+
+        // Stage Configuration
+
+        stage.setScene(scene);
+        stage.setHeight(800);
+        stage.setMinHeight(780);
+        stage.setWidth(900);
+        stage.setMinWidth(900);
+        stage.setTitle("NewProfileScreen");
     }
 }
 
