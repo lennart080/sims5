@@ -55,6 +55,8 @@ public class GuiManager extends Application {
         ((Schnittstelle) simManager).setSimSpeed(60);
     }
 
+    public static void main(String[] args) {launch();}
+
     //-------------------------------------
 
 

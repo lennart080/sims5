@@ -12,6 +12,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -51,7 +52,7 @@ public class NewProfileScreen {
     private Button buttonSettingsKI = new Button("KI");
     private Button buttonSettingsRest = new Button("Rest");
  
-    ListView<String> modePick = new ListView<String>();
+    ChoiceBox modePick = new ChoiceBox<>();
 
     public NewProfileScreen(Stage stage,GuiManager manager){
         this.manager = manager;
@@ -60,6 +61,7 @@ public class NewProfileScreen {
 
         //pane 
         pane.setAlignment(Pos.CENTER);
+        pane.setSpacing(50);
         pane.getChildren().addAll(labelreateProfile,hBoxName,buttonCreate,labelSettings,hBoxSettings);
         pane.setPadding(new Insets(30,30,30,30));
 
@@ -76,15 +78,17 @@ public class NewProfileScreen {
         //Componente:
 
         //modePick
+        modePick.setValue(modes.get(0));
+        modePick.setMaxSize(300, 30);
+        modePick.setMinSize(200, 30);
         for(int i = 0; i < modes.size(); i++){
             modePick.getItems().add(modes.get(i));
-            
         }
         
 
         //labels
-        labelreateProfile.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
-        labelSettings.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
+        labelreateProfile.setFont(Font.font("Stencil", FontWeight.MEDIUM,25));
+        labelSettings.setFont(Font.font("Stencil", FontWeight.MEDIUM,23));
         labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
         labelMode.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
 
