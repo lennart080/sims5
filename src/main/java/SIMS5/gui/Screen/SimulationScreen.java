@@ -2,6 +2,7 @@ package SIMS5.gui.Screen;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Grafik.ImageDirecory;
+import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
@@ -18,15 +19,12 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 import java.io.FileInputStream;
 
@@ -53,6 +51,7 @@ public class SimulationScreen implements ImageDirecory{
     private List<Body> bodies;
     private Rectangle2D bounds;
     private boolean simPaneIsReady;
+    private boolean haveBodies;
 
     //Componente:
     private Label dataRoundName = new Label("Round :");
@@ -152,6 +151,7 @@ public class SimulationScreen implements ImageDirecory{
         //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
 
+        updateBodiesPosLoop();
     }
 
     private Image loadImage(String imageName)  throws IOException {
@@ -174,11 +174,16 @@ public class SimulationScreen implements ImageDirecory{
             while (true) {
                 int xPos;
                 int yPos;
+                updateRound();
+                updateDay();
+                updateTime();
+                updateUpdates();
+                updateBodys();
                 Platform.runLater(() -> {
                     simPane.getChildren().clear();
                     simPane.getChildren().add(simBack); 
                 });
-                if(simPaneIsReady==true){
+                if((simPaneIsReady==true)&&(haveBodies==true)){
                     simPaneIsReady = false;
                     for(int i = 0; i < bodies.size(); i++){
                         RobotBody rBody = (RobotBody)bodies.get(i);
@@ -199,49 +204,7 @@ public class SimulationScreen implements ImageDirecory{
         }).start();
     }
 
-    public void updateLightData(LightData lightData){
-        this.lightData = lightData;
-    }
-
-    public void updateRound(int round){
-        System.out.println(round);
-        Platform.runLater(() -> {
-            try {
-            dataRoundValue.setText(String.valueOf(round));
-            } catch (Exception e) {
-                System.err.println("Error updating round: " + e.getMessage());
-            }
-        });
-    }
-
-    public void updateDay(int day){
-        Platform.runLater(() -> {
-            try {
-            dataDayValue.setText(String.valueOf(day));
-        } catch (Exception e) {
-            System.err.println("Error updating day: " + e.getMessage());
-        }
-        });
-    }
-
-    public void updateTime(int time){
-        Platform.runLater(() -> {
-            dataTimeValue.setText(String.valueOf(time));
-        });
-    }
-
-    public void updateUpdates(int updates){
-        Platform.runLater(() -> {
-            dataUpdatesValue.setText(String.valueOf(updates));
-        });
-    }
-
-    public void updateBodys(List<Body> bodies){
-        this.bodies.clear();
-        this.bodies = new ArrayList<>(bodies);
-        updateAllBodyPos();
-        updateBodiesPosLoop();
-    }
+  
 
 
     public void updateAllBodyPos(){
@@ -251,11 +214,38 @@ public class SimulationScreen implements ImageDirecory{
         }
     }
 
-}
-//simPane.getChildren().clear();
+    public void updateRound(){
+        Platform.runLater(() -> {
+            dataRoundValue.setText(String.valueOf(manager.getRound()));
+        });
+    }
 
-/* 
-Platform.runLater(() -> {
-    simPane.getChildren().clear();
-});
-*/
+    public void updateDay(){
+        Platform.runLater(() -> {
+            dataDayValue.setText(String.valueOf(manager.getDay()));
+        });
+    }
+
+    public void updateTime(){
+        Platform.runLater(() -> {
+            dataTimeValue.setText(String.valueOf(manager.getTime()));
+        });
+    }
+
+    public void updateUpdates(){
+        Platform.runLater(() -> {
+            dataUpdatesValue.setText(String.valueOf(manager.getUpdates()));
+        });
+    }
+
+    public void updateLightData(){
+        lightData = manager.getLightData();
+    }
+
+    public void updateBodys(){
+        this.bodies = manager.getBodys();
+        System.out.println("Bodys: "+manager.getBodys()+"Simpane Bodys: "+bodies);
+        haveBodies = true;
+    }
+
+}

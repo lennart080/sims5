@@ -13,13 +13,10 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class StartScreen{
 
     // Objekte:
-    private GuiManager manager;
-    private Stage stage;
     private Scene scene;
     private VBox pane = new VBox();
     private HBox hBoxProfile = new HBox();
@@ -31,8 +28,6 @@ public class StartScreen{
     private Button defaultsettings = new Button("Start with default Settings");
 
     public StartScreen(Stage stage,GuiManager manager) {
-        this.manager = manager;
-        this.stage = stage;
         scene = new Scene(pane,750,500);
 
         // VBox Configuration

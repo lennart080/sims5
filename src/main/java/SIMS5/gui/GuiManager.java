@@ -1,8 +1,12 @@
 package SIMS5.gui;
 
+import java.util.List;
+
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Screen.StartScreen;
 import SIMS5.sim.Gui.Schnittstelle;
+import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.enviroment.LightData;
 import SIMS5.sim.Manager;
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -46,6 +50,38 @@ public class GuiManager extends Application {
     public void startSimulation(String profileName){
         simManager.startSimulation(profileName);
         ((Schnittstelle) simManager).setSimSpeed(60);
+    }
+
+    public int getRound(){
+        return ((Schnittstelle) simManager).getRound();
+    }
+
+    public int getDay(){
+        return ((Schnittstelle) simManager).getDay();
+    }
+
+    public int getTime(){
+        return ((Schnittstelle) simManager).getTime();
+    }
+
+    public int getUpdates(){
+        return ((Schnittstelle) simManager).getUpdates();
+    }
+
+    public LightData getLightData() {
+        return ((Schnittstelle) simManager).getLightData();
+    }
+
+    public int getSimSpeed(){
+        return ((Schnittstelle) simManager).getSimSpeed();
+    }
+
+    public List<Body> getBodys(){
+        return ((Schnittstelle) simManager).getBodys();
+    }
+
+    public int getMode() {
+        return ((Schnittstelle) simManager).getMode();
     }
 
     public static void main(String[] args) {launch();}

@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -20,8 +19,6 @@ import javafx.stage.Stage;
 public class SelectProfileScreen {
 
     // Objekte + Arrays:
-    private GuiManager manager;
-    private Stage stage;
     private Scene scene;
     private ScrollPane pane = new ScrollPane();
 
@@ -29,8 +26,6 @@ public class SelectProfileScreen {
     private VBox vbox = new VBox();
 
     public SelectProfileScreen(Stage stage, GuiManager manager) {
-        this.manager = manager;
-        this.stage = stage;
         String[] profiles = new Profile("Default").getAllProfiles();
 
         for (String profile : profiles){
