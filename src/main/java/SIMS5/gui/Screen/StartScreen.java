@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class StartScreen{
 
@@ -100,7 +101,7 @@ public class StartScreen{
         stage.setMinWidth(660);
         stage.setWidth(780);
         stage.setHeight(520);
-        stage.setTitle("StartScreen");
+        stage.setTitle("SIMS5");
         stage.setScene(scene);
         stage.show();
     }

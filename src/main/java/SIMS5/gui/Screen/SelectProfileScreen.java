@@ -74,7 +74,6 @@ public class SelectProfileScreen {
 
         stage.setMaxWidth(750);
         stage.setMinWidth(750);
-        stage.setTitle("SelectProfileScreen");
         stage.setScene(scene);
     }
 }

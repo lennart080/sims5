@@ -26,6 +26,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.FileInputStream;
 
@@ -68,13 +69,12 @@ public class SimulationScreen implements ImageDirecory{
     private Rectangle simBack;
 
     public SimulationScreen(Stage stage, GuiManager manager){
-
+    
         //Init
         this.manager = manager;
         this.stage = stage;
         this.profile = manager.getProfile();
         this.bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
-        manager.setSimScreen(this);
 
         //Bilder laden
         /* backRoundImage fehlt noch
@@ -147,10 +147,10 @@ public class SimulationScreen implements ImageDirecory{
         stage.setScene(scene);
         stage.setMaxWidth(4000);
         stage.setMaxHeight(2000);
+        //stage.setResizable(false);
         stage.setMaximized(true);
         //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
-        stage.setTitle("SimulationScreen");
 
     }
 

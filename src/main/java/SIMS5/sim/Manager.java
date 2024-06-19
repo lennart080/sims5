@@ -30,7 +30,7 @@ public class Manager extends Schnittstelle {
         this.guiManager = guiManager;
     }
 
-    public void startSimulation(String profileName) {
+    public void startSimulation(String profileName) { 
         Thread simulationThread = new Thread(() -> {
             profile = new Profile(profileName);
             light = new LightData(profile);

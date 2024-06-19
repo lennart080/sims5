@@ -1,7 +1,6 @@
 package SIMS5.gui;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
-import SIMS5.gui.Screen.SimulationScreen;
 import SIMS5.gui.Screen.StartScreen;
 import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.Manager;
@@ -15,17 +14,11 @@ public class GuiManager extends Application {
     // Objekte:
     private Manager simManager = new Manager(this);
     private Profile profile;
-    private SimulationScreen simScreen;
-
-    public void setSimScreen(SimulationScreen simScreen){
-        this.simScreen = simScreen;
-    }
 
     @Override
     public void start(Stage stage) {
 
         //Start Gui
-
         Pane emtiyPane = new Pane();
         Scene scene = new Scene(emtiyPane,0,0);
         stage.setScene(scene);
