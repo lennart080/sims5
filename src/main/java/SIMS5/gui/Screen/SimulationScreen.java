@@ -182,16 +182,14 @@ public class SimulationScreen implements ImageDirecory{
                     simPane.getChildren().clear();
                     simPane.getChildren().add(simBack); 
                 });
-                if((simPaneIsReady==true)&&(bodies!=null)&&(bodies.size() >= 0)){
+                if((simPaneIsReady)&&(bodies!=null)){
                     simPaneIsReady = false;
-                    for(int i = 0; i < bodies.size(); i++){
-                        RobotBody rBody = (RobotBody)bodies.get(i);
-                        //if(rBody){      //Überprüfen ob der Roboter noch lebt
-                            xPos = rBody.getPosX();
-                            yPos = rBody.getPosY();
-                            setBodyPos(xPos, yPos);
-                            System.out.println("body was set");
-                        //}
+                    for (Body body : bodies) {
+                        RobotBody rBody = (RobotBody) body;
+                        xPos = rBody.getPosX();
+                        yPos = rBody.getPosY();
+                        setBodyPos(xPos, yPos);
+                        System.out.println("body was set");
                     }
                     simPaneIsReady = true;
                 }
@@ -243,13 +241,9 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     public void updateBodys(){
-        if(bodies.size() > 0){
+        if (bodies != null) {
             this.bodies.clear();
         }
-        if(bodies.size() <= 0){
         this.bodies = manager.getBodys();
-        System.out.println(bodies.size());
-        }
-        //System.out.println("Bodys: "+manager.getBodys()+"Simpane Bodys: "+bodies);
     }
 }
