@@ -7,6 +7,8 @@ public class KI extends Settings{
     public KI(Stage mainStage,Stage tempStage, Profile profile){
         super(mainStage,tempStage,profile);
         labelTitle.setText("KI");
-        pane.getChildren().add(labelTitle);
     }
+
+    @Override
+    protected void createLabels(){}
 }

@@ -7,6 +7,8 @@ public class Enviroment extends Settings {
     public Enviroment(Stage mainStage,Stage tempStage, Profile profile){
         super(mainStage,tempStage,profile);
         labelTitle.setText("Enviroment");
-        pane.getChildren().add(labelTitle);
     }
+
+    @Override
+    protected void createLabels(){}
 }

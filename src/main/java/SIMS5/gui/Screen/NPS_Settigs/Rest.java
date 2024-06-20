@@ -7,6 +7,8 @@ public class Rest extends Settings{
     public Rest(Stage mainStage,Stage tempStage, Profile profile){
         super(mainStage,tempStage,profile);
         labelTitle.setText("Rest");
-        pane.getChildren().add(labelTitle);
     }
+
+    @Override
+    protected void createLabels(){}
 }

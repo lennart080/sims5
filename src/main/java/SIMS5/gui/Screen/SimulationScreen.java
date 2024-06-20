@@ -51,7 +51,6 @@ public class SimulationScreen implements ImageDirecory{
     private List<Body> bodies;
     private Rectangle2D bounds;
     private boolean simPaneIsReady;
-    private boolean haveBodies;
 
     //Componente:
     private Label dataRoundName = new Label("Round :");
@@ -183,7 +182,7 @@ public class SimulationScreen implements ImageDirecory{
                     simPane.getChildren().clear();
                     simPane.getChildren().add(simBack); 
                 });
-                if((simPaneIsReady==true)&&(haveBodies==true)){
+                if(simPaneIsReady==true){
                     simPaneIsReady = false;
                     for(int i = 0; i < bodies.size(); i++){
                         RobotBody rBody = (RobotBody)bodies.get(i);
@@ -243,9 +242,8 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     public void updateBodys(){
+        this.bodies.clear();
         this.bodies = manager.getBodys();
         System.out.println("Bodys: "+manager.getBodys()+"Simpane Bodys: "+bodies);
-        haveBodies = true;
     }
-
 }
