@@ -182,7 +182,7 @@ public class SimulationScreen implements ImageDirecory{
                     simPane.getChildren().clear();
                     simPane.getChildren().add(simBack); 
                 });
-                if(simPaneIsReady==true){
+                if((simPaneIsReady==true)&&(bodies!=null)&&(bodies.size() >= 0)){
                     simPaneIsReady = false;
                     for(int i = 0; i < bodies.size(); i++){
                         RobotBody rBody = (RobotBody)bodies.get(i);
@@ -190,6 +190,7 @@ public class SimulationScreen implements ImageDirecory{
                             xPos = rBody.getPosX();
                             yPos = rBody.getPosY();
                             setBodyPos(xPos, yPos);
+                            System.out.println("body was set");
                         //}
                     }
                     simPaneIsReady = true;
@@ -242,8 +243,13 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     public void updateBodys(){
-        this.bodies.clear();
+        if(bodies.size() > 0){
+            this.bodies.clear();
+        }
+        if(bodies.size() <= 0){
         this.bodies = manager.getBodys();
-        System.out.println("Bodys: "+manager.getBodys()+"Simpane Bodys: "+bodies);
+        System.out.println(bodies.size());
+        }
+        //System.out.println("Bodys: "+manager.getBodys()+"Simpane Bodys: "+bodies);
     }
 }
