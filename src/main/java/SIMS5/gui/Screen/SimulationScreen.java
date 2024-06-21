@@ -7,6 +7,7 @@ import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
+import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -31,6 +32,8 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.almasb.fxgl.animation.Animation;
 
 public class SimulationScreen implements ImageDirecory{
 
@@ -98,14 +101,12 @@ public class SimulationScreen implements ImageDirecory{
         pane.setCenter(simPane);
         pane.setLeft(dataPane);
         pane.setTop(graphPane);
+
+        //dataPane
+        dataPane.setMinWidth(100);
         
         //graphPane Configuration
         graphPane.getChildren().add(grafLabel);
-
-        //tests
-    
-        
-
         Rectangle rect2 = new Rectangle(100,100);
         graphPane.getChildren().add(rect2);
 
@@ -192,32 +193,33 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     private void startRound(){
-        Platform.runLater(() -> {
-            updateRound();
-            updateLightData();
-            updateBodys();
-        });
+        updateRound();
+        updateLightData();
+        updateBodys();
         updateSimPane();
     }
 
     private void updateSimPane(){
-        //new Thread(() -> { 
-            while(!endMode) {
-                if(dataRoundValue.equals(String.valueOf(manager.getRound()))){
-                return; 
+        AnimationTimer timer = new AnimationTimer() {
+            @Override
+            public void handle(long now) {
+                if(!endMode){
+                    updateDay();
+                    updateTime();
+                    updateUpdates();
+
+                    if(bodies!=null){
+                        for(int i = 0; i < bodies.size(); i++){
+                            ImageView imageView = new ImageView(bodyImage);
+                            imageView.setX(bodies.get(i).getPosX());
+                            imageView.setY(bodies.get(i).getPosY());
+                            simPane.getChildren().add(imageView);  
+                        }
+                    } 
                 }
-                Platform.runLater(() -> {
-                updateDay();
-                updateTime();
-                updateUpdates();
-                });
-            } 
-            //try {
-            //    Thread.sleep(100);
-            //} catch (Exception e) {
-            //    System.out.println("Error in updateSimPane");
-            //}
-        //}).start();
+            }
+        };
+        timer.start();
     }
 
     private void updateRound(){
