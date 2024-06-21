@@ -50,7 +50,7 @@ public class SimulationScreen implements ImageDirecory{
     private LightData lightData;
     private List<Body> bodies;
     private Rectangle2D bounds;
-    private boolean simPaneIsReady;
+    private boolean endMode = false;
 
     //Componente:
     private Label dataRoundName = new Label("Round :");
@@ -81,7 +81,7 @@ public class SimulationScreen implements ImageDirecory{
         } catch (IOException e) {
             System.err.println("Error loading backRoundImage: " + e.getMessage());
         }
-            */
+        */
 
         try {
             bodyImage = loadImage("Entity2");
@@ -118,7 +118,6 @@ public class SimulationScreen implements ImageDirecory{
         simBack.setStroke(Color.BLACK);
         simBack.setTranslateX((int)bounds.getWidth()/4);
         simPane.getChildren().add(simBack); 
-        simPaneIsReady = true;
 
         //dataPane Configuration
         dataPane.add(dataRoundName,0,0);
@@ -150,7 +149,31 @@ public class SimulationScreen implements ImageDirecory{
         //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
 
-        updateBodiesPosLoop();
+        /* 
+        while (true) {
+            int xPos;
+            int yPos;
+            updateRound();
+            updateDay();
+            updateTime();
+            updateUpdates();
+            Platform.runLater(() -> {
+                simPane.getChildren().clear();
+                simPane.getChildren().add(simBack); 
+            });
+            if((simPaneIsReady)&&(bodies!=null)){
+                simPaneIsReady = false;
+                for (Body body : bodies) {
+                    RobotBody rBody = (RobotBody) body;
+                    xPos = rBody.getPosX();
+                    yPos = rBody.getPosY();
+                    setBodyPos(xPos, yPos);
+                    System.out.println("body was set");
+                }
+                simPaneIsReady = true;
+            }
+        }*/
+        startRound();
     }
 
     private Image loadImage(String imageName)  throws IOException {
@@ -163,84 +186,69 @@ public class SimulationScreen implements ImageDirecory{
         Platform.runLater(() -> {
             ImageView imageView = new ImageView(bodyImage);
             imageView.setTranslateX(x+((int)bounds.getWidth()/4));
-            imageView.setTranslateY(y)  ;
-            simPane.getChildren().add(imageView);
+            imageView.setTranslateY(y);
+            simPane.getChildren().add(imageView); 
         });
     }
 
-    private void updateBodiesPosLoop() {
-            new Thread(() -> {
-            while (true) {
-                int xPos;
-                int yPos;
-                updateRound();
+    private void startRound(){
+        Platform.runLater(() -> {
+            updateRound();
+            updateLightData();
+            updateBodys();
+            updateSimPane();
+        });
+    }
+
+    private void updateSimPane(){
+        new Thread(() -> { 
+            while(!endMode) {
+                if(dataRoundValue.equals(String.valueOf(manager.getRound()))){
+                return; 
+                }
+                Platform.runLater(() -> {
                 updateDay();
                 updateTime();
                 updateUpdates();
-                updateBodys();
-                Platform.runLater(() -> {
-                    simPane.getChildren().clear();
-                    simPane.getChildren().add(simBack); 
                 });
-                if((simPaneIsReady)&&(bodies!=null)){
-                    simPaneIsReady = false;
-                    for (Body body : bodies) {
-                        RobotBody rBody = (RobotBody) body;
-                        xPos = rBody.getPosX();
-                        yPos = rBody.getPosY();
-                        setBodyPos(xPos, yPos);
-                        System.out.println("body was set");
-                    }
-                    simPaneIsReady = true;
-                }
-                try {
-                    Thread.sleep(1); 
-                } catch (InterruptedException e) {
-                    Thread.currentThread().interrupt();
-                }
+            } 
+            try {
+                Thread.sleep(manager.getSimSpeed());
+            } catch (Exception e) {
+                System.out.println("Error in updateSimPane");
             }
         }).start();
     }
 
-  
-
-
-    public void updateAllBodyPos(){
-        for (Body body : bodies) {
-            setBodyPos(body.getPosX(), body.getPosY());
-            //System.out.println("PosX: " + body.getPosX() + "  " + "PosY: " + body.getPosY());
-        }
-    }
-
-    public void updateRound(){
+    private void updateRound(){
         Platform.runLater(() -> {
             dataRoundValue.setText(String.valueOf(manager.getRound()));
         });
     }
 
-    public void updateDay(){
+    private void updateDay(){
         Platform.runLater(() -> {
             dataDayValue.setText(String.valueOf(manager.getDay()));
         });
     }
 
-    public void updateTime(){
+    private void updateTime(){
         Platform.runLater(() -> {
             dataTimeValue.setText(String.valueOf(manager.getTime()));
         });
     }
 
-    public void updateUpdates(){
+    private void updateUpdates(){
         Platform.runLater(() -> {
             dataUpdatesValue.setText(String.valueOf(manager.getUpdates()));
         });
     }
 
-    public void updateLightData(){
+    private void updateLightData(){
         lightData = manager.getLightData();
     }
 
-    public void updateBodys(){
+    private void updateBodys(){
         if (bodies != null) {
             this.bodies.clear();
         }

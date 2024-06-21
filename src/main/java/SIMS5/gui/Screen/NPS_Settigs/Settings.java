@@ -36,6 +36,7 @@ public abstract class Settings {
 
         //Init
         this.profile = profile;
+        //Profile tempProfile = new Profile("temp");
         this.stage = tempStage;
         this.mainStage = mainStage;
 
@@ -56,6 +57,7 @@ public abstract class Settings {
         buttonBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                //saveInput();
                 stage.close();
                 mainStage.show();
             }
@@ -75,6 +77,7 @@ public abstract class Settings {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(keyEvent.getCode() == KeyCode.ESCAPE){
+                    //saveInput();
                     stage.close();
                     mainStage.show();
                 }
@@ -88,4 +91,8 @@ public abstract class Settings {
     }
 
     protected abstract void createLabels();
+
+    protected abstract void createSliders();
+
+    //protected abstract void saveInput();
 }
