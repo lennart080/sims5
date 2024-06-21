@@ -13,6 +13,9 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
+import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,7 +36,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.almasb.fxgl.animation.Animation;
 
 public class SimulationScreen implements ImageDirecory{
 
@@ -106,9 +108,31 @@ public class SimulationScreen implements ImageDirecory{
         dataPane.setMinWidth(100);
         
         //graphPane Configuration
-        graphPane.getChildren().add(grafLabel);
-        Rectangle rect2 = new Rectangle(100,100);
-        graphPane.getChildren().add(rect2);
+        NumberAxis xAxis = new NumberAxis();
+        NumberAxis yAxis = new NumberAxis();
+        xAxis.setLabel("day");
+        yAxis.setLabel("LightIntensity");
+        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+        lineChart.setTitle("LightData");
+        XYChart.Series<Number, Number> series = new XYChart.Series<>();
+
+        // Add data to the series
+        series.getData().add(new XYChart.Data<>(1, 23));
+        series.getData().add(new XYChart.Data<>(2, 14));
+        series.getData().add(new XYChart.Data<>(3, 15));
+        series.getData().add(new XYChart.Data<>(4, 24));
+        series.getData().add(new XYChart.Data<>(5, 34));
+        series.getData().add(new XYChart.Data<>(6, 36));
+        series.getData().add(new XYChart.Data<>(7, 22));
+        series.getData().add(new XYChart.Data<>(8, 45));
+        series.getData().add(new XYChart.Data<>(9, 43));
+        series.getData().add(new XYChart.Data<>(10, 17));
+
+        lineChart.getData().add(series);
+        lineChart.setMaxSize((int)bounds.getWidth(), 50);
+        lineChart.setMinSize((int)bounds.getWidth(), 50);
+
+        graphPane.getChildren().add(lineChart);
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
@@ -150,46 +174,13 @@ public class SimulationScreen implements ImageDirecory{
         //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
 
-        /* 
-        while (true) {
-            int xPos;
-            int yPos;
-            updateRound();
-            updateDay();
-            updateTime();
-            updateUpdates();
-            Platform.runLater(() -> {
-                simPane.getChildren().clear();
-                simPane.getChildren().add(simBack); 
-            });
-            if((simPaneIsReady)&&(bodies!=null)){
-                simPaneIsReady = false;
-                for (Body body : bodies) {
-                    RobotBody rBody = (RobotBody) body;
-                    xPos = rBody.getPosX();
-                    yPos = rBody.getPosY();
-                    setBodyPos(xPos, yPos);
-                    System.out.println("body was set");
-                }
-                simPaneIsReady = true;
-            }
-        }*/
-        startRound();
+        startRound();                   //Startet eine Loop, das alle Labels updatet
     }
 
     private Image loadImage(String imageName)  throws IOException {
         FileInputStream inputStream = new FileInputStream(ImageDirectory + imageName + ".jpg");
         Image image = new Image(inputStream);
         return image;
-    }
-
-    private void setBodyPos(int x, int y){
-        Platform.runLater(() -> {
-            ImageView imageView = new ImageView(bodyImage);
-            imageView.setTranslateX(x+((int)bounds.getWidth()/4));
-            imageView.setTranslateY(y);
-            simPane.getChildren().add(imageView); 
-        });
     }
 
     private void startRound(){
@@ -203,6 +194,7 @@ public class SimulationScreen implements ImageDirecory{
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
+                System.out.println(now);
                 if(!endMode){
                     updateDay();
                     updateTime();
