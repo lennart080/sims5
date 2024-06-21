@@ -63,11 +63,11 @@ public class Enviroment extends Settings {
         sliders[5] = new Slider(0,0,0);
         sliders[5].setMajorTickUnit(1);
     }
-/* 
+
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
             profile.set(labels[i].getText(),sliders[i].getValue());
         }
-    }*/
+    }
 }

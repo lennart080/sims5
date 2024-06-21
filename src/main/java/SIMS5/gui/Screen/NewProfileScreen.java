@@ -58,6 +58,7 @@ public class NewProfileScreen {
         this.stage = stage;
         modes.add("PurAI");
 
+
         //pane 
         pane.setAlignment(Pos.CENTER);
         pane.setSpacing(50);
@@ -106,7 +107,6 @@ public class NewProfileScreen {
                 else {
                     manager.createProfile(inputName.getText());
                     manager.startSimulation(inputName.getText());
-                    new SimulationScreen(stage,manager); 
                 }
             }
         });

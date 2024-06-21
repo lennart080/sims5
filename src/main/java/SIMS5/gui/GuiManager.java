@@ -3,6 +3,7 @@ package SIMS5.gui;
 import java.util.List;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import SIMS5.gui.Screen.SimulationScreen;
 import SIMS5.gui.Screen.StartScreen;
 import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.entitiys.Body;
@@ -18,6 +19,7 @@ public class GuiManager extends Application {
     // Objekte:
     private Manager simManager = new Manager(this);
     private Profile profile;
+    private Stage stage;
 
     @Override
     public void start(Stage stage) {
@@ -42,14 +44,24 @@ public class GuiManager extends Application {
 
     //Start Simulation
 
+    public void setStage(Stage stage){
+        this.stage = stage;
+    }
+
+    public Stage getStage(){
+        return stage;
+    }
+
     public void startSimulation(){
         profile = new Profile("default");
         startSimulation("default");
+        new SimulationScreen(getStage(),this);
     }
 
     public void startSimulation(String profileName){
         simManager.startSimulation(profileName);
         ((Schnittstelle) simManager).setSimSpeed(60);
+        new SimulationScreen(getStage(),this);
     }
 
     public int getRound(){

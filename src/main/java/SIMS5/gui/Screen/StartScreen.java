@@ -28,6 +28,7 @@ public class StartScreen{
     private Button defaultsettings = new Button("Start with default Settings");
 
     public StartScreen(Stage stage,GuiManager manager) {
+        manager.setStage(stage);
         scene = new Scene(pane,750,500);
 
         // VBox Configuration
@@ -84,7 +85,6 @@ public class StartScreen{
             @Override
             public void handle(ActionEvent event) {
                 manager.startSimulation();
-                new SimulationScreen(stage,manager);
             }
         });
 
