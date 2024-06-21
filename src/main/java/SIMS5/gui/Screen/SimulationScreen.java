@@ -196,12 +196,12 @@ public class SimulationScreen implements ImageDirecory{
             updateRound();
             updateLightData();
             updateBodys();
-            updateSimPane();
         });
+        updateSimPane();
     }
 
     private void updateSimPane(){
-        new Thread(() -> { 
+        //new Thread(() -> { 
             while(!endMode) {
                 if(dataRoundValue.equals(String.valueOf(manager.getRound()))){
                 return; 
@@ -212,12 +212,12 @@ public class SimulationScreen implements ImageDirecory{
                 updateUpdates();
                 });
             } 
-            try {
-                Thread.sleep(manager.getSimSpeed());
-            } catch (Exception e) {
-                System.out.println("Error in updateSimPane");
-            }
-        }).start();
+            //try {
+            //    Thread.sleep(100);
+            //} catch (Exception e) {
+            //    System.out.println("Error in updateSimPane");
+            //}
+        //}).start();
     }
 
     private void updateRound(){
