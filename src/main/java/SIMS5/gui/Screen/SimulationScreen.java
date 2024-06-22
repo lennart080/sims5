@@ -2,9 +2,7 @@ package SIMS5.gui.Screen;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Grafik.ImageDirecory;
-import SIMS5.sim.Gui.Schnittstelle;
 import SIMS5.sim.entitiys.Body;
-import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
 import SIMS5.sim.util.MathUtil;
@@ -35,7 +33,6 @@ import javafx.stage.WindowEvent;
 import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,8 +40,7 @@ import java.util.List;
 public class SimulationScreen implements ImageDirecory{
 
     // Objekte:
-    private GuiManager manager;
-    private Stage stage;    
+    private GuiManager manager;   
     private Scene scene;
 
     private BorderPane pane = new BorderPane();
@@ -83,7 +79,6 @@ public class SimulationScreen implements ImageDirecory{
 
     public SimulationScreen(Stage stage, GuiManager manager){
         this.manager = manager;
-        this.stage = stage;
         this.profile = manager.getProfile();
         this.bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
         simSize = profile.getIntager("simulationSize");

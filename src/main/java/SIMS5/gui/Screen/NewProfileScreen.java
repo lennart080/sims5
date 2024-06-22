@@ -30,8 +30,6 @@ import javafx.stage.Stage;
 public class NewProfileScreen {
 
     // Objekte:
-    private GuiManager manager;
-    private Stage stage;
     private Scene scene;
     private VBox pane = new VBox();
     private HBox hBoxName = new HBox();
@@ -58,8 +56,6 @@ public class NewProfileScreen {
     ChoiceBox modePick = new ChoiceBox<>();
 
     public NewProfileScreen(Stage stage,GuiManager manager){
-        this.manager = manager;
-        this.stage = stage;
         modes.add("PurAI");
         existingProfiles = new Profile("Default").getAllProfiles();
 
