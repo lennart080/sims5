@@ -77,7 +77,7 @@ public abstract class Settings {
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(keyEvent.getCode() == KeyCode.ESCAPE){
-                    //saveInput();
+                    saveInput();
                     stage.close();
                     mainStage.show();
                 }
@@ -94,5 +94,5 @@ public abstract class Settings {
 
     protected abstract void createSliders();
 
-    //protected abstract void saveInput();
+    protected abstract void saveInput();
 }

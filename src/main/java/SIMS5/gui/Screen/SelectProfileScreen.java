@@ -39,7 +39,6 @@ public class SelectProfileScreen {
                 @Override
                 public void handle(ActionEvent event) {
                     manager.startSimulation(profile);
-                    new SimulationScreen(stage,manager);
                 }
             });
             

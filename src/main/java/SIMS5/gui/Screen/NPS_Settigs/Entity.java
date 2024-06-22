@@ -99,13 +99,13 @@ public class Entity extends Settings{
         sliders[14] = new Slider(0,10,1);
         sliders[14].setMajorTickUnit(1);
     }
-/* 
+ 
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
             profile.set(labels[i].getText(),sliders[i].getValue());
         }
-    }*/
+    }
 }
 
 //sliders[].adjustValue(1);

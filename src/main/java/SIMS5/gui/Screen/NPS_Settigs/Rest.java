@@ -59,11 +59,11 @@ public class Rest extends Settings{
         sliders[2] = new Slider(0,0,1);
         sliders[2].setMajorTickUnit(1);
     }
-/*
+
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
             profile.set(labels[i].getText(),sliders[i].getValue());
         }
-    }*/
+    }
 }

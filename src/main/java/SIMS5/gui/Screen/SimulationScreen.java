@@ -105,16 +105,16 @@ public class SimulationScreen implements ImageDirecory{
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
         // Add data to the series
-        series.getData().add(new XYChart.Data<>(1, 23));
-        series.getData().add(new XYChart.Data<>(2, 14));
-        series.getData().add(new XYChart.Data<>(3, 15));
-        series.getData().add(new XYChart.Data<>(4, 24));
-        series.getData().add(new XYChart.Data<>(5, 34));
-        series.getData().add(new XYChart.Data<>(6, 36));
-        series.getData().add(new XYChart.Data<>(7, 22));
-        series.getData().add(new XYChart.Data<>(8, 45));
-        series.getData().add(new XYChart.Data<>(9, 43));
-        series.getData().add(new XYChart.Data<>(10, 17));
+        series.getData().add(new XYChart.Data<>(1, 1));
+        series.getData().add(new XYChart.Data<>(2, 2));
+        series.getData().add(new XYChart.Data<>(3, 3));
+        series.getData().add(new XYChart.Data<>(4, 2));
+        series.getData().add(new XYChart.Data<>(5, 1));
+        series.getData().add(new XYChart.Data<>(6, 2));
+        series.getData().add(new XYChart.Data<>(7, 3));
+        series.getData().add(new XYChart.Data<>(8, 4));
+        series.getData().add(new XYChart.Data<>(9, 1));
+        series.getData().add(new XYChart.Data<>(10, 2));
 
         lineChart.getData().add(series);
         lineChart.setMaxSize((int)bounds.getWidth(), 50);
@@ -124,7 +124,13 @@ public class SimulationScreen implements ImageDirecory{
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
-
+        
+        simBack = new Rectangle(manager.getProfile().getIntager("simulationSize"),(manager.getProfile().getIntager("simulationSize")));    
+        //simBack.setFill(new ImagePattern(backRoundImage));
+        simBack.setFill(Color.WHITE);
+        simBack.setStroke(Color.BLACK);
+        simBack.setTranslateX((int)bounds.getWidth()/4);
+        simPane.getChildren().add(simBack); 
 
         //dataPane Configuration
         dataPane.add(dataRoundName,0,0);

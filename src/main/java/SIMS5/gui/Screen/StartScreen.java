@@ -30,6 +30,7 @@ public class StartScreen{
     private Button defaultsettings = new Button("Start with default Settings");
 
     public StartScreen(Stage stage,GuiManager manager) {
+        manager.setStage(stage);
         scene = new Scene(pane,750,500);
         this.manager = manager;
 

@@ -99,11 +99,11 @@ public class KI extends Settings{
         sliders[14] = new Slider(0,0,1);
         sliders[14].setMajorTickUnit(1);
     }
-/* 
+
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
             profile.set(labels[i].getText(),sliders[i].getValue());
         }
-    }*/
+    }
 }
