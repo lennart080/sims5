@@ -40,34 +40,40 @@ public class Enviroment extends Settings {
     @Override
     protected void createLabels(){
         labels[0] = lightTime;
+        labels[0].setId("lightTime");
         labels[1] = lightIntensity;
+        labels[1].setId("lightIntensity");
         labels[2] = noiseStrength;
+        labels[2].setId("noiseStrength");
         labels[3] = noiseSize;
+        labels[3].setId("noiseSize");
         labels[4] = dayLengthVariation;
+        labels[4].setId("dayLengthVariation");
         labels[5] = simulationSize;
+        labels[5].setId("simulationSize");
     }
 
     @Override
     protected void createSliders(){
         //muss noch gemacht werden
-        sliders[0] = new Slider(0,0,0);
+        sliders[0] = new Slider(0,0,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(1);
-        sliders[1] = new Slider(0,0,0);
+        sliders[1] = new Slider(0,0,profile.getIntager(labels[1].getId()));
         sliders[1].setMajorTickUnit(1);
-        sliders[2] = new Slider(0,0,0);
+        sliders[2] = new Slider(0,0,profile.getIntager(labels[2].getId()));
         sliders[2].setMajorTickUnit(1);
-        sliders[3] = new Slider(0,0,0);
+        sliders[3] = new Slider(0,0,profile.getIntager(labels[3].getId()));
         sliders[3].setMajorTickUnit(1);
-        sliders[4] = new Slider(0,0,0);
+        sliders[4] = new Slider(0,0,profile.getIntager(labels[4].getId()));
         sliders[4].setMajorTickUnit(1);
-        sliders[5] = new Slider(0,0,0);
+        sliders[5] = new Slider(0,0,profile.getIntager(labels[5].getId()));
         sliders[5].setMajorTickUnit(1);
     }
 
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
-            profile.set(labels[i].getText(),sliders[i].getValue());
+            profile.set(labels[i].getId(),sliders[i].getValue());
         }
     }
 }

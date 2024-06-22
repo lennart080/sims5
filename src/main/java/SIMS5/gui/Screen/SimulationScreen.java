@@ -30,6 +30,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 import java.io.FileInputStream;
 
@@ -89,10 +90,10 @@ public class SimulationScreen implements ImageDirecory{
         bodyImage = loadImage("Entity2");
         Screen primaryScreen = Screen.getPrimary();
         this.bounds = primaryScreen.getVisualBounds();
-        guiSimSize = this.bounds.getHeight()-40;
+        guiSimSize = this.bounds.getHeight()-50;
         pane.setCenter(simPane);
         pane.setLeft(dataPane);
-        pane.setTop(graphPane);
+        //pane.setTop(graphPane);
         dataPane.setMinWidth(100);
         
         //graphPane Configuration
@@ -104,17 +105,9 @@ public class SimulationScreen implements ImageDirecory{
         lineChart.setTitle("LightData");
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
-        // Add data to the series
-        series.getData().add(new XYChart.Data<>(1, 1));
-        series.getData().add(new XYChart.Data<>(2, 2));
-        series.getData().add(new XYChart.Data<>(3, 3));
-        series.getData().add(new XYChart.Data<>(4, 2));
-        series.getData().add(new XYChart.Data<>(5, 1));
-        series.getData().add(new XYChart.Data<>(6, 2));
-        series.getData().add(new XYChart.Data<>(7, 3));
-        series.getData().add(new XYChart.Data<>(8, 4));
-        series.getData().add(new XYChart.Data<>(9, 1));
-        series.getData().add(new XYChart.Data<>(10, 2));
+        //for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
+            //lineChart.getData().add(new XYChart.Data<>(i, lightData.getLightIntensityAtTime(i)));
+        //}
 
         lineChart.getData().add(series);
         lineChart.setMaxSize((int)bounds.getWidth(), 50);
@@ -159,6 +152,8 @@ public class SimulationScreen implements ImageDirecory{
         stage.setMaxHeight(2000);
         stage.setMaximized(true);
         stage.setFullScreenExitHint(" ");
+        stage.setOnCloseRequest(event -> handelWindowOnClose(event));
+
         startRound();
     }
 
@@ -240,5 +235,9 @@ public class SimulationScreen implements ImageDirecory{
             this.bodies.clear();
         }
         this.bodies = manager.getBodys();
+    }
+
+    private void handelWindowOnClose(WindowEvent event) {
+        manager.closeCall();
     }
 }

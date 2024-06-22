@@ -49,61 +49,76 @@ public class Entity extends Settings{
     @Override
     protected void createLabels(){
         labels[0] = entityStartEnergie;
+        labels[0].setId("entityStartEnergie");
         labels[1] = entityStartSchrott;
+        labels[1].setId("entityStartSchrott");
         labels[2] = entityStartAttack;
+        labels[2].setId("entityStartAttack");
         labels[3] = entityStartEnergieCapacity;
+        labels[3].setId("entityStartEnergieCapacity");
         labels[4] = entityStartSpeed;
+        labels[4].setId("entityStartSpeed");
         labels[5] = entityStartDefense;
+        labels[5].setId("entityStartDefense");
         labels[6] = entityStartHealth;
+        labels[6].setId("entityStartHealth");
         labels[7] = entityStartRust;
+        labels[7].setId("entityStartRust");
         labels[8] = entityStartSolar;
+        labels[8].setId("entityStartSolar");
         labels[9] = entityEnergylossAjustmentPerDay;
+        labels[9].setId("entityEnergylossAjustmentPerDay");
         labels[10] = entityRustPlus;
+        labels[10].setId("entityRustPlus");
         labels[11] = entityRustLoss;
+        labels[11].setId("entityRustLoss");
         labels[12] = entityEnergyLoss;
+        labels[12].setId("entityEnergyLoss");
         labels[13] = entityHealthLoss;
+        labels[13].setId("entityHealthLoss");
         labels[14] = entityAttackEnergieLoss;
+        labels[14].setId("entityAttackEnergieLoss");
     }
 
     @Override
     protected void createSliders(){
-        sliders[0] = new Slider(10,200,100);
+        sliders[0] = new Slider(10,200,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(10);
-        sliders[1] = new Slider(0,10,5);
+        sliders[1] = new Slider(0,10,profile.getIntager(labels[1].getId()));
         sliders[1].setMajorTickUnit(1);
-        sliders[2] = new Slider(0,5,0);
+        sliders[2] = new Slider(0,5,profile.getIntager(labels[2].getId()));
         sliders[2].setMajorTickUnit(1);
-        sliders[3] = new Slider(10,200,100);
+        sliders[3] = new Slider(10,200,profile.getIntager(labels[3].getId()));
         sliders[3].setMajorTickUnit(10);
-        sliders[4] = new Slider(1,5,1);
+        sliders[4] = new Slider(1,5,profile.getIntager(labels[4].getId()));
         sliders[4].setMajorTickUnit(1);
-        sliders[5] = new Slider(0,5,0);
+        sliders[5] = new Slider(0,5,profile.getIntager(labels[5].getId()));
         sliders[5].setMajorTickUnit(1);
-        sliders[6] = new Slider(1,15,5);
+        sliders[6] = new Slider(1,15,profile.getIntager(labels[6].getId()));
         sliders[6].setMajorTickUnit(1);
-        sliders[7] = new Slider(0,5,0);
+        sliders[7] = new Slider(0,5,profile.getIntager(labels[7].getId()));
         sliders[7].setMajorTickUnit(1);
-        sliders[8] = new Slider(0,10,1);
+        sliders[8] = new Slider(0,10,profile.getIntager(labels[8].getId()));
         sliders[8].setMajorTickUnit(1);
         //muss noch gemacht werden
-        sliders[9] = new Slider(0,10,1);
+        sliders[9] = new Slider(0,10,profile.getIntager(labels[9].getId()));
         sliders[9].setMajorTickUnit(1);
-        sliders[10] = new Slider(0,10,1);
+        sliders[10] = new Slider(0,10,profile.getIntager(labels[10].getId()));
         sliders[10].setMajorTickUnit(1);
-        sliders[11] = new Slider(0,10,1);
+        sliders[11] = new Slider(0,10,profile.getIntager(labels[1].getId()));
         sliders[11].setMajorTickUnit(1);
-        sliders[12] = new Slider(0,10,1);
+        sliders[12] = new Slider(0,10,profile.getIntager(labels[12].getId()));
         sliders[12].setMajorTickUnit(1);
-        sliders[13] = new Slider(0,10,1);
+        sliders[13] = new Slider(0,10,profile.getIntager(labels[13].getId()));
         sliders[13].setMajorTickUnit(1);
-        sliders[14] = new Slider(0,10,1);
+        sliders[14] = new Slider(0,10,profile.getIntager(labels[14].getId()));
         sliders[14].setMajorTickUnit(1);
     }
  
     @Override
     protected void saveInput(){
         for(int i = 0; i < sliders.length; i++){
-            profile.set(labels[i].getText(),sliders[i].getValue());
+            profile.set(labels[i].getId(),sliders[i].getValue());
         }
     }
 }

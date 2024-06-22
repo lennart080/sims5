@@ -1,7 +1,9 @@
 package SIMS5.gui.Screen;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
+import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.GuiManager;
 import SIMS5.gui.Screen.NPS_Settigs.Entity;
 import SIMS5.gui.Screen.NPS_Settigs.Enviroment;
@@ -35,6 +37,8 @@ public class NewProfileScreen {
     private HBox hBoxName = new HBox();
     private HBox hBoxSettings = new HBox();
     private ArrayList<String> modes = new ArrayList<>();
+    private String profileName;
+    private String[] existingProfiles;
     
 
     //Componente:
@@ -57,6 +61,7 @@ public class NewProfileScreen {
         this.manager = manager;
         this.stage = stage;
         modes.add("PurAI");
+        existingProfiles = new Profile("Default").getAllProfiles();
 
 
         //pane 
@@ -93,6 +98,7 @@ public class NewProfileScreen {
         labelMode.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
 
         //buttons
+        buttonCreate.setDisable(true);
         buttonCreate.setMinHeight(30);
         buttonCreate.setMaxWidth(300);
         buttonCreate.setMinWidth(300);
@@ -100,17 +106,11 @@ public class NewProfileScreen {
         buttonCreate.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if (inputName.getText().isEmpty()) {
-                    labelName.setTextFill(Color.RED);
-                    labelName.setText("Name* - Please enter Name");
-                }
-                else {
-                    manager.createProfile(inputName.getText());
-                    manager.startSimulation(inputName.getText());
-                }
+                manager.startSimulation(profileName);
             }
         });
 
+        buttonSettingsEntity.setDisable(true);
         buttonSettingsEntity.setMinHeight(30);
         buttonSettingsEntity.setMaxWidth(150);
         buttonSettingsEntity.setMinWidth(150);
@@ -124,6 +124,7 @@ public class NewProfileScreen {
             }
         });
 
+        buttonSettingsEnviroment.setDisable(true);
         buttonSettingsEnviroment.setMinHeight(30);
         buttonSettingsEnviroment.setMaxWidth(150);
         buttonSettingsEnviroment.setMinWidth(150);
@@ -137,6 +138,7 @@ public class NewProfileScreen {
             }
         });
 
+        buttonSettingsKI.setDisable(true);
         buttonSettingsKI.setMinHeight(30);
         buttonSettingsKI.setMaxWidth(150);
         buttonSettingsKI.setMinWidth(150);
@@ -150,6 +152,7 @@ public class NewProfileScreen {
             }
         });
 
+        buttonSettingsRest.setDisable(true);
         buttonSettingsRest.setMinHeight(30);
         buttonSettingsRest.setMaxWidth(150);
         buttonSettingsRest.setMinWidth(150);
@@ -171,6 +174,30 @@ public class NewProfileScreen {
             public void handle(KeyEvent keyEvent) {
                 if(keyEvent.getCode() == KeyCode.ESCAPE){
                     new StartScreen(stage,manager);
+                }
+                if(keyEvent.getCode() == KeyCode.ENTER){
+                    if (inputName.getText().isEmpty()) {
+                        labelName.setTextFill(Color.RED);
+                        labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,14));
+                        labelName.setText("Name* - Please enter Name");
+                    } else if(Arrays.asList(existingProfiles).contains(inputName.getText())){
+                        labelName.setTextFill(Color.RED);
+                        labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,14));
+                        labelName.setText("The name already exists");
+                    }
+                    else {
+                        profileName = inputName.getText();
+                        manager.createProfile(profileName);
+                        inputName.setDisable(true);
+                        labelName.setTextFill(Color.BLACK);
+                        labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,19));
+                        labelName.setText("Name");
+                        buttonCreate.setDisable(false);
+                        buttonSettingsEntity.setDisable(false);
+                        buttonSettingsEnviroment.setDisable(false);
+                        buttonSettingsKI.setDisable(false);
+                        buttonSettingsRest.setDisable(false);
+                    }
                 }
             }
         });

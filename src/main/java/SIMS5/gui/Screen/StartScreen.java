@@ -99,7 +99,7 @@ public class StartScreen{
             }
         });
 
-        stage.setOnCloseRequest(event -> handelWindowOnClose(event));
+        //stage.setOnCloseRequest(event -> handelWindowOnClose(event));
 
         // Stage Configuration
 
@@ -114,7 +114,7 @@ public class StartScreen{
         stage.show();
     }
 
-    private void handelWindowOnClose(WindowEvent event) {
-        manager.closeCall();
-    }
+    //private void handelWindowOnClose(WindowEvent event) {
+    //    manager.closeCall();
+    //}
 }

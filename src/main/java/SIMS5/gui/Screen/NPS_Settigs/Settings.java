@@ -22,6 +22,7 @@ public abstract class Settings {
     //Objekte:
     protected Stage stage;
     protected Stage mainStage;
+    protected Scene scene;
     protected Profile profile;
     protected ScrollPane pane;
     protected VBox vBox = new VBox();
@@ -57,7 +58,7 @@ public abstract class Settings {
         buttonBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //saveInput();
+                saveInput();
                 stage.close();
                 mainStage.show();
             }
@@ -72,7 +73,7 @@ public abstract class Settings {
         stage.setHeight(520);
 
         //Scene
-        Scene scene = new Scene(pane);
+        scene = new Scene(pane);
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
