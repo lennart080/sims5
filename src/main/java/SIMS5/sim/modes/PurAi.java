@@ -3,7 +3,6 @@ package SIMS5.sim.modes;
 import java.util.ArrayList;
 import java.util.List;
 
-import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
@@ -66,9 +65,9 @@ public class PurAi extends RoundHandler {
         runRound(robots);
     }
 
-    public void deleteRobo(Robot robot) {
+    public void deleteEntity(MyEntity entity) {
         for (int i = 0; i < robots.size(); i++) {
-            if (robots.get(i).getSerialNumber() == robot.getSerialNumber()) {
+            if (robots.get(i).getSerialNumber() == entity.getSerialNumber()) {
                 field.removeFromField(robots.get(i).getBody());
                 robots.remove(i);
                 return;
@@ -92,5 +91,9 @@ public class PurAi extends RoundHandler {
             minds.add(robots.get(i).getMind());
         }
         return minds;
+    }
+
+    public void setRound(int round) {
+        this.round = round;
     }
 }

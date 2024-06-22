@@ -7,6 +7,7 @@ import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
+import SIMS5.sim.util.MathUtil;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -32,6 +33,7 @@ import javafx.stage.Stage;
 
 import java.io.FileInputStream;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +59,11 @@ public class SimulationScreen implements ImageDirecory{
     private Rectangle2D bounds;
     private boolean endMode = false;
 
+    private double simFiledX;
+    private double simFiledY;
+    private int simSize;
+    private double guiSimSize;
+
     //Componente:
     private Label dataRoundName = new Label("Round :");
     private Label dataDayName = new Label("Day :");
@@ -71,40 +78,21 @@ public class SimulationScreen implements ImageDirecory{
 
     private Rectangle simBack;
 
+    private long timeforFrame = 0;
+
     public SimulationScreen(Stage stage, GuiManager manager){
-    
-        //Init
         this.manager = manager;
         this.stage = stage;
         this.profile = manager.getProfile();
         this.bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
-
-        //Bilder laden
-        /* backRoundImage fehlt noch
-        try {
-            backRoundImage = loadImage("backRoundImage");
-        } catch (IOException e) {
-            System.err.println("Error loading backRoundImage: " + e.getMessage());
-        }
-        */
-
-        try {
-            bodyImage = loadImage("Entity2");
-        } catch (IOException e) {
-            System.err.println("Error loading backRoundImage: " + e.getMessage());
-        }
-        
-        //Grössen anpassen an den Bildschirm
+        simSize = profile.getIntager("simulationSize");
+        bodyImage = loadImage("Entity2");
         Screen primaryScreen = Screen.getPrimary();
         this.bounds = primaryScreen.getVisualBounds();
-        
-        //BorderPane Configuration
-
+        guiSimSize = this.bounds.getHeight()-40;
         pane.setCenter(simPane);
         pane.setLeft(dataPane);
         pane.setTop(graphPane);
-
-        //dataPane
         dataPane.setMinWidth(100);
         
         //graphPane Configuration
@@ -136,13 +124,7 @@ public class SimulationScreen implements ImageDirecory{
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
-        
-        simBack = new Rectangle(manager.getProfile().getIntager("simulationSize"),(manager.getProfile().getIntager("simulationSize")));    
-        //simBack.setFill(new ImagePattern(backRoundImage));
-        simBack.setFill(Color.WHITE);
-        simBack.setStroke(Color.BLACK);
-        simBack.setTranslateX((int)bounds.getWidth()/4);
-        simPane.getChildren().add(simBack); 
+
 
         //dataPane Configuration
         dataPane.add(dataRoundName,0,0);
@@ -169,18 +151,19 @@ public class SimulationScreen implements ImageDirecory{
         stage.setScene(scene);
         stage.setMaxWidth(4000);
         stage.setMaxHeight(2000);
-        //stage.setResizable(false);
         stage.setMaximized(true);
-        //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
-
-        startRound();                   //Startet eine Loop, das alle Labels updatet
+        startRound();
     }
 
-    private Image loadImage(String imageName)  throws IOException {
-        FileInputStream inputStream = new FileInputStream(ImageDirectory + imageName + ".jpg");
-        Image image = new Image(inputStream);
-        return image;
+    private Image loadImage(String imageName) {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(ImageDirectory + imageName + ".jpg");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return new Image(inputStream);
     }
 
     private void startRound(){
@@ -194,24 +177,28 @@ public class SimulationScreen implements ImageDirecory{
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                System.out.println(now);
                 if(!endMode){
                     updateDay();
                     updateTime();
                     updateUpdates();
 
                     if(bodies!=null){
-                        for(int i = 0; i < bodies.size(); i++){
+                        simPane.getChildren().clear();
+                        for (Body body : bodies) {
                             ImageView imageView = new ImageView(bodyImage);
-                            imageView.setX(bodies.get(i).getPosX());
-                            imageView.setY(bodies.get(i).getPosY());
-                            simPane.getChildren().add(imageView);  
+                            simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                         }
-                    } 
+                    }
                 }
             }
         };
         timer.start();
+    }
+
+    private ImageView setPos(ImageView imageView, int x, int y) {
+        imageView.setTranslateX(MathUtil.normaliseValue(x, simSize, (int)guiSimSize));
+        imageView.setTranslateY(MathUtil.normaliseValue(y, simSize, (int)guiSimSize));
+        return imageView;
     }
 
     private void updateRound(){

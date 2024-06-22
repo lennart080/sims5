@@ -36,4 +36,14 @@ public class Networks {
         }
         NetworkWriter.writeWeights(name, round, network, weights);
     }
+
+    public static int getLastRound(String name) {
+        boolean exists = true;
+        int count = 0;
+        while (exists) {
+            exists = NetworkReader.checkIfRoundExists(name, count);
+            count++;
+        }
+        return count-1;
+    }
 }

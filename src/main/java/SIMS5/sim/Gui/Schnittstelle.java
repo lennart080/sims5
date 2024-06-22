@@ -14,6 +14,10 @@ public abstract class Schnittstelle {
     private int time;
     private int updates;
     private int mode = 0;
+    private int SRround = 0;
+    private int SRentity = 0;
+
+    private boolean ready = false;
 
     public int getDay() {
         return day;
@@ -81,5 +85,29 @@ public abstract class Schnittstelle {
 
     public int getMode() {
         return mode;
+    }
+
+    protected void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    public boolean getReady() {
+        return ready;
+    }
+
+    public void setRoundOfShowroom(int round) {
+        SRround = round;
+    }
+
+    public void setEntityOfShowroom(int entity) {
+        SRentity = entity;
+    }
+
+    public int getSRround() {
+        return SRround;
+    }
+
+    public int getSRentity() {
+        return SRentity;
     }
 }

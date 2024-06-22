@@ -94,6 +94,7 @@ public abstract class RoundHandler {
         updates = 0;
         time = 0;
         day = 0;
+        manager.setMyReady(true);
         while (!entity.isEmpty() || !endMode) {
             simulate(entity);
             int temp = day;
@@ -104,6 +105,7 @@ public abstract class RoundHandler {
                 }
             }
         }
+        manager.setMyReady(false);
         endMode = false;
         round++;
         manager.updateRound(round);
@@ -114,6 +116,8 @@ public abstract class RoundHandler {
     public void setSpeed(int speed) {
         this.simSpeed = speed;
     }
+
+    public abstract void deleteEntity(MyEntity entity);
 
     public void stop() {
         endMode = true;

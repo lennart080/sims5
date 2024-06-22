@@ -13,10 +13,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 
 public class StartScreen{
 
     // Objekte:
+    private GuiManager manager;
     private Scene scene;
     private VBox pane = new VBox();
     private HBox hBoxProfile = new HBox();
@@ -29,6 +31,7 @@ public class StartScreen{
 
     public StartScreen(Stage stage,GuiManager manager) {
         scene = new Scene(pane,750,500);
+        this.manager = manager;
 
         // VBox Configuration
 
@@ -84,9 +87,18 @@ public class StartScreen{
             @Override
             public void handle(ActionEvent event) {
                 manager.startSimulation();
+                while (!manager.getReady()) {
+                    try {
+                        Thread.sleep(1);
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
                 new SimulationScreen(stage,manager);
             }
         });
+
+        stage.setOnCloseRequest(event -> handelWindowOnClose(event));
 
         // Stage Configuration
 
@@ -99,5 +111,9 @@ public class StartScreen{
         stage.setTitle("SIMS5");
         stage.setScene(scene);
         stage.show();
+    }
+
+    private void handelWindowOnClose(WindowEvent event) {
+        manager.closeCall();
     }
 }

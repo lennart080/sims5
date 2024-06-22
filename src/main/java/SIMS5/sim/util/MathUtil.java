@@ -55,4 +55,7 @@ public abstract class MathUtil {
         return listNeurons;
     }
 
+    public static long getExtendetSeed() {
+        return extendetSeed;
+    }
 }

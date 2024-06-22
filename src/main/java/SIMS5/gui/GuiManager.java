@@ -68,6 +68,10 @@ public class GuiManager extends Application {
         return ((Schnittstelle) simManager).getUpdates();
     }
 
+    public boolean getReady() {
+        return ((Schnittstelle) simManager).getReady();
+    }
+
     public LightData getLightData() {
         return ((Schnittstelle) simManager).getLightData();
     }
@@ -85,6 +89,10 @@ public class GuiManager extends Application {
     }
 
     public static void main(String[] args) {launch();}
+
+    public void closeCall() {
+        simManager.closeCall();
+    }
 }
 
 

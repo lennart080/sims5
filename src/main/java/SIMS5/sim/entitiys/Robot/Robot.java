@@ -140,6 +140,6 @@ public class Robot extends MyEntity {
     }
 
     public void delete() {
-        ((PurAi) roundHandler).deleteRobo(this);
+        roundHandler.deleteEntity(this);
     }
 }

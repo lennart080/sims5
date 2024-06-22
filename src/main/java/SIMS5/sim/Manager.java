@@ -3,6 +3,7 @@ package SIMS5.sim;
 import java.util.ArrayList;
 import java.util.List;
 
+import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.GuiManager;
 import SIMS5.sim.Gui.Schnittstelle;
@@ -13,6 +14,7 @@ import SIMS5.sim.enviroment.LightData;
 import SIMS5.sim.modes.PurAi;
 import SIMS5.sim.modes.RoundHandler;
 import SIMS5.sim.modes.ShowRoom;
+import SIMS5.sim.util.MathUtil;
 
 public class Manager extends Schnittstelle {
     private GuiManager guiManager;
@@ -25,14 +27,16 @@ public class Manager extends Schnittstelle {
     private double[] updateList = new double[5];
     private double energieLossAjustment;
     private boolean endCurrentMode = false;
+    private long extendetSeedAtRoundStart;
 
     public Manager(GuiManager guiManager) {
         this.guiManager = guiManager;
     }
 
-    public void startSimulation(String profileName) { 
+    public void startSimulation(String profileName) {
         Thread simulationThread = new Thread(() -> {
             profile = new Profile(profileName);
+            extendetSeedAtRoundStart = profile.getIntager("seed");
             light = new LightData(profile);
             loadProfileSettings();
             field = new Field(profile);
@@ -77,15 +81,21 @@ public class Manager extends Schnittstelle {
         entitysPerRound = profile.getIntager("entitysPerRound");
         int lastPosSize = profile.getIntager("entityPosSave");
         List<Robot> robots = new ArrayList<>(entitysPerRound);
-        for (int i = 0; i < entitysPerRound; i++) {
-            robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
+        if (Networks.getLastRound(profile.getName()) == 0) {
+            for (int i = 0; i < entitysPerRound; i++) {
+                robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
+            }
+            extendetSeedAtRoundStart = MathUtil.getExtendetSeed();
+            ((PurAi) roundHandler).startFirstRound(robots);
+            robots.clear();
+        } else {
+            ((PurAi) roundHandler).setRound(Networks.getLastRound(profile.getName()));
         }
-        ((PurAi) roundHandler).startFirstRound(robots);
-        robots.clear();
         while (!endCurrentMode) {
             for (int i = 0; i < entitysPerRound; i++) {
                 robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
             }
+            extendetSeedAtRoundStart = MathUtil.getExtendetSeed();
             ((PurAi) roundHandler).startRound(robots);
             robots.clear();
         }
@@ -100,7 +110,7 @@ public class Manager extends Schnittstelle {
         List<Robot> robots = new ArrayList<>(1);
         while (!endCurrentMode) {
             robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
-            ((ShowRoom) roundHandler).startShowRoom(robots, 5, 7);
+            ((ShowRoom) roundHandler).startShowRoom(robots, getSRround(), getSRentity());
             robots.clear();
         }
         endCurrentMode = false;
@@ -133,5 +143,14 @@ public class Manager extends Schnittstelle {
     public void endCurrentMode() {
         roundHandler.stop();
         endCurrentMode = true;
+    }
+
+    public void setMyReady(boolean Tready) {
+        setReady(Tready);
+    }
+
+    public void closeCall() {
+        endCurrentMode();
+        profile.set("extendedSeedSave", extendetSeedAtRoundStart);
     }
 }
