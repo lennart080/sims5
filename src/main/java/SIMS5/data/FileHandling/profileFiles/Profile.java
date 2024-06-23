@@ -1,9 +1,11 @@
 package SIMS5.data.FileHandling.profileFiles;
 
+import SIMS5.data.FileHandling.FileClass;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class Profile {
+public class Profile implements ProfileData {
 
     private String name;
     private List<String[]> profile = new ArrayList<>();
@@ -91,6 +93,10 @@ public class Profile {
 
     public List<String[]> getAllAtributs() {
         return ProfileReader.getprofile(name);
+    }
+
+    public void deleteProfile() {
+        FileClass.deleteFile(userProfilePath, name, fileType);
     }
 
     public String getName() {
