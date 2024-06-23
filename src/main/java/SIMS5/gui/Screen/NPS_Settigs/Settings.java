@@ -69,8 +69,6 @@ public abstract class Settings {
         pane.setContent(vBox);
         pane.setMinSize(660, 440);
         pane.setMaxSize(900, 600);
-        stage.setWidth(780);
-        stage.setHeight(520);
 
         //Scene
         scene = new Scene(pane);
@@ -86,6 +84,8 @@ public abstract class Settings {
         });
 
         //Stage
+        stage.setWidth(780);
+        stage.setHeight(520);
         stage.setScene(scene);
         stage.setTitle("Settings");
         stage.show();

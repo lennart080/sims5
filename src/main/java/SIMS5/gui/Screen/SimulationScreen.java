@@ -136,7 +136,8 @@ public class SimulationScreen implements ImageDirecory{
             @Override
             public void handle(KeyEvent keyEvent) {
                 if(keyEvent.getCode() == KeyCode.ESCAPE){
-                   // new MenueScreen(stage,manager,_____)
+                    Stage tempStage = new Stage();
+                    new MenueScreen(manager,tempStage,stage);
                 }
             }
         });
