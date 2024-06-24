@@ -22,6 +22,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -43,10 +44,9 @@ public class SimulationScreen implements ImageDirecory{
     private GuiManager manager;   
     private Scene scene;
 
-    private BorderPane pane = new BorderPane();
+    private HBox pane = new HBox();
     private StackPane simPane = new StackPane();
     private GridPane dataPane = new GridPane();
-    private Pane graphPane = new Pane();
 
     private Profile profile;
     private Image bodyImage;
@@ -86,8 +86,9 @@ public class SimulationScreen implements ImageDirecory{
         Screen primaryScreen = Screen.getPrimary();
         this.bounds = primaryScreen.getVisualBounds();
         guiSimSize = this.bounds.getHeight()-50;
-        pane.setCenter(simPane);
-        pane.setLeft(dataPane);
+
+        //pane Configuration
+        pane.getChildren().addAll(dataPane,simPane);
         //pane.setTop(graphPane);
         dataPane.setMinWidth(100);
         
@@ -97,18 +98,15 @@ public class SimulationScreen implements ImageDirecory{
         xAxis.setLabel("day");
         yAxis.setLabel("LightIntensity");
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
-        lineChart.setTitle("LightData");
+        lineChart.setTitle("Light Intensity Over the Day");
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
-        //for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
-            //lineChart.getData().add(new XYChart.Data<>(i, lightData.getLightIntensityAtTime(i)));
-        //}
+        for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
+            double lightIntensity = lightData.getLightIntensityAtTime(i);
+            series.getData().add(new XYChart.Data<>(i, lightIntensity));
+        }
 
         lineChart.getData().add(series);
-        lineChart.setMaxSize((int)bounds.getWidth(), 50);
-        lineChart.setMinSize((int)bounds.getWidth(), 50);
-
-        graphPane.getChildren().add(lineChart);
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
@@ -121,14 +119,15 @@ public class SimulationScreen implements ImageDirecory{
         simPane.getChildren().add(simBack); 
 
         //dataPane Configuration
-        dataPane.add(dataRoundName,0,0);
-        dataPane.add(dataDayName, 0, 1);
-        dataPane.add(dataTimeName, 0, 2);
-        dataPane.add(dataUpdatesName, 0, 3);
-        dataPane.add(dataRoundValue,1,0);
-        dataPane.add(dataDayValue, 1, 1);
-        dataPane.add(dataTimeValue, 1, 2);
-        dataPane.add(dataUpdatesValue, 1, 3);
+        dataPane.add(lineChart, 0, 0);
+        dataPane.add(dataRoundName,0,1);
+        dataPane.add(dataDayName, 0, 2);
+        dataPane.add(dataTimeName, 0, 3);
+        dataPane.add(dataUpdatesName, 0, 4);
+        dataPane.add(dataRoundValue,1,1);
+        dataPane.add(dataDayValue, 1, 2);
+        dataPane.add(dataTimeValue, 1, 3);
+        dataPane.add(dataUpdatesValue, 1, 4);
 
         // Scene Configuration
         scene = new Scene(pane,0,0);

@@ -41,6 +41,7 @@ public class MenueScreen {
             @Override
             public void handle(ActionEvent event) {
                 manager.closeCall();
+                mainStage.setMaximized(false);
                 new StartScreen(mainStage,manager);
                 stage.close();
             }
@@ -55,6 +56,7 @@ public class MenueScreen {
             public void handle(ActionEvent event) {
                 manager.closeCall();
                 manager.getProfile().deleteProfile();
+                mainStage.setMaximized(false);
                 new StartScreen(mainStage,manager);
                 stage.close();
             }

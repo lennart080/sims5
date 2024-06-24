@@ -88,8 +88,6 @@ public class StartScreen{
             }
         });
 
-        //stage.setOnCloseRequest(event -> handelWindowOnClose(event));
-
         // Stage Configuration
 
         stage.setMaxHeight(600);
@@ -102,8 +100,4 @@ public class StartScreen{
         stage.setScene(scene);
         stage.show();
     }
-
-    //private void handelWindowOnClose(WindowEvent event) {
-    //    manager.closeCall();
-    //}
 }
