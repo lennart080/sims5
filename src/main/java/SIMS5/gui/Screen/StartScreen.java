@@ -85,14 +85,6 @@ public class StartScreen{
             @Override
             public void handle(ActionEvent event) {
                 manager.startSimulation();
-                while (!manager.getReady()) {
-                    try {
-                        Thread.sleep(1);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                new SimulationScreen(stage,manager);
             }
         });
 

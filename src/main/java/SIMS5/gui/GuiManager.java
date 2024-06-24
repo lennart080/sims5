@@ -55,12 +55,17 @@ public class GuiManager extends Application {
     public void startSimulation(){
         profile = new Profile("default");
         startSimulation("default");
-        new SimulationScreen(getStage(),this);
     }
 
     public void startSimulation(String profileName){
         simManager.startSimulation(profileName);
-        ((Schnittstelle) simManager).setSimSpeed(60);
+        while (!getReady()) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
         new SimulationScreen(getStage(),this);
     }
 
