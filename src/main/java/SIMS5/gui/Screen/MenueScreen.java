@@ -40,7 +40,9 @@ public class MenueScreen {
         buttonQuit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //Zurück zu Start
+                manager.closeCall();
+                new StartScreen(mainStage,manager);
+                stage.close();
             }
         });
 
@@ -51,7 +53,10 @@ public class MenueScreen {
         buttonDeleteProfile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                //Zurück zu Start und Profil löschen
+                manager.closeCall();
+                manager.getProfile().deleteProfile();
+                new StartScreen(mainStage,manager);
+                stage.close();
             }
         });
 
