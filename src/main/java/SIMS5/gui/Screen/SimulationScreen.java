@@ -44,6 +44,8 @@ public class SimulationScreen implements ImageDirecory{
     private GuiManager manager;   
     private Scene scene;
 
+    private AnimationTimer timer;
+
     private HBox pane = new HBox();
     private StackPane simPane = new StackPane();
     private GridPane dataPane = new GridPane();
@@ -86,6 +88,7 @@ public class SimulationScreen implements ImageDirecory{
         Screen primaryScreen = Screen.getPrimary();
         this.bounds = primaryScreen.getVisualBounds();
         guiSimSize = this.bounds.getHeight()-50;
+        lightData = manager.getLightData();
 
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
@@ -149,7 +152,7 @@ public class SimulationScreen implements ImageDirecory{
         stage.setFullScreenExitHint(" ");
         stage.setOnCloseRequest(event -> handelWindowOnClose(event));
 
-        startRound();
+        runRounds();
     }
 
     private Image loadImage(String imageName) {
@@ -162,6 +165,17 @@ public class SimulationScreen implements ImageDirecory{
         return new Image(inputStream);
     }
 
+    private void runRounds() {
+        while (!manager.getReady()) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        startRound();
+    }
+
     private void startRound(){
         updateRound();
         updateLightData();
@@ -170,7 +184,7 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     private void updateSimPane(){
-        AnimationTimer timer = new AnimationTimer() {
+        timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if(!endMode){
@@ -184,11 +198,18 @@ public class SimulationScreen implements ImageDirecory{
                             ImageView imageView = new ImageView(bodyImage);
                             simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                         }
+                    } else {
+                        stopTimer();
                     }
                 }
             }
         };
         timer.start();
+    }
+
+    private void stopTimer() {
+        timer.stop();
+        runRounds();
     }
 
     private ImageView setPos(ImageView imageView, int x, int y) {

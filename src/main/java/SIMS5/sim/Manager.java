@@ -146,7 +146,9 @@ public class Manager extends Schnittstelle {
     }
 
     public void setMyReady(boolean Tready) {
-        setReady(Tready);
+        if (light != null) {
+            setReady(Tready);
+        }
     }
 
     public void closeCall() {

@@ -95,7 +95,10 @@ public abstract class RoundHandler {
         time = 0;
         day = 0;
         manager.setMyReady(true);
-        while (!entity.isEmpty() || !endMode) {
+        while (entity.size() != 0) {
+            if (endMode) {
+                break;
+            }
             simulate(entity);
             int temp = day;
             updatesAndSleepHandling();

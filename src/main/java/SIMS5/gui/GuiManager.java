@@ -54,10 +54,19 @@ public class GuiManager extends Application {
 
     public void startSimulation(){
         profile = new Profile("default");
-        startSimulation("default");
+        simManager.startSimulation(profile.getName());
+        while (!getReady()) {
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        new SimulationScreen(getStage(),this);
     }
 
     public void startSimulation(String profileName){
+        profile = new Profile(profileName);
         simManager.startSimulation(profileName);
         while (!getReady()) {
             try {

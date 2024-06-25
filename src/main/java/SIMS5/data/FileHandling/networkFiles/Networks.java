@@ -12,7 +12,6 @@ public class Networks {
         if (!NetworkReader.checkIfNetworkExists(name)) {
             NetworkWriter.createNewNetwork(name);
         }
-        NetworkWriter.createNewRound(name, 0);
     }
 
     public void writeNetworkNeurons(int round, int network, double[][][] neurons) {

@@ -31,30 +31,30 @@ public class ShowRoom extends RoundHandler {
 
     public void startShowRoom(List<Robot> entity, int round, int entityId) {
         robot = new ArrayList<>();
-        robot.add(entity.getFirst());
+        robot.add(entity.get(0));
         int[] pos = field.newPosition(0);
-        robot.getFirst().setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robot.getFirst()));
-        field.addToField(robot.getFirst().getBody());
-        robot.getFirst().setMind(new NeuralNetwork(network.getWeights(round, entityId), network.getNeurons(round, entityId), simSize));
+        robot.get(0).setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robot.get(0)));
+        field.addToField(robot.get(0).getBody());
+        robot.get(0).setMind(new NeuralNetwork(network.getWeights(round, entityId), network.getNeurons(round, entityId), simSize));
         runRound(robot);
     }
 
     public void deleteEntity(MyEntity entity) {
-        field.removeFromField(robot.getFirst().getBody());
-        robot.removeFirst();
+        field.removeFromField(robot.get(0).getBody());
+        robot.remove(0);
     }
 
     @Override
     public List<Body> getBodys() {
         List<Body> body = new ArrayList<>(1);
-        body.add(robot.getFirst().getBody());
+        body.add(robot.get(0).getBody());
         return body;
     }
 
     @Override
     public List<Mind> getMinds() {
         List<Mind> mind = new ArrayList<>(1);
-        mind.add(robot.getFirst().getMind());
+        mind.add(robot.get(0).getMind());
         return mind;
     }
 }
