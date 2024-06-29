@@ -57,7 +57,7 @@ public class NewProfileScreen {
 
     public NewProfileScreen(Stage stage,GuiManager manager){
         modes.add("PurAI");
-        existingProfiles = new Profile("Default").getAllProfiles();
+        //existingProfiles = new Profile("Default").getAllProfiles();
 
 
         //pane 
@@ -176,11 +176,11 @@ public class NewProfileScreen {
                         labelName.setTextFill(Color.RED);
                         labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,14));
                         labelName.setText("Name* - Please enter Name");
-                    } else if(Arrays.asList(existingProfiles).contains(inputName.getText())){
+                    } /*else if(Arrays.asList(existingProfiles).contains(inputName.getText())){
                         labelName.setTextFill(Color.RED);
                         labelName.setFont(Font.font("Stencil", FontWeight.MEDIUM,14));
                         labelName.setText("The name already exists");
-                    }
+                    }*/
                     else {
                         profileName = inputName.getText();
                         manager.createProfile(profileName);
