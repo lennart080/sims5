@@ -3,6 +3,7 @@ package SIMS5.gui.Screen;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.gui.Grafik.ImageDirecory;
 import SIMS5.sim.entitiys.Body;
+import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
 import SIMS5.sim.util.MathUtil;
@@ -20,6 +21,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -93,15 +95,18 @@ public class SimulationScreen implements ImageDirecory{
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
         //pane.setTop(graphPane);
-        dataPane.setMinWidth(100);
+        dataPane.setMinWidth(((int)bounds.getWidth())/3);
         
         //graphPane Configuration
         NumberAxis xAxis = new NumberAxis();
         NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("day");
         yAxis.setLabel("LightIntensity");
+
+        //LineChart
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Light Intensity Over the Day");
+
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
         for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
@@ -192,15 +197,27 @@ public class SimulationScreen implements ImageDirecory{
                     updateTime();
                     updateUpdates();
 
-                    if(bodies!=null){
+                    Platform.runLater(() -> {
                         simPane.getChildren().clear();
-                        for (Body body : bodies) {
-                            ImageView imageView = new ImageView(bodyImage);
-                            simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
+                        if(bodies!=null){
+                            //simPane.getChildren().removeAll(simPane.getChildren());
+                            for (Body body : bodies) {
+                                ImageView imageView = new ImageView(bodyImage);
+                                imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent event) {
+                                        System.out.println("ImageView was clicked.");
+                                        RobotBody robotBody = (RobotBody) body;
+                                        imageView.setId(String.valueOf(robotBody.getId()));
+                                        System.out.println(imageView.getId());
+                                    }
+                                });
+                                simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
+                            }
+                        } else {
+                            stopTimer();
                         }
-                    } else {
-                        stopTimer();
-                    }
+                    });
                 }
             }
         };
