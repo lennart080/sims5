@@ -10,6 +10,7 @@ import SIMS5.sim.util.MathUtil;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
@@ -22,13 +23,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
@@ -57,6 +58,7 @@ public class SimulationScreen implements ImageDirecory{
     private Image backRoundImage;
     private LightData lightData;
     private List<Body> bodies;
+    private RobotBody selectedRobot;
     private Rectangle2D bounds;
     private boolean endMode = false;
 
@@ -70,12 +72,33 @@ public class SimulationScreen implements ImageDirecory{
     private Label dataDayName = new Label("Day :");
     private Label dataTimeName = new Label("Time :");
     private Label dataUpdatesName = new Label("Updates :");
-    private Label grafLabel = new Label("graf");
+    private Label robotStatistics = new Label("Robot Statistics");
+
+    private Label robotEnergieName = new Label("Energie :");
+    private Label robotSchrottName = new Label("Schrott :");
+    private Label robotAttackName = new Label("Attack :");
+    private Label robotEnergieCapesityName = new Label("EnergieCapesity :");
+    private Label robotSpeedName = new Label("Speed :");
+    private Label robotHealthName = new Label("Health :");
+    private Label robotDefenseName = new Label("Defense :");
+    private Label robotRustName = new Label("Rust :");
+    private Label robotSolarName = new Label("Solar :");
 
     private Label dataRoundValue = new Label();
     private Label dataDayValue = new Label();
     private Label dataTimeValue = new Label();
     private Label dataUpdatesValue = new Label();
+
+    private Label robotEnergieValue = new Label();
+    private Label robotSchrottValue = new Label();
+    private Label robotAttackValue = new Label();
+    private Label robotEnergieCapesityValue = new Label();
+    private Label robotSpeedValue = new Label();
+    private Label robotHealthValue = new Label();
+    private Label robotDefenseValue = new Label();
+    private Label robotRustValue = new Label();
+    private Label robotSolarValue = new Label();
+    
 
     private Rectangle simBack;
 
@@ -106,8 +129,11 @@ public class SimulationScreen implements ImageDirecory{
         //LineChart
         LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Light Intensity Over the Day");
+        lineChart.setCreateSymbols(false);
 
         XYChart.Series<Number, Number> series = new XYChart.Series<>();
+
+        series.setName("Das ist komisch und muss weg");
 
         for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
             double lightIntensity = lightData.getLightIntensityAtTime(i);
@@ -126,16 +152,28 @@ public class SimulationScreen implements ImageDirecory{
         simBack.setTranslateX((int)bounds.getWidth()/4);
         simPane.getChildren().add(simBack); 
 
+        //robotStatistics 
+        robotStatistics.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+
         //dataPane Configuration
+        dataPane.setPadding(new Insets(0, 30, 0, 30));
+        dataPane.setVgap(5);
+
         dataPane.add(lineChart, 0, 0);
         dataPane.add(dataRoundName,0,1);
         dataPane.add(dataDayName, 0, 2);
         dataPane.add(dataTimeName, 0, 3);
         dataPane.add(dataUpdatesName, 0, 4);
+        dataPane.add(robotStatistics,0,5);
+        dataPane.addColumn(0, robotEnergieName,robotSchrottName,robotAttackName,robotEnergieCapesityName,robotSpeedName,robotDefenseName,robotHealthName,robotRustName,robotSolarName);
+
         dataPane.add(dataRoundValue,1,1);
         dataPane.add(dataDayValue, 1, 2);
         dataPane.add(dataTimeValue, 1, 3);
         dataPane.add(dataUpdatesValue, 1, 4);
+        dataPane.add(new Label(),1,5);
+
+        dataPane.addColumn(1,robotEnergieValue,robotSchrottValue,robotAttackValue,robotEnergieCapesityValue,robotSpeedValue,robotDefenseValue,robotHealthValue,robotRustValue,robotSolarValue);
 
         // Scene Configuration
         scene = new Scene(pane,0,0);
@@ -196,6 +234,8 @@ public class SimulationScreen implements ImageDirecory{
                     updateDay();
                     updateTime();
                     updateUpdates();
+                    selectedRobot = (RobotBody)bodies.get(1);
+                    updateRobotStatistics();
 
                     Platform.runLater(() -> {
                         simPane.getChildren().clear();
@@ -203,6 +243,7 @@ public class SimulationScreen implements ImageDirecory{
                             //simPane.getChildren().removeAll(simPane.getChildren());
                             for (Body body : bodies) {
                                 ImageView imageView = new ImageView(bodyImage);
+                                simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                                 imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                     @Override
                                     public void handle(MouseEvent event) {
@@ -212,7 +253,6 @@ public class SimulationScreen implements ImageDirecory{
                                         System.out.println(imageView.getId());
                                     }
                                 });
-                                simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                             }
                         } else {
                             stopTimer();
@@ -272,5 +312,22 @@ public class SimulationScreen implements ImageDirecory{
 
     private void handelWindowOnClose(WindowEvent event) {
         manager.closeCall();
+    }
+
+    private void updateRobotStatistics(){
+        Platform.runLater(() -> {
+            if(selectedRobot!=null){
+                double[] statistics = selectedRobot.getStatistics();
+                robotEnergieValue.setText(String.valueOf(statistics[0]));
+                robotSchrottValue.setText(String.valueOf(statistics[1]));
+                robotAttackValue.setText(String.valueOf(statistics[2]));
+                robotEnergieCapesityValue.setText(String.valueOf(statistics[3]));
+                robotSpeedValue.setText(String.valueOf(statistics[4]));
+                robotDefenseValue.setText(String.valueOf(statistics[5]));
+                robotHealthValue.setText(String.valueOf(statistics[6]));
+                robotRustValue.setText(String.valueOf(statistics[7]));
+                robotSolarValue.setText(String.valueOf(statistics[8]));
+            }
+        });
     }
 }
