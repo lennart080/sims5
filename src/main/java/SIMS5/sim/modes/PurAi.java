@@ -69,6 +69,7 @@ public class PurAi extends RoundHandler {
         for (int i = 0; i < robots.size(); i++) {
             if (robots.get(i).getSerialNumber() == entity.getSerialNumber()) {
                 field.removeFromField(robots.get(i).getBody());
+                deadBody(robots.get(i).getBody());
                 robots.remove(i);
                 return;
             }

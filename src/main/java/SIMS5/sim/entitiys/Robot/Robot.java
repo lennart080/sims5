@@ -141,5 +141,6 @@ public class Robot extends MyEntity {
 
     public void delete() {
         roundHandler.deleteEntity(this);
+        body = null;
     }
 }

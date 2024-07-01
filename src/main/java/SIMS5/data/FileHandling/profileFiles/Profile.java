@@ -61,7 +61,7 @@ public class Profile implements ProfileData {
         return (int) getDouble(atribute);
     }
 
-    @SuppressWarnings("null")
+
     public boolean getBoolean(String setting) {
         boolean value;
         for (int i = 0; i < profile.size(); i++) {
@@ -70,7 +70,7 @@ public class Profile implements ProfileData {
                 return value;
             }
         }
-        return (Boolean) null;
+        return false;
     }
 
     public double[] getArray(String setting) {

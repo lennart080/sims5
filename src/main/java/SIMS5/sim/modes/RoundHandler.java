@@ -25,6 +25,7 @@ public abstract class RoundHandler {
     protected int updates = 0;
     private int simSpeed;
     private boolean endMode = false;
+    private List<Body> bodies;
 
 
     public RoundHandler(Profile profile, LightData lightdata, Field field, Manager manager) {
@@ -86,7 +87,7 @@ public abstract class RoundHandler {
     }
 
     protected void runRound(List<MyEntity> entity) {
-        List<Body> bodies = new ArrayList<>(entity.size());
+        bodies = new ArrayList<>(entity.size());
         for (MyEntity my : entity) {
             bodies.add(my.getBody());
         }
@@ -95,13 +96,14 @@ public abstract class RoundHandler {
         time = 0;
         day = 0;
         manager.setMyReady(true);
-        while (entity.size() != 0) {
+        while (!entity.isEmpty()) {
             if (endMode) {
                 break;
             }
             simulate(entity);
             int temp = day;
             updatesAndSleepHandling();
+            System.out.println(bodies.size()); //hrhhrhrhrhewggeh
             if (day > temp) {
                 for (MyEntity myEntity : entity) {
                     myEntity.setDay(day);
@@ -112,6 +114,15 @@ public abstract class RoundHandler {
         endMode = false;
         round++;
         manager.updateRound(round);
+    }
+
+    protected void deadBody(Body body) {
+        for (int i = 0; i < bodies.size(); i++) {
+            if (bodies.get(i).equals(body)) {
+                bodies.remove(i);
+                return;
+            }
+        }
     }
 
     public abstract List<Mind> getMinds();
