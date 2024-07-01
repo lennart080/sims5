@@ -12,6 +12,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -24,6 +25,7 @@ public class SelectProfileScreen {
 
     //Componente:
     private VBox vbox = new VBox();
+    private Button deleteAllProfiles = new Button("Delete All Profiles");
 
     public SelectProfileScreen(Stage stage, GuiManager manager) {
         String[] profiles = new Profile("Default").getAllProfiles();
@@ -44,11 +46,26 @@ public class SelectProfileScreen {
             
             vbox.getChildren().add(profileButton);
         }
+        
+        
+        deleteAllProfiles.setMinSize(600, 100);
+        deleteAllProfiles.setTextFill(Color.RED);
+        deleteAllProfiles.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+        deleteAllProfiles.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent event) {
+                    manager.deleteAllProfiles(profiles);
+                    new SelectProfileScreen(stage,manager);
+                }
+            });
+        
+
 
         // VBox Configuration
         vbox.setSpacing(10);
         vbox.setPadding(new Insets(50,50,50,50));
         vbox.setAlignment(Pos.CENTER);
+        vbox.getChildren().add(deleteAllProfiles);
 
         // pane
         pane.setContent(vbox);

@@ -61,7 +61,6 @@ public class Profile implements ProfileData {
         return (int) getDouble(atribute);
     }
 
-
     public boolean getBoolean(String setting) {
         boolean value;
         for (int i = 0; i < profile.size(); i++) {

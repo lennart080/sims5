@@ -36,7 +36,14 @@ public class GuiManager extends Application {
     public void createProfile(String profilname){
         Profile profile = new Profile(profilname);
         this.profile = profile;
-    }                             
+    }    
+    
+    public void deleteAllProfiles(String[] profiles){
+        for (String profile : profiles){
+            Profile temp = new Profile(profile);
+            temp.deleteProfile();
+        }
+    }
 
     public Profile getProfile() {
         return profile;
