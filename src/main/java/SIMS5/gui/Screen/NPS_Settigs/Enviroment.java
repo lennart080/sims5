@@ -34,6 +34,7 @@ public class Enviroment extends Settings {
             vBox.getChildren().add(labels[i]);
             vBox.getChildren().add(sliders[i]);
         }
+        sliders[0].setMinWidth(scene.getWidth()-150);
         vBox.getChildren().add(buttonBack);
     }
 

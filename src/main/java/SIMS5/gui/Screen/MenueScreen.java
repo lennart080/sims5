@@ -40,7 +40,7 @@ public class MenueScreen {
         buttonQuit.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                manager.closeCall();
+                manager.stopAll();  
                 mainStage.setMaximized(false);
                 new StartScreen(mainStage,manager);
                 stage.close();
@@ -54,7 +54,7 @@ public class MenueScreen {
         buttonDeleteProfile.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                manager.closeCall();
+                manager.stopAll();
                 manager.getProfile().deleteProfile();
                 mainStage.setMaximized(false);
                 new StartScreen(mainStage,manager);

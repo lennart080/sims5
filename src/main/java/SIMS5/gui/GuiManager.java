@@ -20,6 +20,7 @@ public class GuiManager extends Application {
     private Manager simManager = new Manager(this);
     private Profile profile;
     private Stage stage;
+    private SimulationScreen simulationScreen;
 
     @Override
     public void start(Stage stage) {
@@ -69,7 +70,7 @@ public class GuiManager extends Application {
                 throw new RuntimeException(e);
             }
         }
-        new SimulationScreen(getStage(),this);
+        simulationScreen = new SimulationScreen(getStage(),this);
     }
 
     public void startSimulation(String profileName){
@@ -82,7 +83,7 @@ public class GuiManager extends Application {
                 throw new RuntimeException(e);
             }
         }
-        new SimulationScreen(getStage(),this);
+        simulationScreen = new SimulationScreen(getStage(),this);
     }
 
     public int getRound(){
@@ -125,6 +126,10 @@ public class GuiManager extends Application {
 
     public void closeCall() {
         simManager.closeCall();
+    }
+
+    public void stopAll(){
+        simulationScreen.stopAll();
     }
 }
 
