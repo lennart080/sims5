@@ -5,96 +5,56 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e13e83ab-8e4e-4b18-8773-9f0c7fa6eedf" name="Changes" comment="fix">
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round1.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round1.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round2.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round2.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round3.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round3.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round4.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/cvbnfmf/round4.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/drhdeh/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/drhdeh/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ehgehe/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ehgehe/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ehgh/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ehgh/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/fgnhfrgj/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/fgnhfrgj/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/gfgjfj/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/gfgjfj/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/gfnfmg,/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/gfnfmg,/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ghhkj/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ghhkj/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ghhkj/round1.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/ghhkj/round1.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/rgweg/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/rgweg/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/wadqa/round0.n" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/wadqa/round0.w" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/cvbnfmf.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/default.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/drhdeh.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/ehgehe.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/ehgh.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/fgnhfrgj.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/gfgjfj.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/gfnfmg,.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/ghhkj.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/rgweg.p" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/wadqa.p" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkWriter.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkWriter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/Networks.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/Networks.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round0.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round0.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round1.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round1.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round10.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round10.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round11.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round11.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round12.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round12.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round13.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round13.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round14.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round14.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round15.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round15.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round16.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round16.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round17.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round17.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round18.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round18.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round19.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round19.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round2.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round2.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round20.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round20.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round21.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round21.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round22.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round22.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round23.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round23.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round24.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round24.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round25.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round25.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round26.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round26.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round27.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round27.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round28.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round28.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round29.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round29.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round3.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round3.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round30.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round30.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round31.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round31.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round32.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round32.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round33.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round33.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round4.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round4.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round5.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round5.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round6.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round6.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round7.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round7.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round8.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round8.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round9.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/beispielSim/round9.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.n" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/default/round1.w" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/jasy/round0.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart.p/round0.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round0.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round1.n" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/networks/lennart/round1.w" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/47.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP1.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP2.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP3.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/TP4.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/dfh.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/ezerz.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/profiles/UserProfiles/lennart.p" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/Manager.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/profileFiles/Profile.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/entitiys/Robot/Robot.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -303,18 +263,28 @@
           <line>28</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java</url>
+          <line>70</line>
+          <option name="timeStamp" value="27" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/RoundHandler.java</url>
+          <line>121</line>
+          <option name="timeStamp" value="28" />
+        </line-breakpoint>
         <breakpoint enabled="true" type="java-exception">
           <properties class="java.lang.StackOverflowError" package="java.lang" />
           <option name="timeStamp" value="3" />
         </breakpoint>
         <line-breakpoint enabled="true" type="java-method">
-          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/data/FileHandling/networkFiles/NetworkWriter.java</url>
-          <line>42</line>
-          <properties class="SIMS5.data.FileHandling.networkFiles.NetworkWriter" method="writeWeights">
+          <url>file://$PROJECT_DIR$/src/main/java/SIMS5/sim/modes/PurAi.java</url>
+          <line>67</line>
+          <properties class="SIMS5.sim.modes.PurAi" method="deleteEntity">
             <option name="EMULATED" value="true" />
             <option name="WATCH_EXIT" value="false" />
           </properties>
-          <option name="timeStamp" value="14" />
+          <option name="timeStamp" value="16" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
