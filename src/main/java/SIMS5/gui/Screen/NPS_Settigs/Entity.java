@@ -43,6 +43,7 @@ public class Entity extends Settings{
             vBox.getChildren().add(labels[i]);
             vBox.getChildren().add(sliders[i]);
         }
+        sliders[0].setMinWidth(scene.getWidth()-150);
         vBox.getChildren().add(buttonBack);
     }
 
@@ -101,18 +102,18 @@ public class Entity extends Settings{
         sliders[8] = new Slider(0,10,profile.getIntager(labels[8].getId()));
         sliders[8].setMajorTickUnit(1);
         //muss noch gemacht werden
-        sliders[9] = new Slider(0,10,profile.getIntager(labels[9].getId()));
-        sliders[9].setMajorTickUnit(1);
-        sliders[10] = new Slider(0,10,profile.getIntager(labels[10].getId()));
-        sliders[10].setMajorTickUnit(1);
-        sliders[11] = new Slider(0,10,profile.getIntager(labels[1].getId()));
-        sliders[11].setMajorTickUnit(1);
-        sliders[12] = new Slider(0,10,profile.getIntager(labels[12].getId()));
-        sliders[12].setMajorTickUnit(1);
-        sliders[13] = new Slider(0,10,profile.getIntager(labels[13].getId()));
-        sliders[13].setMajorTickUnit(1);
+        sliders[9] = new Slider(0.1,5,profile.getDouble(labels[9].getId()));
+        sliders[9].setMajorTickUnit(0.5);
+        sliders[10] = new Slider(0.1,5,profile.getDouble(labels[10].getId()));
+        sliders[10].setMajorTickUnit(0.1);
+        sliders[11] = new Slider(0.1,5,profile.getDouble(labels[1].getId()));
+        sliders[11].setMajorTickUnit(0.5);
+        sliders[12] = new Slider(0.1,5,profile.getDouble(labels[12].getId()));
+        sliders[12].setMajorTickUnit(0.2);
+        sliders[13] = new Slider(0.1,5,profile.getDouble(labels[13].getId()));
+        sliders[13].setMajorTickUnit(0.1);
         sliders[14] = new Slider(0,10,profile.getIntager(labels[14].getId()));
-        sliders[14].setMajorTickUnit(1);
+        sliders[14].setMajorTickUnit(2);
     }
  
     @Override

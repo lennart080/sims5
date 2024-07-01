@@ -48,7 +48,7 @@ public abstract class Settings {
         vBox.getChildren().add(labelTitle);
     
         //labelTitle
-        labelTitle.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+         labelTitle.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
 
         //buttonBack
         buttonBack.setMinHeight(30);

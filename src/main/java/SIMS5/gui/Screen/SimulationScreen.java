@@ -234,8 +234,8 @@ public class SimulationScreen implements ImageDirecory{
                     updateDay();
                     updateTime();
                     updateUpdates();
-                    selectedRobot = (RobotBody)bodies.get(1);
                     updateRobotStatistics();
+                    System.out.println(bodies.size());
 
                     Platform.runLater(() -> {
                         simPane.getChildren().clear();
@@ -244,13 +244,12 @@ public class SimulationScreen implements ImageDirecory{
                             for (Body body : bodies) {
                                 ImageView imageView = new ImageView(bodyImage);
                                 simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
+                                RobotBody robotBody = (RobotBody) body;
+                                imageView.setId(String.valueOf(robotBody.getId()));
                                 imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                     @Override
                                     public void handle(MouseEvent event) {
-                                        System.out.println("ImageView was clicked.");
-                                        RobotBody robotBody = (RobotBody) body;
-                                        imageView.setId(String.valueOf(robotBody.getId()));
-                                        System.out.println(imageView.getId());
+                                        System.out.println("ImageView was clicked."+imageView.getId());
                                     }
                                 });
                             }
@@ -311,12 +310,18 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     private void handelWindowOnClose(WindowEvent event) {
+        stopAll();
+    }
+
+    public void stopAll(){
         manager.closeCall();
+        timer.stop();
     }
 
     private void updateRobotStatistics(){
         Platform.runLater(() -> {
-            if(selectedRobot!=null){
+            selectedRobot = (RobotBody)bodies.get(0);
+            if(selectedRobot!=null){   
                 double[] statistics = selectedRobot.getStatistics();
                 robotEnergieValue.setText(String.valueOf(statistics[0]));
                 robotSchrottValue.setText(String.valueOf(statistics[1]));
@@ -327,7 +332,19 @@ public class SimulationScreen implements ImageDirecory{
                 robotHealthValue.setText(String.valueOf(statistics[6]));
                 robotRustValue.setText(String.valueOf(statistics[7]));
                 robotSolarValue.setText(String.valueOf(statistics[8]));
+                if (selectedRobot.getStatistics()[6]==0) {
+                    /* 
+                    while (selectedRobot.getId()==((RobotBody)bodies.get(0)).getId()) {
+                        try {
+                            Thread.sleep(1);
+                        } catch (Exception e) {
+                            System.out.println(e);
+                        }
+                    }*/
+                    selectedRobot = (RobotBody)bodies.get(0);
+                }
+                //System.out.println(selectedRobot.getId());
             }
-        });
+        }); 
     }
 }

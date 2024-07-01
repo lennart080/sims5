@@ -3,6 +3,7 @@ package SIMS5.gui.Screen.NPS_Settigs;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -47,6 +48,7 @@ public class Rest extends Settings{
             vBox.getChildren().add(labels[i]);
             vBox.getChildren().add(sliders[i]);
         }
+        sliders[0].setMinWidth(scene.getWidth()-150);
         buttonBack.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -54,7 +56,11 @@ public class Rest extends Settings{
                     saveInput();
                     stage.close();
                     mainStage.show();
-                    }
+                }
+                else{
+                    seed.setTextFill(Color.RED);
+                    seed.setText("seed* - Please enter numbers!");
+                }
             }
         });
         vBox.getChildren().add(buttonBack);
@@ -90,11 +96,11 @@ public class Rest extends Settings{
     @Override
     protected void createSliders(){
         //muss noch gemacht werden
-        sliders[0] = new Slider(0,0,profile.getIntager(labels[0].getId()));
-        sliders[0].setMajorTickUnit(1);
-        sliders[1] = new Slider(0,0,profile.getIntager(labels[1].getId()));
-        sliders[1].setMajorTickUnit(1);
-        sliders[2] = new Slider(0,0,profile.getIntager(labels[2].getId()));
+        sliders[0] = new Slider(1,3600,profile.getIntager(labels[0].getId()));
+        sliders[0].setMajorTickUnit(100);
+        sliders[1] = new Slider(1,10000,profile.getIntager(labels[1].getId()));
+        sliders[1].setMajorTickUnit(100);
+        sliders[2] = new Slider(1,20,profile.getIntager(labels[2].getId()));
         sliders[2].setMajorTickUnit(1);
     }
 
