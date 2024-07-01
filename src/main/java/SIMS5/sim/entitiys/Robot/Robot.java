@@ -32,12 +32,12 @@ public class Robot extends MyEntity {
     }
 
     public void simulate(double currentLight) {
-        updateStatistics(currentLight);
-        setInputs(); 
-        mind.setInput(input);
-        ((NeuralNetwork) mind).simulate();
-        double[] output = mind.getOutput();
-        prossesingOutput(output);
+            updateStatistics(currentLight);
+            setInputs();
+            mind.setInput(input);
+            ((NeuralNetwork) mind).simulate();
+            double[] output = mind.getOutput();
+            prossesingOutput(output);
     }
 
     private void setInputs() {
@@ -141,6 +141,5 @@ public class Robot extends MyEntity {
 
     public void delete() {
         roundHandler.deleteEntity(this);
-        body = null;
     }
 }

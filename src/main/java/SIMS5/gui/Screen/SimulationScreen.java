@@ -230,16 +230,16 @@ public class SimulationScreen implements ImageDirecory{
         timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if(!endMode){
+                if(bodies!=null && !bodies.isEmpty()){
                     updateDay();
                     updateTime();
                     updateUpdates();
-                    selectedRobot = (RobotBody)bodies.get(1);
+                    selectedRobot = (RobotBody)bodies.get(0);
                     updateRobotStatistics();
 
                     Platform.runLater(() -> {
                         simPane.getChildren().clear();
-                        if(bodies!=null){
+                        if(bodies!=null && !bodies.isEmpty()){
                             //simPane.getChildren().removeAll(simPane.getChildren());
                             for (Body body : bodies) {
                                 ImageView imageView = new ImageView(bodyImage);
@@ -254,10 +254,10 @@ public class SimulationScreen implements ImageDirecory{
                                     }
                                 });
                             }
-                        } else {
-                            stopTimer();
                         }
                     });
+                } else {
+                    stopTimer();
                 }
             }
         };
