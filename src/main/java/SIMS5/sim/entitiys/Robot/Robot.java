@@ -17,11 +17,14 @@ public class Robot extends MyEntity {
     private double attakActivision;
     private int lastMovment = 0;
     private List<Boolean> wasMoving = new ArrayList<>();
+    private int score = 0;
+    private int killScoreBonus;
 
-    public Robot(RoundHandler handler, double[] statistics, double[] updateList, double energieLossAjustment, double walkActivasion, Field field, int lastPosSize, double attakActivision) {
+    public Robot(RoundHandler handler, double[] statistics, double[] updateList, double energieLossAjustment, double walkActivasion, Field field, int lastPosSize, double attakActivision, int killScoreBonus) {
         super(handler, statistics, updateList, energieLossAjustment, field);
         this.walkActivasion = walkActivasion;
         this.attakActivision = attakActivision;
+        this.killScoreBonus = killScoreBonus;
         setMoved(lastPosSize);
     }
 
@@ -128,6 +131,7 @@ public class Robot extends MyEntity {
                 if (killed) { 
                     if (totchingBody instanceof RobotBody) {
                         statistics[1]+= stats[1];
+                        score+=killScoreBonus;
                     }
                 }
             }
@@ -137,6 +141,14 @@ public class Robot extends MyEntity {
     private void wasMovingNewIndex(boolean moved) {
         wasMoving.remove(0);
         wasMoving.add(moved);
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void alterScore(int score) {
+        this.score += score;
     }
 
     public void delete() {

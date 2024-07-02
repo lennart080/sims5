@@ -80,10 +80,11 @@ public class Manager extends Schnittstelle {
         roundHandler = new PurAi(profile, light, field, this);
         entitysPerRound = profile.getIntager("entitysPerRound");
         int lastPosSize = profile.getIntager("entityPosSave");
+        int killScoreBonus = profile.getIntager("killScoreBonus");
         List<Robot> robots = new ArrayList<>(entitysPerRound);
         while (!endCurrentMode) {
             for (int i = 0; i < entitysPerRound; i++) {
-                robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
+                robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision, killScoreBonus));
             }
             extendetSeedAtRoundStart = MathUtil.getExtendetSeed();
             if (Networks.getLastRound(profile.getName()) == 0) {
@@ -100,11 +101,12 @@ public class Manager extends Schnittstelle {
     private void showRoomMode() {
         double walkActivasion = profile.getDouble("entityWalkActivation");
         double attakActivision = profile.getDouble("attakActivision");
+        int killScoreBonus = profile.getIntager("killScoreBonus");
         roundHandler = new ShowRoom(profile, light, field, this);
         int lastPosSize = profile.getIntager("entityPosSave");
         List<Robot> robots = new ArrayList<>(1);
         while (!endCurrentMode) {
-            robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
+            robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision, killScoreBonus));
             ((ShowRoom) roundHandler).startShowRoom(robots, getSRround(), getSRentity());
             robots.clear();
         }

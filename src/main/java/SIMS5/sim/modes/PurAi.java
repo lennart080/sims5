@@ -1,6 +1,8 @@
 package SIMS5.sim.modes;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import SIMS5.data.FileHandling.networkFiles.Networks;
@@ -28,6 +30,8 @@ public class PurAi extends RoundHandler {
     private int robotSize;
     private int lastPosSize;
     private int bestEntitySize;
+    private double lastManStanding;
+    private int entityPerRound;
 
     public PurAi(Profile profile, LightData light, Field field, Manager manager) {
         super(profile, light, field, manager);
@@ -37,6 +41,8 @@ public class PurAi extends RoundHandler {
         robotSize = profile.getIntager("entitySize");
         lastPosSize = profile.getIntager("entityPosSave");
         bestEntitySize = profile.getIntager("bestEntitySize");
+        entityPerRound = profile.getIntager("entitysPerRound");
+        lastManStanding = profile.getDouble("lastManStanding");
     }
 
     public void startRound(List<Robot> entitys, boolean firstRound) {
@@ -62,9 +68,17 @@ public class PurAi extends RoundHandler {
     public void deleteEntity(MyEntity entity) {
         for (int i = 0; i < robots.size(); i++) {
             if (robots.get(i).getSerialNumber() == entity.getSerialNumber()) {
-                if (robots.size() <= bestEntitySize) {
+                ((Robot)robots.get(i)).alterScore((int)((entityPerRound-robots.size())*lastManStanding));
+                System.out.println(((Robot)robots.get(i)).getScore()); //hrejerjtrhejeje4rjrkterhwe3hjj
+                if (bestRobots.size() < bestEntitySize) {
                     bestRobots.add(robots.get(i));
+                } else {
+                   if (((Robot)bestRobots.get(0)).getScore() < ((Robot)robots.get(i)).getScore()) {
+                       bestRobots.remove(0);
+                       bestRobots.add(robots.get(i));
+                   }
                 }
+                bestRobots.sort(Comparator.comparingInt(o -> ((Robot) o).getScore()));
                 field.removeFromField(robots.get(i).getBody());
                 deadBody(robots.get(i).getBody());
                 robots.remove(i);

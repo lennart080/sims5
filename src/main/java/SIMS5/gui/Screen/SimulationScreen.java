@@ -236,7 +236,6 @@ public class SimulationScreen implements ImageDirecory{
                     updateUpdates();
                     selectedRobot = (RobotBody)bodies.get(0);
                     updateRobotStatistics();
-                    System.out.println(bodies.size());
 
                     Platform.runLater(() -> {
                         simPane.getChildren().clear();
