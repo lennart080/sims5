@@ -103,7 +103,6 @@ public abstract class RoundHandler {
             simulate(entity);
             int temp = day;
             updatesAndSleepHandling();
-            System.out.println(bodies.size()); //hrhhrhrhrhewggeh
             if (day > temp) {
                 for (MyEntity myEntity : entity) {
                     myEntity.setDay(day);

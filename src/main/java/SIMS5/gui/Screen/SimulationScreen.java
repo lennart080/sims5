@@ -67,6 +67,12 @@ public class SimulationScreen implements ImageDirecory{
     private int simSize;
     private double guiSimSize;
 
+    //Graf
+    NumberAxis xAxis = new NumberAxis();
+    NumberAxis yAxis = new NumberAxis();
+    LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
+    XYChart.Series<Number, Number> series = new XYChart.Series<>();
+
     //Componente:
     private Label dataRoundName = new Label("Round :");
     private Label dataDayName = new Label("Day :");
@@ -99,7 +105,6 @@ public class SimulationScreen implements ImageDirecory{
     private Label robotRustValue = new Label();
     private Label robotSolarValue = new Label();
     
-
     private Rectangle simBack;
 
     private long timeforFrame = 0;
@@ -117,45 +122,30 @@ public class SimulationScreen implements ImageDirecory{
 
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
-        //pane.setTop(graphPane);
-        dataPane.setMinWidth(((int)bounds.getWidth())/3);
         
         //graphPane Configuration
-        NumberAxis xAxis = new NumberAxis();
-        NumberAxis yAxis = new NumberAxis();
         xAxis.setLabel("day");
         yAxis.setLabel("LightIntensity");
 
         //LineChart
-        LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
         lineChart.setTitle("Light Intensity Over the Day");
         lineChart.setCreateSymbols(false);
 
-        XYChart.Series<Number, Number> series = new XYChart.Series<>();
-
         series.setName("Das ist komisch und muss weg");
-
-        for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
-            double lightIntensity = lightData.getLightIntensityAtTime(i);
-            series.getData().add(new XYChart.Data<>(i, lightIntensity));
-        }
-
-        lineChart.getData().add(series);
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
         
-        simBack = new Rectangle(manager.getProfile().getIntager("simulationSize"),(manager.getProfile().getIntager("simulationSize")));    
+        simBack = new Rectangle(manager.getProfile().getIntager("simulationSize")+100,(manager.getProfile().getIntager("simulationSize"))+100);    
         //simBack.setFill(new ImagePattern(backRoundImage));
         simBack.setFill(Color.WHITE);
         simBack.setStroke(Color.BLACK);
-        simBack.setTranslateX((int)bounds.getWidth()/4);
-        simPane.getChildren().add(simBack); 
 
         //robotStatistics 
         robotStatistics.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
 
         //dataPane Configuration
+        dataPane.setMinWidth(((int)bounds.getWidth())/3);
         dataPane.setPadding(new Insets(0, 30, 0, 30));
         dataPane.setVgap(5);
 
@@ -221,8 +211,8 @@ public class SimulationScreen implements ImageDirecory{
 
     private void startRound(){
         updateRound();
-        updateLightData();
         updateBodys();
+        updateLightData();
         updateSimPane();
     }
 
@@ -236,10 +226,10 @@ public class SimulationScreen implements ImageDirecory{
                     updateUpdates();
                     selectedRobot = (RobotBody)bodies.get(0);
                     updateRobotStatistics();
-                    System.out.println(bodies.size());
 
                     Platform.runLater(() -> {
                         simPane.getChildren().clear();
+                        simPane.getChildren().add(simBack); 
                         if(bodies!=null && !bodies.isEmpty()){
                             //simPane.getChildren().removeAll(simPane.getChildren());
                             for (Body body : bodies) {
@@ -282,9 +272,18 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     private void updateDay(){
+        int comparisonDay;
+        if(dataDayValue.getText()!=""){
+            comparisonDay = Integer.parseInt(dataDayValue.getText());
+        } else {
+            comparisonDay = 0;
+        }
         Platform.runLater(() -> {
             dataDayValue.setText(String.valueOf(manager.getDay()));
         });
+        if(comparisonDay!=manager.getDay()){
+            updateLightData();
+        }
     }
 
     private void updateTime(){
@@ -301,6 +300,16 @@ public class SimulationScreen implements ImageDirecory{
 
     private void updateLightData(){
         lightData = manager.getLightData();
+
+        Platform.runLater(() -> {
+        lineChart.getData().clear();
+        series.getData().clear();
+        for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
+            double lightIntensity = lightData.getLightIntensityAtTime(i);
+            series.getData().add(new XYChart.Data<>(i, lightIntensity));
+        }
+        lineChart.getData().add(series);
+        });
     }
 
     private void updateBodys(){
