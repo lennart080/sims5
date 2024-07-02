@@ -1,6 +1,7 @@
 package SIMS5.data.FileHandling.profileFiles;
 
 import SIMS5.data.FileHandling.FileClass;
+import SIMS5.data.FileHandling.networkFiles.Networks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,6 +96,7 @@ public class Profile implements ProfileData {
     }
 
     public void deleteProfile() {
+        new Networks(this).deleteNetwork();
         FileClass.deleteFile(userProfilePath, name, fileType);
     }
 

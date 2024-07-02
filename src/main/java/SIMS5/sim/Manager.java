@@ -81,22 +81,17 @@ public class Manager extends Schnittstelle {
         entitysPerRound = profile.getIntager("entitysPerRound");
         int lastPosSize = profile.getIntager("entityPosSave");
         List<Robot> robots = new ArrayList<>(entitysPerRound);
-        if (Networks.getLastRound(profile.getName()) == 0) {
-            for (int i = 0; i < entitysPerRound; i++) {
-                robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
-            }
-            extendetSeedAtRoundStart = MathUtil.getExtendetSeed();
-            ((PurAi) roundHandler).startFirstRound(robots);
-            robots.clear();
-        } else {
-            ((PurAi) roundHandler).setRound(Networks.getLastRound(profile.getName()));
-        }
         while (!endCurrentMode) {
             for (int i = 0; i < entitysPerRound; i++) {
                 robots.add(new Robot(roundHandler, robotStartStatistics, updateList, energieLossAjustment, walkActivasion, field, lastPosSize, attakActivision));
             }
             extendetSeedAtRoundStart = MathUtil.getExtendetSeed();
-            ((PurAi) roundHandler).startRound(robots);
+            if (Networks.getLastRound(profile.getName()) == 0) {
+                ((PurAi) roundHandler).startRound(robots, true);
+            } else {
+                ((PurAi) roundHandler).setRound(Networks.getLastRound(profile.getName()));
+                ((PurAi) roundHandler).startRound(robots, false);
+            }
             robots.clear();
         }
         endCurrentMode = false;

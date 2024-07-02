@@ -34,9 +34,7 @@ mutationProbabilityBiasAjustmentValue:3:1.0:0.01:1000.0
 mutationProbabilityNewNeuronRow:3:0.1:0.005:100.0
 mutationProbabilityNewNeuron:3:0.2:0.01:150.0
 mutationProbabilityNeuronDying:3:0.15:0.01:150.0
-entitySelectionValueRandom:1:2.0
-entitySelectionValueMostDifferent:1:0.0
-entitySelectionValueNew:1:3.0
+bestEntitySize:1:10.0
 simulationMode:1:0.0
 entityPosSave:1:5.0
 attakActivision:1:0.6

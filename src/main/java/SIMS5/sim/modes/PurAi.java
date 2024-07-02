@@ -3,6 +3,7 @@ package SIMS5.sim.modes;
 import java.util.ArrayList;
 import java.util.List;
 
+import SIMS5.data.FileHandling.networkFiles.Networks;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 import SIMS5.sim.Manager;
 import SIMS5.sim.entitiys.Body;
@@ -22,9 +23,11 @@ public class PurAi extends RoundHandler {
     private NetworkHandler networkCreator;
     private Mutator mutator;
     private List<MyEntity> robots = new ArrayList<>();
+    private List<MyEntity> bestRobots = new ArrayList<>();
     private int simSize;
     private int robotSize;
     private int lastPosSize;
+    private int bestEntitySize;
 
     public PurAi(Profile profile, LightData light, Field field, Manager manager) {
         super(profile, light, field, manager);
@@ -33,33 +36,24 @@ public class PurAi extends RoundHandler {
         simSize = profile.getIntager("simulationSize");
         robotSize = profile.getIntager("entitySize");
         lastPosSize = profile.getIntager("entityPosSave");
-    }
-    
-    public void startFirstRound(List<Robot> entitys) {
-        robots.clear();
-        for (int i = 0; i < entitys.size(); i++) {
-            robots.add(entitys.get(i));
-            int[] pos = field.newPosition(i);
-            robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robots.get(i)));
-            field.addToField(robots.get(i).getBody());
-            NeuronReturner nr = networkCreator.newNetwork();
-            network.writeNetworkNeurons(0, i, nr.getNeurons());
-            network.writeNetworkWeights(0, i, nr.getWeights());
-            robots.get(i).setMind(new NeuralNetwork(nr.getWeights(), nr.getNeurons(), simSize));
-        }
-        runRound(robots);
+        bestEntitySize = profile.getIntager("bestEntitySize");
     }
 
-    public void startRound(List<Robot> entitys) {
+    public void startRound(List<Robot> entitys, boolean firstRound) {
         robots.clear();
+        bestRobots.clear();
+        int divider = entitys.size() / bestEntitySize;
         for (int i = 0; i < entitys.size(); i++) {
             robots.add(entitys.get(i));
             int[] pos = field.newPosition(i);
             robots.get(i).setBody(new RobotBody(pos, robotSize, lastPosSize, (Robot) robots.get(i)));
             field.addToField(robots.get(i).getBody());
-            NeuronReturner nr =  mutator.mutate(network.getWeights(round-1, i), network.getNeurons(round-1, i));
-            network.writeNetworkNeurons(round, i, nr.getNeurons());
-            network.writeNetworkWeights(round, i, nr.getWeights());
+            NeuronReturner nr;
+            if (firstRound) {
+                nr = networkCreator.newNetwork();
+            } else {
+                nr =  mutator.mutate(network.getWeights(round-1, i/divider), network.getNeurons(round-1, i/divider));
+            }
             robots.get(i).setMind(new NeuralNetwork(nr.getWeights(), nr.getNeurons(), simSize));
         }
         runRound(robots);
@@ -68,9 +62,18 @@ public class PurAi extends RoundHandler {
     public void deleteEntity(MyEntity entity) {
         for (int i = 0; i < robots.size(); i++) {
             if (robots.get(i).getSerialNumber() == entity.getSerialNumber()) {
+                if (robots.size() <= bestEntitySize) {
+                    bestRobots.add(robots.get(i));
+                }
                 field.removeFromField(robots.get(i).getBody());
                 deadBody(robots.get(i).getBody());
                 robots.remove(i);
+                if (robots.isEmpty()) {
+                    for (int j = 0; j < bestRobots.size(); j++) {
+                        network.writeNetworkNeurons(round, j, ((NeuralNetwork) bestRobots.get(j).getMind()).getNeurons());
+                        network.writeNetworkWeights(round, j, ((NeuralNetwork) bestRobots.get(j).getMind()).getWeights());
+                    }
+                }
                 return;
             }
         }

@@ -2,6 +2,7 @@ package SIMS5.data.FileHandling.networkFiles;
 
 import java.util.List;
 
+import SIMS5.data.FileHandling.FileClass;
 import SIMS5.data.FileHandling.profileFiles.Profile;
 
 public class Networks {
@@ -44,5 +45,9 @@ public class Networks {
             count++;
         }
         return count-1;
+    }
+
+    public void deleteNetwork() {
+        NetworkWriter.deleteNetwork(name);
     }
 }

@@ -3,6 +3,7 @@ package SIMS5.data.FileHandling.networkFiles;
 import java.io.File;
 import java.util.List;
 
+import SIMS5.data.FileHandling.FileClass;
 import SIMS5.data.FileHandling.MyFileReader;
 import SIMS5.data.FileHandling.MyFileWriter;
 
@@ -56,5 +57,9 @@ public abstract class NetworkWriter extends MyFileWriter implements NetworkData 
         }
         weights.add(weight);
         return writeInFile(networkPath, name + File.separator + "round" + round, fileTypeWeights, weights);
+    }
+
+    public static void deleteNetwork(String name) {
+        FileClass.deleteOrdner(networkPath, name);
     }
 }
