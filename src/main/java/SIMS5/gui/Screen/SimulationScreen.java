@@ -27,6 +27,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -55,6 +56,7 @@ public class SimulationScreen implements ImageDirecory{
 
     private Profile profile;
     private Image bodyImage;
+    private int bodySize;
     private Image backRoundImage;
     private LightData lightData;
     private List<Body> bodies;
@@ -81,6 +83,7 @@ public class SimulationScreen implements ImageDirecory{
     private Label dataTimeName = new Label("Time :");
     private Label dataUpdatesName = new Label("Updates :");
     private Label robotStatistics = new Label("Robot Statistics");
+    private Label robotID = new Label();
 
     private Label robotEnergieName = new Label("Energie :");
     private Label robotSchrottName = new Label("Schrott :");
@@ -121,6 +124,7 @@ public class SimulationScreen implements ImageDirecory{
         this.bounds = primaryScreen.getVisualBounds();
         guiSimSize = this.bounds.getHeight()-50;
         lightData = manager.getLightData();
+        bodySize = profile.getIntager("entitySize");
 
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
@@ -163,7 +167,7 @@ public class SimulationScreen implements ImageDirecory{
         dataPane.add(dataDayValue, 1, 2);
         dataPane.add(dataTimeValue, 1, 3);
         dataPane.add(dataUpdatesValue, 1, 4);
-        dataPane.add(new Label(),1,5);
+        dataPane.add(robotID,1,5);
 
         dataPane.addColumn(1,robotEnergieValue,robotSchrottValue,robotAttackValue,robotEnergieCapesityValue,robotSpeedValue,robotDefenseValue,robotHealthValue,robotRustValue,robotSolarValue);
 
@@ -236,11 +240,17 @@ public class SimulationScreen implements ImageDirecory{
                         if(bodies!=null && !bodies.isEmpty()){
                             for (Body body : bodies) {
                                 ImageView imageView = new ImageView(bodyImage);
+                                Rectangle clip = new Rectangle(bodySize,bodySize);
+                                imageView.setClip(clip);
                                 simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                                 RobotBody robotBody = (RobotBody) body;
-                                imageView.setId(String.valueOf(robotBody.getId()));
-                                imageView.setOnMouseClicked(e -> {
-                                    System.out.println("ImageView was clicked."+imageView.getId());
+                                clip.setId(String.valueOf(robotBody.getId()));
+                                clip.setOnMouseClicked(new EventHandler<MouseEvent>() {
+                                    @Override
+                                    public void handle(MouseEvent event) {
+                                        selectedRobot = robotBody;
+                                        System.out.println("ImageView was clicked."+clip.getId());
+                                    }
                                 });
                                 /* 
                                 imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -345,6 +355,7 @@ public class SimulationScreen implements ImageDirecory{
     private void updateRobotStatistics(){
         Platform.runLater(() -> {
             selectedRobot = (RobotBody)bodies.get(0);
+            robotID.setText(String.valueOf(selectedRobot.getId()));
             if(selectedRobot!=null){   
                 double[] statistics = selectedRobot.getStatistics();
                 robotEnergieValue.setText(String.valueOf(statistics[0]));
