@@ -1,11 +1,11 @@
 package SIMS5.gui.Screen;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
-import SIMS5.gui.Grafik.ImageDirecory;
 import SIMS5.sim.entitiys.Body;
 import SIMS5.sim.entitiys.Robot.RobotBody;
 import SIMS5.sim.enviroment.LightData;
 import SIMS5.gui.GuiManager;
+import SIMS5.gui.Grafik.ImageDirecory;
 import SIMS5.sim.util.MathUtil;
 import javafx.animation.AnimationTimer;
 import javafx.application.Platform;
@@ -24,6 +24,11 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -36,6 +41,7 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 
+import java.io.File;
 import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
@@ -80,6 +86,7 @@ public class SimulationScreen implements ImageDirecory{
     
 
     //Componente:
+
     private Label dataRoundName = new Label("Round :");
     private Label dataDayName = new Label("Day :");
     private Label dataTimeName = new Label("Time :");
@@ -131,10 +138,9 @@ public class SimulationScreen implements ImageDirecory{
 
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
-        /*
-        backgroundImage = loadImage("backgroundImage");
+        backgroundImage = loadImageJPG("backgroundImage");
         BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
-        pane.setBackground(new Background(background));*/
+        pane.setBackground(new Background(background));
         
         //graphPane Configuration
         xAxis.setLabel("day");
@@ -189,14 +195,15 @@ public class SimulationScreen implements ImageDirecory{
                 }
             }
         });
+        scene.getStylesheets().add(ImageDirectory+"SimulationScreen.css");
 
         // Stage Configuration
         stage.setScene(scene);
         stage.setMaxWidth(4000);
         stage.setMaxHeight(2000);
-        //stage.setMaximized(true);
+        stage.setMaximized(true);
         stage.setFullScreenExitKeyCombination(KeyCombination.NO_MATCH);
-        stage.setFullScreen(true);
+        //stage.setFullScreen(true);
         stage.setFullScreenExitHint(" ");
         stage.setOnCloseRequest(event -> handelWindowOnClose(event));
 
