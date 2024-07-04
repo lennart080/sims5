@@ -57,17 +57,18 @@ public class Enviroment extends Settings {
     @Override
     protected void createSliders(){
         //muss noch gemacht werden
-        sliders[0] = new Slider(0,0,profile.getIntager(labels[0].getId()));
+        sliders[0] = new Slider(1,59,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(1);
-        sliders[1] = new Slider(0,0,profile.getIntager(labels[1].getId()));
-        sliders[1].setMajorTickUnit(1);
-        sliders[2] = new Slider(0,0,profile.getIntager(labels[2].getId()));
-        sliders[2].setMajorTickUnit(1);
-        sliders[3] = new Slider(0,0,profile.getIntager(labels[3].getId()));
-        sliders[3].setMajorTickUnit(1);
-        sliders[4] = new Slider(0,0,profile.getIntager(labels[4].getId()));
-        sliders[4].setMajorTickUnit(1);
-        sliders[5] = new Slider(0,0,profile.getIntager(labels[5].getId()));
+        sliders[1] = new Slider(0,1,profile.getIntager(labels[1].getId()));
+        sliders[1].setMajorTickUnit(0.01);
+        sliders[2] = new Slider(0.001,0.029,profile.getIntager(labels[2].getId()));
+        sliders[2].setMajorTickUnit(0.001);
+        sliders[3] = new Slider(0,1,profile.getIntager(labels[3].getId()));
+        sliders[3].setMajorTickUnit(0.01);
+        sliders[4] = new Slider(0,1,profile.getIntager(labels[4].getId()));
+        sliders[4].setMajorTickUnit(0.01);
+        double simulationSize = Math.sqrt(profile.getIntager("entitysPerRound"))*profile.getIntager("entitySize")+600;
+        sliders[5] = new Slider(simulationSize,simulationSize+600,profile.getIntager(labels[5].getId()));
         sliders[5].setMajorTickUnit(1);
     }
 

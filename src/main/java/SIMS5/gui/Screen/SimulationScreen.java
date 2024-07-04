@@ -72,6 +72,8 @@ public class SimulationScreen implements ImageDirecory{
     NumberAxis yAxis = new NumberAxis();
     LineChart<Number, Number> lineChart = new LineChart<>(xAxis, yAxis);
     XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    XYChart.Series<Number, Number> seriesNext = new XYChart.Series<>();
+    
 
     //Componente:
     private Label dataRoundName = new Label("Round :");
@@ -128,10 +130,10 @@ public class SimulationScreen implements ImageDirecory{
         yAxis.setLabel("LightIntensity");
 
         //LineChart
-        lineChart.setTitle("Light Intensity Over the Day");
+        lineChart.setTitle("");
         lineChart.setCreateSymbols(false);
 
-        series.setName("Das ist komisch und muss weg");
+        series.setName("Light Intensity Over the Day");
 
         //simPaneConfiguration
         simPane.setAlignment(Pos.TOP_LEFT);
@@ -185,6 +187,7 @@ public class SimulationScreen implements ImageDirecory{
         stage.setFullScreenExitHint(" ");
         stage.setOnCloseRequest(event -> handelWindowOnClose(event));
 
+        lightData = manager.getLightData();
         runRounds();
     }
 
@@ -231,18 +234,21 @@ public class SimulationScreen implements ImageDirecory{
                         simPane.getChildren().clear();
                         simPane.getChildren().add(simBack); 
                         if(bodies!=null && !bodies.isEmpty()){
-                            //simPane.getChildren().removeAll(simPane.getChildren());
                             for (Body body : bodies) {
                                 ImageView imageView = new ImageView(bodyImage);
                                 simPane.getChildren().add(setPos(imageView, body.getPosX(), body.getPosY()));
                                 RobotBody robotBody = (RobotBody) body;
                                 imageView.setId(String.valueOf(robotBody.getId()));
+                                imageView.setOnMouseClicked(e -> {
+                                    System.out.println("ImageView was clicked."+imageView.getId());
+                                });
+                                /* 
                                 imageView.setOnMouseClicked(new EventHandler<MouseEvent>() {
                                     @Override
                                     public void handle(MouseEvent event) {
                                         System.out.println("ImageView was clicked."+imageView.getId());
                                     }
-                                });
+                                });*/
                             }
                         }
                     });
@@ -271,7 +277,7 @@ public class SimulationScreen implements ImageDirecory{
         });
     }
 
-    private void updateDay(){
+    private void updateDay(){ 
         int comparisonDay;
         if(dataDayValue.getText()!=""){
             comparisonDay = Integer.parseInt(dataDayValue.getText());
@@ -284,6 +290,9 @@ public class SimulationScreen implements ImageDirecory{
         if(comparisonDay!=manager.getDay()){
             updateLightData();
         }
+        Platform.runLater(() -> {
+            dataDayValue.setText(String.valueOf(manager.getDay()));
+        });
     }
 
     private void updateTime(){
@@ -299,16 +308,21 @@ public class SimulationScreen implements ImageDirecory{
     }
 
     private void updateLightData(){
-        lightData = manager.getLightData();
-
+        Thread thread = new Thread(new updateLightDataNext());
+        //thread.start();
         Platform.runLater(() -> {
-        lineChart.getData().clear();
+        //lineChart.getData().clear();
         series.getData().clear();
-        for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
-            double lightIntensity = lightData.getLightIntensityAtTime(i);
-            series.getData().add(new XYChart.Data<>(i, lightIntensity));
+        if(manager.getDay()==0){
+            for (int i = 0; i < lightData.getLightOfDay(manager.getDay()).length; i++) {
+                double lightIntensity = lightData.getLightIntensityAtTime(i);
+                series.getData().add(new XYChart.Data<>(i, lightIntensity));
+            }
+            lineChart.getData().add(series);
+        } else {
+            series = seriesNext;
         }
-        lineChart.getData().add(series);
+        //lineChart.getData().add(series);
         });
     }
 
@@ -343,18 +357,20 @@ public class SimulationScreen implements ImageDirecory{
                 robotRustValue.setText(String.valueOf(statistics[7]));
                 robotSolarValue.setText(String.valueOf(statistics[8]));
                 if (selectedRobot.getStatistics()[6]==0) {
-                    /* 
-                    while (selectedRobot.getId()==((RobotBody)bodies.get(0)).getId()) {
-                        try {
-                            Thread.sleep(1);
-                        } catch (Exception e) {
-                            System.out.println(e);
-                        }
-                    }*/
                     selectedRobot = (RobotBody)bodies.get(0);
                 }
-                //System.out.println(selectedRobot.getId());
             }
         }); 
+    }
+    
+    public class updateLightDataNext implements Runnable {
+        @Override
+        public void run() {
+            for (int i = 0; i < lightData.getLightOfDay(Integer.parseInt(dataDayValue.getText())+1).length; i++) {
+                double lightIntensity = lightData.getLightIntensityAtTime(i);
+                seriesNext.getData().add(new XYChart.Data<>(i, lightIntensity));
+            }
+            System.out.println("Thread läuft + nextday: "+manager.getDay()+1);
+        }
     }
 }

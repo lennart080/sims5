@@ -37,7 +37,6 @@ public abstract class Settings {
 
         //Init
         this.profile = profile;
-        //Profile tempProfile = new Profile("temp");
         this.stage = tempStage;
         this.mainStage = mainStage;
 
