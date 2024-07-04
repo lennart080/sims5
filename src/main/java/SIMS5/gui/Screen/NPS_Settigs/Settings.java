@@ -92,7 +92,7 @@ public abstract class Settings {
 
     protected abstract void createLabels();
 
-    protected abstract void createSliders();
+    protected abstract void createInput();
 
     protected abstract void saveInput();
 }

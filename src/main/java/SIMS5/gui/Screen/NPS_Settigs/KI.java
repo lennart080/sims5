@@ -1,8 +1,12 @@
 package SIMS5.gui.Screen.NPS_Settigs;
 
 import SIMS5.data.FileHandling.profileFiles.Profile;
+import javafx.geometry.Pos;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -26,22 +30,27 @@ public class KI extends Settings{
     private Label entitySelectionValueMostDifferent = new Label("entitySelectionValueMostDifferent");
     private Label entitySelectionValueNew = new Label("entitySelectionValueNew");
 
+    CheckBox checkBox = new CheckBox();
+
     public KI(Stage mainStage,Stage tempStage, Profile profile){
         super(mainStage,tempStage,profile);
         labelTitle.setText("KI");
         labels = new Label[15];
-        sliders = new Slider[15];
+
+        //Inputs
+        sliders = new Slider[0];
+
         createLabels();
-        createSliders();
+        createInput();
+
+        //Zentrieren
+        Label transperendLabel = new Label();
+        transperendLabel.setMaxHeight(0);
+        transperendLabel.setMinWidth(scene.getWidth()-150);
+        vBox.getChildren().add(transperendLabel);
+
         for(int i = 0; i < labels.length; i++){
             labels[i].setFont(Font.font("Stencil", FontWeight.MEDIUM,16));
-            sliders[i].setShowTickMarks(true);
-            sliders[i].setShowTickLabels(true);
-            sliders[i].setMinorTickCount(0);
-            sliders[i].setBlockIncrement(0);
-            sliders[i].setSnapToTicks(true);
-            vBox.getChildren().add(labels[i]);
-            vBox.getChildren().add(sliders[i]);
         }
         vBox.getChildren().add(buttonBack);
     }
@@ -81,12 +90,25 @@ public class KI extends Settings{
     }
 
     @Override
-    protected void createSliders(){
-
+    protected void createInput(){
+        vBox.getChildren().add(labels[0]);
+        vBox.getChildren().add(checkBox);
+        for (int i = 1; i < 10; i++) {
+            HBox hBox = new HBox();
+            HBox hBoxLabel = new HBox(labels[i]);
+            hBox.setAlignment(Pos.CENTER);
+            hBoxLabel.setAlignment(Pos.CENTER);
+            hBox.setSpacing(10);
+            hBox.getChildren().addAll(new TextField(),new TextField(),new TextField());
+            vBox.getChildren().addAll(hBoxLabel,hBox);
+        }
     }
 
     @Override
     protected void saveInput(){
-        
+        profile.set(labels[0].getId(),checkBox.isPressed());
+        for (int i = 1; i < 10; i++) {
+            
+        }
     }
 }

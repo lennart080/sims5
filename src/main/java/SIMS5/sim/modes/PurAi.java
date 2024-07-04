@@ -69,7 +69,6 @@ public class PurAi extends RoundHandler {
         for (int i = 0; i < robots.size(); i++) {
             if (robots.get(i).getSerialNumber() == entity.getSerialNumber()) {
                 ((Robot)robots.get(i)).alterScore((int)((entityPerRound-robots.size())*lastManStanding));
-                System.out.println(((Robot)robots.get(i)).getScore()); //hrejerjtrhejeje4rjrkterhwe3hjj
                 if (bestRobots.size() < bestEntitySize) {
                     bestRobots.add(robots.get(i));
                 } else {

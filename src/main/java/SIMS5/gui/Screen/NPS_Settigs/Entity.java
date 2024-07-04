@@ -32,7 +32,7 @@ public class Entity extends Settings{
         labels = new Label[15];
         sliders = new Slider[15];
         createLabels();
-        createSliders();
+        createInput();
         for(int i = 0; i < labels.length; i++){
             labels[i].setFont(Font.font("Stencil", FontWeight.MEDIUM,16));
             sliders[i].setShowTickMarks(true);
@@ -82,7 +82,7 @@ public class Entity extends Settings{
     }
 
     @Override
-    protected void createSliders(){
+    protected void createInput(){
         sliders[0] = new Slider(10,200,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(10);
         sliders[1] = new Slider(0,10,profile.getIntager(labels[1].getId()));

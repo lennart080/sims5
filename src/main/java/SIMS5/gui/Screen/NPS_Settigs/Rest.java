@@ -37,7 +37,7 @@ public class Rest extends Settings{
         labels = new Label[3];
         sliders = new Slider[3];
         createLabels();
-        createSliders();
+        createInput();
         for(int i = 0; i < labels.length; i++){
             labels[i].setFont(Font.font("Stencil", FontWeight.MEDIUM,16));
             sliders[i].setShowTickMarks(true);
@@ -94,7 +94,7 @@ public class Rest extends Settings{
     }
 
     @Override
-    protected void createSliders(){
+    protected void createInput(){
         //muss noch gemacht werden
         sliders[0] = new Slider(1,3600,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(100);

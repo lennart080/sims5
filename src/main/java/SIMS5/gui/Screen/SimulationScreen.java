@@ -23,10 +23,18 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.BackgroundImage;
+import javafx.scene.layout.BackgroundPosition;
+import javafx.scene.layout.BackgroundRepeat;
+import javafx.scene.layout.BackgroundSize;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.paint.Paint;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -57,7 +65,8 @@ public class SimulationScreen implements ImageDirecory{
     private Profile profile;
     private Image bodyImage;
     private int bodySize;
-    private Image backRoundImage;
+    private Image backgroundImage;
+    private Image simFieldImage;
     private LightData lightData;
     private List<Body> bodies;
     private RobotBody selectedRobot;
@@ -119,7 +128,8 @@ public class SimulationScreen implements ImageDirecory{
         this.profile = manager.getProfile();
         this.bodies = new ArrayList<>(profile.getIntager("entitysPerRound"));
         simSize = profile.getIntager("simulationSize");
-        bodyImage = loadImage("Entity2");
+        bodyImage = loadImagePNG("Entity2");
+        simFieldImage = loadImageJPG("simFieldImage");
         Screen primaryScreen = Screen.getPrimary();
         this.bounds = primaryScreen.getVisualBounds();
         guiSimSize = this.bounds.getHeight()-50;
@@ -128,6 +138,10 @@ public class SimulationScreen implements ImageDirecory{
 
         //pane Configuration
         pane.getChildren().addAll(dataPane,simPane);
+        /*
+        backgroundImage = loadImage("backgroundImage");
+        BackgroundImage background = new BackgroundImage(backgroundImage, BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+        pane.setBackground(new Background(background));*/
         
         //graphPane Configuration
         xAxis.setLabel("day");
@@ -143,8 +157,8 @@ public class SimulationScreen implements ImageDirecory{
         simPane.setAlignment(Pos.TOP_LEFT);
         
         simBack = new Rectangle(manager.getProfile().getIntager("simulationSize")+100,(manager.getProfile().getIntager("simulationSize"))+100);    
-        //simBack.setFill(new ImagePattern(backRoundImage));
-        simBack.setFill(Color.WHITE);
+        simBack.setFill(new ImagePattern(simFieldImage));
+        //simBack.setFill(Color.GREEN);
         simBack.setStroke(Color.BLACK);
 
         //robotStatistics 
@@ -195,10 +209,20 @@ public class SimulationScreen implements ImageDirecory{
         runRounds();
     }
 
-    private Image loadImage(String imageName) {
+    private Image loadImageJPG(String imageName) {
         FileInputStream inputStream = null;
         try {
             inputStream = new FileInputStream(ImageDirectory + imageName + ".jpg");
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+        return new Image(inputStream);
+    }
+
+    private Image loadImagePNG(String imageName) {
+        FileInputStream inputStream = null;
+        try {
+            inputStream = new FileInputStream(ImageDirectory + imageName + ".png");
         } catch (FileNotFoundException e) {
             throw new RuntimeException(e);
         }

@@ -23,7 +23,7 @@ public class Enviroment extends Settings {
         labels = new Label[6];
         sliders = new Slider[6];
         createLabels();
-        createSliders();
+        createInput();
         for(int i = 0; i < labels.length; i++){
             labels[i].setFont(Font.font("Stencil", FontWeight.MEDIUM,16));
             sliders[i].setShowTickMarks(true);
@@ -55,7 +55,7 @@ public class Enviroment extends Settings {
     }
 
     @Override
-    protected void createSliders(){
+    protected void createInput(){
         //muss noch gemacht werden
         sliders[0] = new Slider(1,59,profile.getIntager(labels[0].getId()));
         sliders[0].setMajorTickUnit(1);
