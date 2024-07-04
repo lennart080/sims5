@@ -195,7 +195,7 @@ public class SimulationScreen implements ImageDirecory{
                 }
             }
         });
-        scene.getStylesheets().add(ImageDirectory+"SimulationScreen.css");
+        scene.getStylesheets().add(getClass().getResource(System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "SIMS5" + File.separator + "gui"+ File.separator +"CSS"+ File.separator +"SimulationScreen.css").toExternalForm());
 
         // Stage Configuration
         stage.setScene(scene);
