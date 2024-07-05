@@ -32,6 +32,7 @@ import javafx.scene.layout.BackgroundSize;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
@@ -45,6 +46,7 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
+import java.lang.foreign.PaddingLayout;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,6 +60,7 @@ public class SimulationScreen implements ImageDirecory{
     private AnimationTimer timer;
 
     private HBox pane = new HBox();
+    private VBox vbox = new VBox();
     private StackPane simPane = new StackPane();
     private GridPane dataPane = new GridPane();
 
@@ -92,6 +95,7 @@ public class SimulationScreen implements ImageDirecory{
     private Label dataTimeName = new Label("Time :");
     private Label dataUpdatesName = new Label("Updates :");
     private Label robotStatistics = new Label("Robot Statistics");
+    private Label general = new Label("General");
     private Label robotID = new Label();
 
     private Label robotEnergieName = new Label("Energie :");
@@ -149,6 +153,8 @@ public class SimulationScreen implements ImageDirecory{
         //LineChart
         lineChart.setTitle("");
         lineChart.setCreateSymbols(false);
+        
+        //lineChart.setBackground(new Background(new BackgroundImage(loadImageJPG("Sonne"),BackgroundRepeat.REPEAT, BackgroundRepeat.REPEAT, BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT)));
 
         series.setName("Light Intensity Over the Day");
 
@@ -157,30 +163,34 @@ public class SimulationScreen implements ImageDirecory{
         
         simBack = new Rectangle(manager.getProfile().getIntager("simulationSize")+100,(manager.getProfile().getIntager("simulationSize"))+100);    
         simBack.setFill(new ImagePattern(simFieldImage));
-        //simBack.setFill(Color.GREEN);
         simBack.setStroke(Color.BLACK);
 
         //robotStatistics 
         robotStatistics.setFont(Font.font("Stencil", FontWeight.MEDIUM,21));
+        general.setFont(Font.font("Stencil", FontWeight.MEDIUM,23));
 
         //dataPane Configuration
         dataPane.setMinWidth(((int)bounds.getWidth())/3);
-        dataPane.setPadding(new Insets(0, 30, 0, 30));
+        dataPane.setPadding(new Insets(30, 30, 30, 30));
         dataPane.setVgap(5);
 
+        //Perfekte Positionierung
+        dataRoundName.setMinWidth((((int)bounds.getWidth())/3)-150);
+
         dataPane.add(lineChart, 0, 0);
-        dataPane.add(dataRoundName,0,1);
-        dataPane.add(dataDayName, 0, 2);
-        dataPane.add(dataTimeName, 0, 3);
-        dataPane.add(dataUpdatesName, 0, 4);
-        dataPane.add(robotStatistics,0,5);
+        dataPane.add(general,0,1);
+        dataPane.add(dataRoundName,0,2);
+        dataPane.add(dataDayName, 0, 3);
+        dataPane.add(dataTimeName, 0, 4);
+        dataPane.add(dataUpdatesName, 0, 5);
+        dataPane.add(robotStatistics,0,6);
         dataPane.addColumn(0, robotEnergieName,robotSchrottName,robotAttackName,robotEnergieCapesityName,robotSpeedName,robotDefenseName,robotHealthName,robotRustName,robotSolarName);
 
-        dataPane.add(dataRoundValue,1,1);
-        dataPane.add(dataDayValue, 1, 2);
-        dataPane.add(dataTimeValue, 1, 3);
-        dataPane.add(dataUpdatesValue, 1, 4);
-        dataPane.add(robotID,1,5);
+        dataPane.add(dataRoundValue,1,2);
+        dataPane.add(dataDayValue, 1, 3);
+        dataPane.add(dataTimeValue, 1, 4);
+        dataPane.add(dataUpdatesValue, 1, 5);
+        dataPane.add(robotID,1,6);
 
         dataPane.addColumn(1,robotEnergieValue,robotSchrottValue,robotAttackValue,robotEnergieCapesityValue,robotSpeedValue,robotDefenseValue,robotHealthValue,robotRustValue,robotSolarValue);
 
@@ -193,9 +203,43 @@ public class SimulationScreen implements ImageDirecory{
                     Stage tempStage = new Stage();
                     new MenueScreen(manager,tempStage,stage);
                 }
+                if(keyEvent.getCode() == KeyCode.G){
+                    if(dataPane.getChildren().contains(lineChart)){
+                        dataPane.getChildren().remove(lineChart);
+                        dataPane.setAlignment(Pos.CENTER);
+                    }
+                    else{
+                        dataPane.getChildren().add(lineChart);
+                        dataPane.setAlignment(Pos.TOP_CENTER);
+                    }
+                }
+                if(keyEvent.getCode() == KeyCode.LEFT){
+                    for (int i = 0; i < bodies.size(); i++) {
+                        if(selectedRobot.equals(bodies.get(i))){
+                            if(i == 0){
+                                selectedRobot = (RobotBody)bodies.get(i);
+                            } else {
+                                selectedRobot = (RobotBody)bodies.get(i-1);
+                            }
+                            break;
+                        }
+                    } 
+                }
+                if(keyEvent.getCode() == KeyCode.RIGHT){
+                    for (int i = 0; i < bodies.size(); i++) {
+                        if(selectedRobot.equals(bodies.get(i))){
+                            if(i == bodies.size()-1){
+                                selectedRobot = (RobotBody)bodies.get(i);
+                            } else {
+                                selectedRobot = (RobotBody)bodies.get(i+1);
+                            }
+                            break;
+                        }
+                    } 
+                }
             }
         });
-        scene.getStylesheets().add(getClass().getResource(System.getProperty("user.dir") + File.separator + "src" + File.separator + "main" + File.separator + "java" + File.separator + "SIMS5" + File.separator + "gui"+ File.separator +"CSS"+ File.separator +"SimulationScreen.css").toExternalForm());
+        scene.getStylesheets().add(getClass().getResource("SimulationScreen.css").toExternalForm());
 
         // Stage Configuration
         stage.setScene(scene);
@@ -247,6 +291,7 @@ public class SimulationScreen implements ImageDirecory{
         updateBodys();
         updateLightData();
         updateSimPane();
+        selectedRobot = (RobotBody)bodies.get(0);
     }
 
     private void updateSimPane(){
@@ -257,7 +302,6 @@ public class SimulationScreen implements ImageDirecory{
                     updateDay();
                     updateTime();
                     updateUpdates();
-                    selectedRobot = (RobotBody)bodies.get(0);
                     updateRobotStatistics();
 
                     Platform.runLater(() -> {
@@ -380,11 +424,10 @@ public class SimulationScreen implements ImageDirecory{
 
     private void updateRobotStatistics(){
         Platform.runLater(() -> {
-            selectedRobot = (RobotBody)bodies.get(0);
-            robotID.setText(String.valueOf(selectedRobot.getId()));
+            robotID.setText("< "+String.valueOf(selectedRobot.getId())+" >");
             if(selectedRobot!=null){   
                 double[] statistics = selectedRobot.getStatistics();
-                robotEnergieValue.setText(String.valueOf(statistics[0]));
+                robotEnergieValue.setText(String.valueOf(MathUtil.roundToDecPlaces(statistics[0],2)));
                 robotSchrottValue.setText(String.valueOf(statistics[1]));
                 robotAttackValue.setText(String.valueOf(statistics[2]));
                 robotEnergieCapesityValue.setText(String.valueOf(statistics[3]));
@@ -396,6 +439,8 @@ public class SimulationScreen implements ImageDirecory{
                 if (selectedRobot.getStatistics()[6]==0) {
                     selectedRobot = (RobotBody)bodies.get(0);
                 }
+            } else {
+                selectedRobot = (RobotBody)bodies.get(0); 
             }
         }); 
     }
