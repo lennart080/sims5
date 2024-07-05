@@ -46,9 +46,9 @@ import java.io.File;
 import java.io.FileInputStream;
 
 import java.io.FileNotFoundException;
-import java.lang.foreign.PaddingLayout;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class SimulationScreen implements ImageDirecory{
@@ -291,8 +291,13 @@ public class SimulationScreen implements ImageDirecory{
         updateBodys();
         updateLightData();
         updateSimPane();
-        selectedRobot = (RobotBody)bodies.get(0);
+        try {
+            selectedRobot = (RobotBody) bodies.get(0);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
+
 
     private void updateSimPane(){
         timer = new AnimationTimer() {

@@ -58,7 +58,11 @@ public class PurAi extends RoundHandler {
             if (firstRound) {
                 nr = networkCreator.newNetwork();
             } else {
-                nr =  mutator.mutate(network.getWeights(round-1, i/divider), network.getNeurons(round-1, i/divider));
+                if (entitys.size()/divider == i) {
+                    nr = networkCreator.newNetwork();
+                } else {
+                    nr = mutator.mutate(network.getWeights(round - 1, i / divider), network.getNeurons(round - 1, i / divider));
+                }
             }
             robots.get(i).setMind(new NeuralNetwork(nr.getWeights(), nr.getNeurons(), simSize));
         }
